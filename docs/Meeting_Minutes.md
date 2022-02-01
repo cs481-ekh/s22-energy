@@ -1,9 +1,19 @@
 ## 1/31/2022 - Sponsor Meeting
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
-  "Meeting notes" 
+  Meeting went well, spent about 45 minutes talking about expectations for this project, very excited! Here are some things we went over:
+  - Simple map, 3D campus map overlay might be overkill
+  - Ideally would prefer clickable buildings rather than pins (not crucial). Energy data shows up on card with a click.
+  - Toggles/filters for electric, gas, geothermal?, solar, historical data (delimites by week/month/year?). (stretch goal: steam)
+  - Requested sample data set (He will get .csv and sq. ft. of buildings BY Feb. 8
+  - ABSOLUTE(Raw) Energy filter vs. EUI (energy usage intensity --> energy used divided by sq. ft. of building)
+  - includes way to graph data like UC berkely energy website (perhaps google dashboard)
+  - Potentially autofilling "real time" data from energy client (stretch goal)
+  - Future check in meeting planned
+  
+  
 
-  Action Items: 
+  Action Items: Finish project plan and get it to sponsor, Plan for future meeting, stay in contact with sponsor for any questions. Recieve .csv from sponsor
   
 
 </p>
