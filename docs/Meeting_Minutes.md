@@ -5,12 +5,14 @@
   
  * Simple map, 3D campus map overlay might be overkill
  * Ideally would prefer clickable buildings rather than pins (not crucial). Energy data shows up on card with a click.
- * Toggles/filters for electric, gas, geothermal?, solar, historical data (delimites by week/month/year?). (stretch goal: steam)
+ * Toggles/filters for electric, gas, geothermal?, solar, historical data (delimits by week/month/year?). (stretch goal: steam)
  * Requested sample data set (He will get .csv and sq. ft. of buildings BY Feb. 8
  * ABSOLUTE(Raw) Energy filter vs. EUI (energy usage intensity --> energy used divided by sq. ft. of building)
  * includes way to graph data like UC berkely energy website (perhaps google dashboard)
  * Potentially autofilling "real time" data from energy client (stretch goal)
- * Future check in meeting planned
+ * Future check in meeting planned -> Monday, February 28 @ 12:30
+ * Stretch goal: Automated data polling from BSU database for available energy's (alongsige csv upload for other
+energies)
   
   Action Items: Finish project plan and get it to sponsor, Plan for future meeting, stay in contact with sponsor for any questions. Recieve .csv from sponsor
 
