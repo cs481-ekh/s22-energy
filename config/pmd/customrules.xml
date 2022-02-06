@@ -1,0 +1,18 @@
+<!-- PMD > version 6.* -->
+<ruleset name = "customrules">
+<description>Custom rules</description>
+<rule ref="category/java/errorprone.xml" >
+    <properties>
+    </properties>
+</rule>
+<rule ref = "category/java/bestpractices.xml">
+    <exclude name="JUnit4TestShouldUseAfterAnnotation"/>
+    <exclude name="JUnit4SuitesShouldUseSuiteAnnotation"/>
+    <exclude name="JUnit4TestShouldUseBeforeAnnotation"/>
+    <exclude name="JUnit4TestShouldUseTestAnnotation"/>
+    <exclude name="JUnit5TestShouldBePackagePrivate"/>
+    <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+    <exclude name="JUnitTestContainsTooManyAsserts"/>
+    <exclude name = "JUnitUseExpected"/>
+</rule>
+</ruleset>
