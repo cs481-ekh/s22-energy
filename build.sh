@@ -1,2 +1,1 @@
-#!/bin/bash
-exit 127
+./gradlew build || echo "Build failed"; exit -1
