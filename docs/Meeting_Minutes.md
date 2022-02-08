@@ -1,3 +1,27 @@
+## 2/6/2002
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+Meeting notes:
+  
+* Worked on Build, Test, CI for our React and Springboot setup
+* Worked on using professors notes from project setup to clean up our project plan.  Completed this
+    
+Action items:  Keegan working on Diagram for project plan.  
+</p>
+
+## 2/3/2002
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+  After class meeting to discuss weekend meet up plans.  We decided to meet on Sunday at 4pm to work on our project plan
+</p>
+
+## 2/1/2002
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+  After class meeting, spent the remaining time finishing up our project setup and turned it in
+</p>
+
+
 ## 1/31/2022 - Sponsor Meeting
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
