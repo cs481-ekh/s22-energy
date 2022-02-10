@@ -6,24 +6,22 @@ on:
     branches: [ main ]
     
 jobs:
-  build_and_test:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: run build.sh
+    - name: build
       uses: actions/checkout@v2
     - run: |
-        echo "====================[ BUILDING ]===================="
         ./gradlew build
-        npm --prefix ./client
+        npm --prefix ./client install
         npm --prefix ./client run build
-        echo "====================[ TESTING ]====================="
+
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: test
+      uses: actions/checkout@v2
+    - run: |
         npm --prefix ./client t --silent -- --watchAll=false
-
-
-#   test:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - name: run test.sh
-#       uses: actions/checkout@v2
-#     - run: |
-#         npm --prefix ./client t --silent -- --watchAll=false
