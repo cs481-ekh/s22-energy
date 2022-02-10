@@ -9,16 +9,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
     - name: run build.sh
+      uses: actions/checkout@v2
     - run: ./build.sh
 
 
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
     - name: run test.sh
+      uses: actions/checkout@v2
     - run: ./test.sh
 
 
