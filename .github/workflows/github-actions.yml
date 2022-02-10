@@ -1,23 +1,23 @@
 name: BSU Energy Dashboard CI
 on:
-    push:
-        branches: [ main ]
-    pull_request:
-        branches: [ main ]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
     
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-        - name: Run build.sh
-        - run: ./build.sh
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: run build.sh
+    - run: ./build.sh
 
 
-    test:
-        runs-on: ubuntu-latest
-        steps:
-        - name: Run test.sh
-        - run: ./test.sh
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: run test.sh
+    - run: ./test.sh
 
 
 
