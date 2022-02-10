@@ -9,15 +9,15 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - name: Run build.sh
-            - run: ./build.sh
+        - name: Run build.sh
+        - run: ./build.sh
 
 
     test:
         runs-on: ubuntu-latest
         steps:
-            - name: Run test.sh
-            - run: ./test.sh
+        - name: Run test.sh
+        - run: ./test.sh
 
 
 
