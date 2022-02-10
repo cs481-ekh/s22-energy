@@ -10,11 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: build backend
+    - name: Build backend
       run: ./gradlew build
-    - name: build frontend
+    - name: Build frontend
       run: |
-        npm --prefix ./client install
         npm --prefix ./client run build
 
 
@@ -23,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: test frontend
+    - name: Test frontend
       run: |
         npm --prefix ./client install
         npm --prefix ./client test --silent -- --watchAll=false
