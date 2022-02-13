@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    # I'm breaking the build apart into seperate sections instead
+    # of using the build.sh so that it is easier to debug with
+    # outputs seperated out, in github actions, instead of all
+    # bunched together into one giant file
     - name: Build backend
       run: ./gradlew build
     - name: Build frontend
@@ -23,6 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    # I'm also breaking this one apart into sections for the
+    # same reason as above. Although so far there is still only
+    # one section. I'm sure that will change over time and I'll
+    # update the script as needed
     - name: Test frontend
       run: |
         npm --prefix ./client install
