@@ -6,3 +6,12 @@ build
 
 # Ignore node_modules
 node_modules/
+
+#Ignore Intellij
+.idea
+
+#Ignore directory
+server/bin/
+
+#Ignore properties values
+application.properties
