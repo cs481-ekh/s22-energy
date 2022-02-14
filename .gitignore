@@ -14,4 +14,4 @@ node_modules/
 server/bin/
 
 #Ignore properties values
-application.properties
+server/src/test/resources/application.properties
