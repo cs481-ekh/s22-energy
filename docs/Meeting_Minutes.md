@@ -1,3 +1,58 @@
+## 2/10002
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+Meeting notes:
+  * Prepared github for Sprint 0
+  * Added our issues to github
+  * Added our milestones to github
+  * Assigned out issue for sprint 0
+  * Discussed the project flow and addressed concerns everyone had
+  * Worked on Build,Test,CI assignment.  
+    
+Action items:  Everyone is to work on there issues, using Sprint 0 and pull request.  Ask for help if needed.
+</p>
+
+
+## 2/8/2002
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+Meeting notes:
+  
+* Finished up project plan diagram
+* Created more epic in our github to match our project plan
+* Discussed the Jacks' icon he made and we will be using it for this project
+* Adjusted out timeline to match stories
+* Cleaned up our Risk and Contingency 
+* Cleaned up our Diagram discription
+    
+Action items:  Meeting Thursday during class time to work on Sprint 0
+</p>
+
+
+## 2/6/2002
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+Meeting notes:
+  
+* Worked on Build, Test, CI for our React and Springboot setup
+* Worked on using professors notes from project setup to clean up our project plan.  Completed this
+    
+Action items:  Keegan working on Diagram for project plan.  
+</p>
+
+## 2/3/2002
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+  After class meeting to discuss weekend meet up plans.  We decided to meet on Sunday at 4pm to work on our project plan
+</p>
+
+## 2/1/2002
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+  After class meeting, spent the remaining time finishing up our project setup and turned it in
+</p>
+
+
 ## 1/31/2022 - Sponsor Meeting
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
