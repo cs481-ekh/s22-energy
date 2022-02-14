@@ -1,9 +1,23 @@
-(./gradlew assemble) || { echo >&2 "Gradle build failed"; exit 1;}
-echo "######################## Gradle Complete ############################" 
+#!/bin/bash
 
-npm --prefix ./client install || { echo >&2 "npm install failed"; exit 1;}
-echo "######################## npm Install Complete #######################" 
+# print a horizontal ruler with mesage
+rulem() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: rulem <message> [<rule character>]"
+    return 1
+  fi
 
-npm --prefix ./client run build || { echo >&2 "npm run build failed"; exit 1; }
-echo "######################## npm Build Complete #########################" 
+  # fill line with ruler characters ($2, default "-"), reset cursor, move 2 cols right, print message
+  printf -v _hr "%*s" $(tput cols) &&
+    echo "" &&
+    echo -en "${_hr// /${2--}}" &&
+    echo -e "\r\033[2C$1" &&
+    echo ""
+}
 
+(./gradlew assemble) || { rulem "Gradle build failed" '!'; exit 1; }
+rulem "gradle build complete" '#'
+
+npm --prefix ./client install || { rulem "npm install failed" '!'; exit 1; }
+npm --prefix ./client run build || { rulem "npm run build failed" '!'; exit 1; }
+rulem "npm build complete" '#'
