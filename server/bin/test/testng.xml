@@ -1,7 +1,0 @@
-<suite name="suite">
-    <test name="test suite">
-        <classes>
-            <class name="Tester" />
-        </classes>
-    </test>
-</suite>
