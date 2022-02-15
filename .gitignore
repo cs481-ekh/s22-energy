@@ -19,5 +19,8 @@ server/build/
 #Ignore package lock
 client/package-lock.json
 
+#ignore vscode
+.vscode/
+
 #Ignore properties values
 server/src/test/resources/application.properties
