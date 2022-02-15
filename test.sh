@@ -37,5 +37,5 @@ rulem "[ npm test ]" '='
 rule '='
 npm --prefix ./client install || { rulem "npm install failed" '!'; exit 1; }
 npm --prefix ./client test --silent -- --watchAll=false || { rulem "npm test failed" '!'; exit 1; }
-npm --prefix ./client run lint
+npm --prefix ./client run lint || { rulem "Linter failed" '!'; exit 1; }
 rulem "[ npm test complete ]" '#'
