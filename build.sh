@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# print a horizontal rule
+rule() {
+  printf -v _hr "%*s" $(tput cols) && echo "${_hr// /${1--}}"
+}
+
 # print a horizontal ruler with mesage
 rulem() {
   if [ $# -eq 0 ]; then
@@ -15,9 +20,15 @@ rulem() {
     echo ""
 }
 
-(./gradlew assemble) || { rulem "Gradle build failed" '!'; exit 1; }
-rulem "gradle build complete" '#'
 
+
+rule '='
+rulem "[ gradle build ]" '='
+rule '='
+(./gradlew assemble) || { rulem "Gradle build failed" '!'; exit 1; }
+
+rule '='
+rulem "[ npm build ]" '='
+rule '='
 npm --prefix ./client install || { rulem "npm install failed" '!'; exit 1; }
 npm --prefix ./client run build || { rulem "npm run build failed" '!'; exit 1; }
-rulem "npm build complete" '#'
