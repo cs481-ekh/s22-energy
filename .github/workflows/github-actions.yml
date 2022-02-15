@@ -1,0 +1,23 @@
+name: BSU Energy Dashboard CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: build gradle and npm
+      run: ./build.sh
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: test gradle and npm
+      run: ./test.sh
+
