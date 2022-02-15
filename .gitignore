@@ -6,3 +6,18 @@ build
 
 # Ignore node_modules
 node_modules/
+
+#Ignore Intellij
+.idea
+
+#Ignore directory
+server/bin/
+
+#Ignore build dir
+server/build/
+
+#ignore vscode
+.vscode/
+
+#Ignore properties values
+server/src/test/resources/application.properties
