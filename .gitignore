@@ -13,5 +13,11 @@ node_modules/
 #Ignore directory
 server/bin/
 
+#Ignore build dir
+server/build/
+
+#Ignore package lock
+client/package-lock.json
+
 #Ignore properties values
 server/src/test/resources/application.properties
