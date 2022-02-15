@@ -22,7 +22,7 @@ rulem() {
 
 # run gradle tests
 rule '='
-rulem "[ gradle test ]" '='
+rulem "[ gradle test ]" '-'
 rule '='
 ./gradlew test || { rulem "NUnit tests on server failed" '!'; exit 1; }
 ./gradlew pmdMain || { rulem "There are static issues with the main code!" '!';  exit 1; }
@@ -33,9 +33,8 @@ rulem "[ gradle test complete ]" '#'
 
 # run npm tests
 rule '='
-rulem "[ npm test ]" '='
+rulem "[ npm test ]" '-'
 rule '='
-npm --prefix ./client install || { rulem "npm install failed" '!'; exit 1; }
 npm --prefix ./client test --silent -- --watchAll=false || { rulem "npm test failed" '!'; exit 1; }
 npm --prefix ./client run lint || { rulem "Linter failed" '!'; exit 1; }
 rulem "[ npm test complete ]" '#'
