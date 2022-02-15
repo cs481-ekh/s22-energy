@@ -16,9 +16,6 @@ server/bin/
 #Ignore build dir
 server/build/
 
-#Ignore package lock
-client/package-lock.json
-
 #ignore vscode
 .vscode/
 
