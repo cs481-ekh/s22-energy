@@ -26,9 +26,11 @@ rule '='
 rulem "[ gradle build ]" '='
 rule '='
 (./gradlew assemble) || { rulem "Gradle build failed" '!'; exit 1; }
+rulem "[ gradle build complete ]" '#'
 
 rule '='
 rulem "[ npm build ]" '='
 rule '='
 npm --prefix ./client install || { rulem "npm install failed" '!'; exit 1; }
 npm --prefix ./client run build || { rulem "npm run build failed" '!'; exit 1; }
+rulem "[ npm build complete ]" '#'
