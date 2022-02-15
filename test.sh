@@ -34,6 +34,6 @@ rule '='
 rule '='
 rulem "[ npm test ]" '='
 rule '='
-npm --prefix ./client install || { rulem "npm install failed" '!' }
-npm --prefix ./client test --silent -- --watchAll=false || { rulem "npm test failed" '!' }
+npm --prefix ./client install || { rulem "npm install failed" '!'; exit 1; }
+npm --prefix ./client test --silent -- --watchAll=false || { rulem "npm test failed" '!'; exit 1; }
 
