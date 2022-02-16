@@ -1,13 +1,30 @@
-## 2/10002
+## 2/15/2020
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+  Meeting Notes:
+  
+ * Looked over the data provided by Brian
+
+</p>
+
+# Sprint0 Retrospect 
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+ I think the group worked really well together implementing sprint0.  Everyone was able to assist were needed and we did a greate job during our meeting identifying what our task needed to be and who would handle each task.  I think the only thing I would change would be keeping better meeting notes/descriptions to added to our docs.  
+ 
+</p>
+
+## 2/10/2002
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
 Meeting notes:
-  * Prepared github for Sprint 0
-  * Added our issues to github
-  * Added our milestones to github
-  * Assigned out issue for sprint 0
-  * Discussed the project flow and addressed concerns everyone had
-  * Worked on Build,Test,CI assignment.  
+ 
+* Prepared github for Sprint 0
+* Added our issues to github
+* Added our milestones to github
+* Assigned out issue for sprint 0
+* Discussed the project flow and addressed concerns everyone had
+* Worked on Build,Test,CI assignment.  
     
 Action items:  Everyone is to work on there issues, using Sprint 0 and pull request.  Ask for help if needed.
 </p>
