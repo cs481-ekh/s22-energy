@@ -25,6 +25,10 @@
  
 </p>
 
+<p>
+The group did a great job implementing sprint0. Everybody was able compelete his task on time, as mentioned the only thing we need to do is to add more notes and descriptions to our docs.
+ 
+</p>
 ## 2/10/2002
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
@@ -41,7 +45,7 @@ Action items:  Everyone is to work on there issues, using Sprint 0 and pull requ
 </p>
 
 
-## 2/8/2002
+## 2/8/2022
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
 Meeting notes:
@@ -57,7 +61,7 @@ Action items:  Meeting Thursday during class time to work on Sprint 0
 </p>
 
 
-## 2/6/2002
+## 2/6/2022
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
 Meeting notes:
@@ -68,13 +72,13 @@ Meeting notes:
 Action items:  Keegan working on Diagram for project plan.  
 </p>
 
-## 2/3/2002
+## 2/3/2022
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
   After class meeting to discuss weekend meet up plans.  We decided to meet on Sunday at 4pm to work on our project plan
 </p>
 
-## 2/1/2002
+## 2/1/2022
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
   After class meeting, spent the remaining time finishing up our project setup and turned it in
