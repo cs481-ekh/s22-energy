@@ -27,8 +27,9 @@
 
 <p>
 The group did a great job implementing sprint0. Everybody was able compelete his task on time, as mentioned the only thing we need to do is to add more notes and descriptions to our docs.
- 
+  
 </p>
+
 ## 2/10/2002
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
