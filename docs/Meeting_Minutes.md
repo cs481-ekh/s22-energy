@@ -1,4 +1,4 @@
-## 2/15/2020 After Class
+## 2/15/2022 After Class
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
   Meeting Notes:
@@ -18,19 +18,29 @@
   
 </p>
 
-# Sprint0 Retrospect 
+## Sprint0 Retrospect
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
- I think the group worked really well together implementing sprint0.  Everyone was able to assist were needed and we did a greate job during our meeting identifying what our task needed to be and who would handle each task.  I think the only thing I would change would be keeping better meeting notes/descriptions to added to our docs.  
- 
+I think the group worked really well together implementing sprint0.
+Everyone was able to assist were needed and we did a greate job during our
+meeting identifying what our task needed to be and who would handle each task.
+I think the only thing I would change would be keeping better meeting
+notes/descriptions to be added to our docs.
+</p>
+
+<p>
+I also think our group did well with sprint 0. We're at kind of an awkard
+stage of development where it can be hard to get meaningful and evenyl
+distributed tasks for all 6 of us at once, but I foresee this getting better as
+we begin true development.
 </p>
 
 <p>
 The group did a great job implementing sprint0. Everybody was able compelete his task on time, as mentioned the only thing we need to do is to add more notes and descriptions to our docs.
-  
 </p>
 
-## 2/10/2002
+
+## 2/10/2022
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
 Meeting notes:
