@@ -2,8 +2,19 @@ name: BSU Energy Dashboard CI
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
+      - 'CONTRIBUTORS'
+      - 'LICENSE'
+      - '**.md'
+
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
+      - 'CONTRIBUTORS'
+      - 'LICENSE'
+      - '**.md'
     
 jobs:
   build-and-test:
