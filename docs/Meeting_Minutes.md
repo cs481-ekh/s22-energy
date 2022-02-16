@@ -39,6 +39,11 @@ we begin true development.
 The group did a great job implementing sprint0. Everybody was able compelete his task on time, as mentioned the only thing we need to do is to add more notes and descriptions to our docs.
 </p>
 
+<p>
+We definetely succeeded in our goals this sprint, curious to see how real development will go.
+Need to talk with sponsor about how to handle data. Overall I think we are set up to begin dev!
+</p>
+
 
 ## 2/10/2022
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
