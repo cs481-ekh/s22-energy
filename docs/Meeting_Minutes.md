@@ -1,10 +1,21 @@
-## 2/15/2020
+## 2/15/2020 After Class
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
   Meeting Notes:
   
- * Looked over the data provided by Brian
-
+  * Looked over the data provided by Brian
+  * Discussed our concerns with Energy data we recieved.  Lot of issues
+  * Discussed our parts of Sprint0 and addressed any issues
+  * Addressed new issue professor commented on in class about the CI
+  
+  Action items:
+  
+    1. Review Brian data notes, so we can understand what his data represents
+    2. Setup a meeting iwth Brian so we can address our concerns with his data
+    3. Discuss Sprint1 on Thursday
+    4. Everyone needs to submit their Build, Test, CI assignment
+    5. Everyone will add their retrospect for Sprint0 in our Meeting Notes
+  
 </p>
 
 # Sprint0 Retrospect 
