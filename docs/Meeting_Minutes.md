@@ -1,3 +1,22 @@
+## 2/19/2022 Database Meeting 2:30pm - 4pm
+#### Attendees: Aidan, Khaled, Victor
+<p>
+  We worked on creating the database schema.  We used sqldbm to generate a graphical representation of our tables. We will be working to add these tables to heroku shortly.  
+  </p>
+
+## 2/18/2022 Sponsor Meeting 3:30pm
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+  Meeting Notes:
+  
+  * Discussed OIT access.  
+  * Natural Gas spreadsheet - Brian explained that there is a high volumn number at the bottom of the page.  This number represents a large purchase amount by BSU and we will probably excluded it from our data for now. 
+    * This spreadsheet will be in an excel format
+  * Linking Tables - We discussed how to link each spreadsheet.  Brian explained that we should use a form of building code and premise number.  
+  * Update Page - We discussed how we would wanted to handle missing information.  When new data is present, we will identify the data and have a page that ask if he would like to added.  
+  * Steam stretch goal - Brian wanted add a potiential steam option for our page.  For when they decided to added steam to this data
+</p>
+
 ## 2/15/2022 After Class
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
