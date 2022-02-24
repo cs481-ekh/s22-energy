@@ -1,3 +1,17 @@
+## 2/22/2022 9am
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+  * Reviewed our database tables.  Tried to narrow down the table diagram so it would be more manageable
+  * Discussed our energy converstion java class.  How we would handle data conversion both to and from data downloads
+  * Disccused adding more libraries/drivers to our project(CSV parsing, postgres)
+  
+  #### Action items:
+  
+    * Victor, Aidan and Khaled to work on adding data to database tables
+    * Jack and Keegan working on creating first front end page with buttons
+    * Taylor working on creating conversion java class
+</p>
+
 ## 2/19/2022 Database Meeting 2:30pm - 4pm
 #### Attendees: Aidan, Khaled, Victor
 <p>
@@ -5,7 +19,7 @@
   </p>
 
 ## 2/18/2022 Sponsor Meeting 3:30pm
-#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor, Brian Emtman
 <p>
   Meeting Notes:
   
