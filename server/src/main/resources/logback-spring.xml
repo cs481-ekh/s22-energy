@@ -43,12 +43,14 @@
         </rollingPolicy>
     </appender>
 
-    <root level="info">
+    <!-- Throw warnings and errors to console and applog !-->
+    <root level="WARN">
         <appender-ref ref="Console" />
         <appender-ref ref="APPLOG" />
+        <appender-ref ref="ELOG"/>
     </root>
 
-    <!-- Log our application at debug level !-->
+    <!-- Log our application at debug level, send it to own log file !-->
     <logger name="application" level="debug" additivity="false">
         <appender-ref ref="ELOG"/>
         <appender-ref ref="Console"/>
