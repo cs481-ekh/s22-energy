@@ -5,31 +5,34 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Building entity that maps to our buildings table.
+ */
 @Entity
-@Table(schema = "public", name="buildings")
+@Table(schema = "public", name = "buildings")
 public class Building {
 	@Id
-	@Column(name="building_code", nullable = false, unique = true)
+	@Column(name = "building_code", nullable = false, unique = true)
 	public String buildingCode;
 
-	@Column(name="abbreviation", nullable = true)
+	@Column(name = "abbreviation", nullable = true)
 	public String abbreviation;
 
-	@Column(name="building_name", nullable = false)
+	@Column(name = "building_name", nullable = false)
 	public String buildingName;
 
-	@Column(name="address", nullable = true)
+	@Column(name = "address", nullable = true)
 	public String address;
 
-	@Column(name="gross_sf", nullable = true)
+	@Column(name = "gross_sf", nullable = true)
 	public int squareFt;
 
-	@Column(name="year_built", nullable = true)
+	@Column(name = "year_built", nullable = true)
 	public int yearBuilt;
 
-	@Column(name="x_coord", nullable = true)
-	public int xCoord;
+	@Column(name = "x_coord", nullable = true)
+	public double xCoord;
 
-	@Column(name="y_coord", nullable = true)
-	public int yCoord;
+	@Column(name = "y_coord", nullable = true)
+	public double yCoord;
 }

@@ -1,6 +1,5 @@
 package application;
 
-import application.Database.EnergyDB.Repo.MeterRepo;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +16,10 @@ import org.springframework.boot.SpringApplication;
 public class Server {
 
     @Autowired
-    private MeterRepo energyRepo;
     static final transient Logger logger = LoggerFactory.getLogger(Server.class);
 
     /**
-     * Main method
+     * Main method.
      */
     public static void main(String[] args) {
         SpringApplication.run(Server.class, args);

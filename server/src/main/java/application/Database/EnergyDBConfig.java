@@ -23,12 +23,19 @@ import java.util.HashMap;
 		entityManagerFactoryRef = "energyEntityManager",
 		transactionManagerRef = "energyTransactionManager"
 )
+/**
+ * Configures connection to main energy db.
+ */
 public class EnergyDBConfig {
 	@Autowired
-	private Environment env;
+	private transient Environment env;
 
 	@Bean
 	@Primary
+	/**
+	 * Manages which entities this configuration applies to.
+	 * @returns entity factory for all models under package models.
+	 */
 	public LocalContainerEntityManagerFactoryBean energyEntityManager() {
 		LocalContainerEntityManagerFactoryBean em
 				= new LocalContainerEntityManagerFactoryBean();
@@ -36,6 +43,7 @@ public class EnergyDBConfig {
 		em.setPackagesToScan(
 				new String[] { "application.Database.EnergyDB.Models" });
 
+		// Configures how the Jpa adapter should interact with the database
 		HibernateJpaVendorAdapter vendorAdapter
 				= new HibernateJpaVendorAdapter();
 		em.setJpaVendorAdapter(vendorAdapter);
@@ -51,25 +59,35 @@ public class EnergyDBConfig {
 
 	@Primary
 	@Bean
+	/**
+	 * Handles connection to the database.
+	 * @returns a database connection.
+	 */
 	public DataSource energyDataSource() {
-
-		DriverManagerDataSource dataSource
-				= new DriverManagerDataSource();
-		dataSource.setDriverClassName(
-				env.getProperty("spring.energydb.driver"));
-		dataSource.setUrl(env.getProperty("spring.energydb.url"));
-		dataSource.setUsername(env.getProperty("spring.energydb.username"));
-		dataSource.setPassword(env.getProperty("spring.energydb.password"));
-
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		try {
+			// Sets login and host information for the connection
+			dataSource.setDriverClassName(
+					env.getProperty("spring.energydb.driver"));
+			dataSource.setUrl(env.getProperty("spring.energydb.url"));
+			dataSource.setUsername(env.getProperty("spring.energydb.username"));
+			dataSource.setPassword(env.getProperty("spring.energydb.password"));
+		}
+		catch(Exception ex){
+			// Will add logging capability in next PR
+		}
 		return dataSource;
 	}
 
 	@Primary
 	@Bean
+	/**
+	 * Sets up a manager for a transaction between db and entity.
+	 * @returns a transaction manager for spring boot to use internally.
+	 */
 	public PlatformTransactionManager energyTransactionManager() {
 
-		JpaTransactionManager transactionManager
-				= new JpaTransactionManager();
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(
 				energyEntityManager().getObject());
 		return transactionManager;
