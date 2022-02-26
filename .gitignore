@@ -21,3 +21,11 @@ server/build/
 
 #Ignore properties values
 server/src/test/resources/application.properties
+
+#Ignore properties from main
+server/src/main/resources/application.properties
+
+#Ignore intelliJ project files
+server/src/main/main.iml
+server/src/test/test.iml
+
