@@ -39,7 +39,7 @@ const ResponsiveAppBar = () => {
     return (
         <div>
         <AppBar position="static" sx={{ bgcolor: "#E5E5E5"}}>
-            <Container maxWidth="xl" >
+            <Container maxWidth="fixed" >
                 <Toolbar disableGutters>
                     <img src={logo} alt="logggo" className="logo" />
                     <img src={bar} alt="logggo" className="idaho-logo" />
