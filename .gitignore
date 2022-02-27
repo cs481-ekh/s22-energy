@@ -21,3 +21,6 @@ server/build/
 
 #Ignore properties values
 server/src/test/resources/application.properties
+
+#Ignore local gradle junit test results
+testing.xml
