@@ -1,3 +1,18 @@
+## 2/25/2022 10am
+#### Attendees: Jack, Aidan, Keegan, Khaled
+<p>
+   Discussed our progress with current tasks and added additional tasks to complete before Sprint 1 ends.
+
+   #### Action items:
+  
+    * Khaled working on Postgres wrapper modules (Insert, Delete and Update)
+    * Victor working on parsing class
+    * Aidan working on database connection class and getting logger injected into multiple modules
+    * Jack starting admin login/authentication
+    * Taylor/Keegan continue working on current tasks
+
+ </p>
+
 ## 2/22/2022 9am
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
