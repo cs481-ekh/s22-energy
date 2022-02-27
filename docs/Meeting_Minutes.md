@@ -1,3 +1,32 @@
+## 2/25/2022 10am
+#### Attendees: Jack, Aidan, Keegan, Khaled
+<p>
+   Discussed our progress with current tasks and added additional tasks to complete before Sprint 1 ends.
+
+   #### Action items:
+  
+    * Khaled working on Postgres wrapper modules (Insert, Delete and Update)
+    * Victor working on parsing class
+    * Aidan working on database connection class and getting logger injected into multiple modules
+    * Jack starting admin login/authentication
+    * Taylor/Keegan continue working on current tasks
+
+ </p>
+
+## 2/22/2022 9am
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+  * Reviewed our database tables.  Tried to narrow down the table diagram so it would be more manageable
+  * Discussed our energy converstion java class.  How we would handle data conversion both to and from data downloads
+  * Disccused adding more libraries/drivers to our project(CSV parsing, postgres)
+  
+  #### Action items:
+  
+    * Victor, Aidan and Khaled to work on adding data to database tables
+    * Jack and Keegan working on creating first front end page with buttons
+    * Taylor working on creating conversion java class
+</p>
+
 ## 2/19/2022 Database Meeting 2:30pm - 4pm
 #### Attendees: Aidan, Khaled, Victor
 <p>
@@ -5,7 +34,7 @@
   </p>
 
 ## 2/18/2022 Sponsor Meeting 3:30pm
-#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor, Brian Emtman
 <p>
   Meeting Notes:
   
