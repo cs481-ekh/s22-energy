@@ -1,5 +1,7 @@
 package application.Database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +31,7 @@ import java.util.HashMap;
 public class EnergyDBConfig {
 	@Autowired
 	private transient Environment env;
+	private final transient Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Bean
 	@Primary
@@ -65,17 +68,14 @@ public class EnergyDBConfig {
 	 */
 	public DataSource energyDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		try {
-			// Sets login and host information for the connection
-			dataSource.setDriverClassName(
-					env.getProperty("spring.energydb.driver"));
-			dataSource.setUrl(env.getProperty("spring.energydb.url"));
-			dataSource.setUsername(env.getProperty("spring.energydb.username"));
-			dataSource.setPassword(env.getProperty("spring.energydb.password"));
-		}
-		catch(Exception ex){
-			// Will add logging capability in next PR
-		}
+
+		// Sets login and host information for the connection
+		dataSource.setDriverClassName(
+				env.getProperty("spring.energydb.driver"));
+		dataSource.setUrl(env.getProperty("spring.energydb.url"));
+		dataSource.setUsername(env.getProperty("spring.energydb.username"));
+		dataSource.setPassword(env.getProperty("spring.energydb.password"));
+		logger.debug("Succesfully connected to db!");
 		return dataSource;
 	}
 
