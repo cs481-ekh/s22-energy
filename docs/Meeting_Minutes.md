@@ -1,6 +1,15 @@
 ## Sprint1 Retrospect
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 
+<p>
+So we pretty much split into two groups on this sprint. 
+   Once for backend and one to start up the front end. 
+   I think that this sprint was successful because we achieved all 
+   (or most) of the tasks that we set out to complete. We got 
+   a good mockup of front end and are on the way to a working 
+   backend! Work seemed well distributed and everyone was busy 
+   with their tasks.
+</p>
 
 ## 2/28/2022 12:30pm -Sponser checkin
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor, Brian Emtman
