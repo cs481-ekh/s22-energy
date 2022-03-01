@@ -1,3 +1,16 @@
+## 2/28/2022 12:30pm -Sponser checkin
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor, Brian Emtman
+<p>
+   
+   * Discussed spreadsheet/data issues.  Missing building codes and unknown address location(Jerome).  Had to determine what to do with this type of data.
+   * Discussed Map API issue and our plan to use Bing Map API.  This could be a problem if BSU wants us to use Google API, would require a complete change to the application
+   
+   #### Action items:
+      
+      *  Brian is looking into geting us the needed Building Codes
+      *  Brian is also going to see if we can utilize BSU map application.  This is so we don't have complication with having to use Bing Map API
+ </p>
+
 ## 2/25/2022 10am
 #### Attendees: Jack, Aidan, Keegan, Khaled
 <p>
@@ -12,6 +25,20 @@
     * Taylor/Keegan continue working on current tasks
 
  </p>
+
+## 2/24/2022 9am
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+
+<p>
+  
+   * Google map API requires a credit card number.  We made the decision to move to Bing map API.  They do not require one. 
+   * Conversion class method.  Discussed what we would need it to do and they types of measurments it would need to address.  
+   * We will have to manually load the database.
+   
+   #### Action Items:
+   
+      * Everyone continue working on their task
+</p>
 
 ## 2/22/2022 9am
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
