@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(schema = "public", name = "usage")
 public class Usage {
+
 	@Id
 	@Column(name = "id", nullable = false, unique = true)
 	public int id;
@@ -31,4 +32,9 @@ public class Usage {
 
 	@Column(name = "cost", nullable = true)
 	public BigDecimal cost;
+
+	public Usage(){
+		utilityUsage = new BigDecimal(0);
+		cost = new BigDecimal(0);
+	}
 }
