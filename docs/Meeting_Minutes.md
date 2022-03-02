@@ -1,3 +1,20 @@
+## 3/1/2022 9:30am after class meeting
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+
+<p>
+   
+   * Discussed User table we needing added to our database.  Also discussed updating our Buildings table with Long/Lat values.
+   * Talked about Keegan's addition of Bing Map to our application.  Looked really good.  We discussed the difference between Google and Bing.  Big differnce
+   * Discussed having everyone add their retrospects to our Meeting doc.
+   * Reminded everyone not to delete their branchs as the Professor mentioned in class
+   * Setup everything for Sprint2 and assigned task to everyone.
+   
+   #### Action Items:
+      * Find out if we can get Google API key from BSU
+      * Start working on our tasks
+      
+</p>
+
 ## Sprint1 Retrospect
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 
