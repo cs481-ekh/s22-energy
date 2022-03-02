@@ -52,6 +52,12 @@
    going to be difficult and then we ended up changing our mind on how we
    wanted to do it. This made my task relatively easy, I need to make sure to
    get a heavier work load this next sprint so I can make a bigger impact.
+   
+   Thought this sprint went well. The way we divided up tasks made sense and we 
+   were able to accomplish a fair amount. For this next sprint more work could 
+   be done towards the beginning to prevent as much last minute work as possible.
+   Along with this I know personally I could have created some additional tasks to
+   demonstrate the time I spent researching and learning new technologies. 
 
 </p>
    
