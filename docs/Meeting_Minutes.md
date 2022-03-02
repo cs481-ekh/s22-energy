@@ -33,6 +33,15 @@
    
 </p>
 
+<p>
+   The sprint went well, we were able to accomplish all the tasks we set out to do. I think some of the tasks could have been tackled in Sprint 0 since 1/4
+   of the tasks involved setting up and configuring different aspects of the project. This was mostly due to the fact that we hadn't analyzed the CSV data files
+   enough beforehand and figured out how to tackle them. 
+   
+   Overall, I think everyone did a good job of getting their pieces done, but as others have said a lot of the work was done near the end of the sprint, rather
+   than towards the beginning and middle. Given how much we were able to get done in that short period of time I am optimistic about what we can accomplish in
+   Sprint 2.
+
 ## 2/28/2022 12:30pm -Sponser checkin
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor, Brian Emtman
 <p>
