@@ -4,10 +4,11 @@
 <p>
    
    * Discussed User table we needing added to our database.  Also discussed updating our Buildings table with Long/Lat values.
-   * Talked about Keegan's addition of Bing Map to our application.  Looked really good.  We discussed the difference between Google and Bing.  Big differnce
+   * Talked about Keegan's addition of Bing Map to our application.  Looked really good.  We discussed the difference between Google and Bing.  Big difference
    * Discussed having everyone add their retrospects to our Meeting doc.
    * Reminded everyone not to delete their branchs as the Professor mentioned in class
    * Setup everything for Sprint2 and assigned task to everyone.
+   * Planning on meeting again on Thursday and making more tasks then.
    
    #### Action Items:
       * Find out if we can get Google API key from BSU
@@ -43,6 +44,14 @@
    Overall, I think everyone did a good job of getting their pieces done, but as others have said a lot of the work was done near the end of the sprint, rather
    than towards the beginning and middle. Given how much we were able to get done in that short period of time I am optimistic about what we can accomplish in
    Sprint 2.
+
+   A good start to the development process for our project. The front end guys
+   are doing a great job and the database guys are also doing great work
+   getting the data mapped and ready to be useable. I personally didn't do
+   enough on this Sprint (Taylor). I volunteered for a task that was originally
+   going to be difficult and then we ended up changing our mind on how we
+   wanted to do it. This made my task relatively easy, I need to make sure to
+   get a heavier work load this next sprint so I can make a bigger impact.
 
 </p>
    
