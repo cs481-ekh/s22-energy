@@ -19,6 +19,10 @@
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 
 <p>
+   We got done with all the tasks that we planned to do, 
+   a lot of work was done to get the backend done. We had a serveral meetings during 
+   the last two weeks and we had a lot of discussions, the backend might still need more work.  
+   
    So we pretty much split into two groups on this sprint. 
    Once for backend and one to start up the front end. 
    I think that this sprint was successful because we achieved all 
