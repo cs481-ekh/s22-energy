@@ -31,9 +31,6 @@
    up ideas we had.  I do feel like we could have spent some more time on each piece of the sprint.  We have discussed this 
    and next sprint we will spend a lot more time working on our task.  
    
-   
-    We got done with all the tasks that we planned to do, a lot of work was done to get the backend done. We had a serveral meetings during 
-   the last two weeks and we had a lot of discussions, the backend might still need more work.  
 
    The sprint went well, we were able to accomplish all the tasks we set out to do. I think some of the tasks could have been tackled in Sprint 0 since 1/4
    of the tasks involved setting up and configuring different aspects of the project. This was mostly due to the fact that we hadn't analyzed the CSV data files
