@@ -2,13 +2,18 @@
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 
 <p>
-So we pretty much split into two groups on this sprint. 
+   So we pretty much split into two groups on this sprint. 
    Once for backend and one to start up the front end. 
    I think that this sprint was successful because we achieved all 
    (or most) of the tasks that we set out to complete. We got 
    a good mockup of front end and are on the way to a working 
    backend! Work seemed well distributed and everyone was busy 
    with their tasks.
+   
+   I think there was a lot of collaboration between all members of our team.  We had several meetings that helped clear 
+   up ideas we had.  I do feel like we could have spent some more time on each piece of the sprint.  We have discussed this 
+   and next sprint we will spend a lot more time working on our task.  
+   
 </p>
 
 ## 2/28/2022 12:30pm -Sponser checkin
