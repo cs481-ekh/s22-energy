@@ -31,6 +31,10 @@
    up ideas we had.  I do feel like we could have spent some more time on each piece of the sprint.  We have discussed this 
    and next sprint we will spend a lot more time working on our task.  
    
+   
+    We got done with all the tasks that we planned to do, a lot of work was done to get the backend done. We had a serveral meetings during 
+   the last two weeks and we had a lot of discussions, the backend might still need more work.  
+
 </p>
 
 <p>
@@ -42,9 +46,6 @@
    than towards the beginning and middle. Given how much we were able to get done in that short period of time I am optimistic about what we can accomplish in
    Sprint 2.
    
-    We got done with all the tasks that we planned to do, a lot of work was done to get the backend done. We had a serveral meetings during 
-   the last two weeks and we had a lot of discussions, the backend might still need more work.  
-
 ## 2/28/2022 12:30pm -Sponser checkin
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor, Brian Emtman
 <p>
