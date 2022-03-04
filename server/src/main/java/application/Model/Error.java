@@ -11,8 +11,6 @@ public class Error {
         errorUsage = new Usage();
     }
 
-    //getter setter for both error values
-
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
