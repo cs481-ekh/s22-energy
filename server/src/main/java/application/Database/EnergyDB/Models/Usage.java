@@ -1,11 +1,14 @@
 package application.Database.EnergyDB.Models;
 
+import application.Model.UsageSummary;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Entity for usage table in db.
