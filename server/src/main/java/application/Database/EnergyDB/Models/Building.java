@@ -1,9 +1,6 @@
 package application.Database.EnergyDB.Models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Building entity that maps to our buildings table.
@@ -25,14 +22,14 @@ public class Building {
 	public String address;
 
 	@Column(name = "gross_sf", nullable = true)
-	public int squareFt;
+	public Integer squareFt;
 
 	@Column(name = "year_built", nullable = true)
-	public int yearBuilt;
+	public Integer yearBuilt;
 
 	@Column(name = "x_coord", nullable = true)
-	public double xCoord;
+	public Double xCoord;
 
 	@Column(name = "y_coord", nullable = true)
-	public double yCoord;
+	public Double yCoord;
 }
