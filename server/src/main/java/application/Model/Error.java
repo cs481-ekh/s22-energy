@@ -2,17 +2,34 @@ package application.Model;
 
 import application.Database.EnergyDB.Models.Usage;
 
+
 public class Error {
 
     private String errorMessage;
+    private Errors errorType;
     private Usage errorUsage;
+
+    // List of possible error types
+    public enum Errors
+    {
+        MISSINGPREMISE,
+        DATAFORMAT,
+        NULLEXCEPTION
+    }
 
     public Error(){
         errorUsage = new Usage();
     }
 
-    public void setErrorMessage(String errorMessage) {
+    public Error(String errorMessage, Errors errorType){
         this.errorMessage = errorMessage;
+        this.errorType = errorType;
+        errorUsage = new Usage();
+    }
+
+    public void setErrorMessage(String errorMessage, Errors errorType) {
+        this.errorMessage = errorMessage;
+        this.errorType = errorType;
     }
 
     public String getErrorMessage() {
@@ -27,3 +44,4 @@ public class Error {
         return errorUsage;
     }
 }
+
