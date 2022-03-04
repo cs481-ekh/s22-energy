@@ -1,3 +1,20 @@
+## 3/3/2022 9:30am after class meeting
+#### Attendees: Jack, Aidan, Keegan, Khaled, Victor
+
+<p>
+   
+   * Discussed Aidan implementation of JPQL scripts(allows use to access database)
+   * Discussed our Main Page layout.  What could we improve on.  
+      - Map will be fit-to-page.  
+      - Identied what Map and Analytics buttons would do
+      - Discussed Admin login page
+   * Explained Database additions
+      - Add lat/Long to x/y columns in Building database.  Discussed where to get this value from(right click on Bing map will display it)
+      - Add a User table with needed column values(first/last name, ID, admin privilage(yes/no))
+   * Retrospect was completed
+   * Need to complete peer assessment
+ </p>
+
 ## 3/1/2022 9:30am after class meeting
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 
