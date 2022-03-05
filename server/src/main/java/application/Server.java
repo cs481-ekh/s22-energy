@@ -1,9 +1,13 @@
 package application;
 
+import application.CSV.CsvParser;
+import application.CSV.ElectricDemandParser;
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
+import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
 import application.Database.EnergyDB.Repo.JPARepository.UsageRepo;
+import application.Model.Response;
 import application.Model.UsageSummary;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -26,6 +30,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
@@ -33,7 +38,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * application.Server class.
  */
 @EnableTransactionManagement
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+@SpringBootApplication
 public class Server implements ApplicationRunner {
 
     @Autowired
@@ -44,6 +49,9 @@ public class Server implements ApplicationRunner {
     @Autowired
     PremiseRepo premRepo;
 
+    @Autowired
+    BuildingRepo buildRepo;
+
     /**
      * Main method.
      */
@@ -52,25 +60,7 @@ public class Server implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments arg0) throws Exception {
-        System.out.println("Hello World from Application Runner");
-        List<Usage> usageList = new ArrayList<Usage>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
-        Date date = dateFormat.parse("23/09/2007");
-        Usage usage = new Usage();
-        usage.utilityUsage = new BigDecimal(25);
-        usage.cost = new BigDecimal(25);
-        usage.timestamp = new Timestamp(date.getTime());
-
-        Usage usage2 = new Usage();
-        date = dateFormat.parse("23/09/2008");
-        usage2.utilityUsage = new BigDecimal(25);
-        usage2.cost = new BigDecimal(25);
-        usage2.timestamp = new Timestamp(date.getTime());
-
-        usageList.add(usage);
-        usageList.add(usage2);
-
-        UsageSummary summary = new UsageSummary();
-        summary.generateSummary(usageList);
+        CsvParser parser = new ElectricDemandParser("/home/aidanleuck/Downloads/Data.csv", buildRepo);
+        Response response = parser.readData();
     }
 }
