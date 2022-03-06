@@ -11,8 +11,8 @@ import java.util.List;
 
 public class SmallElectricPaser extends CsvParser {
     
-    public SmallElectricPaser(String csvPath) throws FileNotFoundException {
-        super(csvPath);
+    public SmallElectricPaser(String csvPath, int utilityID) throws FileNotFoundException {
+        super(csvPath, utilityID);
     }
 
     @Override
