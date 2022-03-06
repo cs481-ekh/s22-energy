@@ -155,7 +155,7 @@ public class ElectricDemandParser extends CsvParser {
                 usage.utilityID = utilityID;
 
                 // Skip the row if the building code is null.
-                if (buildingCode != null) {
+                if (buildingCode != null && stamp != null) {
                     String data = rowData[i];
                     int currentColumn = i + 1;
 
