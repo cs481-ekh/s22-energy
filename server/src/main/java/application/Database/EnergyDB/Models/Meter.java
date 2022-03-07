@@ -1,9 +1,6 @@
 package application.Database.EnergyDB.Models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Matches meter table schema in database.
@@ -16,8 +13,12 @@ public class Meter {
 	public int meterID;
 
 	@Column(name = "utility_id", nullable = false)
-	public int utilityID;
+	public Integer utilityID;
 
 	@Column(name = "building_code", nullable = false)
 	public String buildingCode;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "building_code", insertable = false, updatable = false)
+	public Building building;
 }

@@ -1,7 +1,8 @@
 <suite name="suite">
     <test name="test suite">
         <classes>
-            <class name="Tester" />
+            <class name="EnergyConverterTest" />
+            <class name="UsageSummaryTest"/>
         </classes>
     </test>
 </suite>
