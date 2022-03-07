@@ -3,20 +3,8 @@ import PropTypes from 'prop-types';
 
 // Create boundary for map (N, W, S, E)
 var bounds = new window.Microsoft.Maps.LocationRect.fromLocations(
-    new window.Microsoft.Maps.Location(43.616630, -116.220600), 
-    new window.Microsoft.Maps.Location(43.592898, -116.181414)
-);
-
-
-// Highlighting the border of bounds on the map 
-// (just to show where the boundary is set, probably not something to keep cause it's ugly)
-var boundsBorder = new window.Microsoft.Maps.Polyline([
-    bounds.getNorthwest(),
-    new window.Microsoft.Maps.Location(bounds.getNorthwest().latitude, bounds.getSoutheast().longitude),
-    bounds.getSoutheast(),
-    new window.Microsoft.Maps.Location(bounds.getSoutheast().latitude, bounds.getNorthwest().longitude),
-    bounds.getNorthwest()], 
-    { strokeColor: 'orange', strokeThickness: 5 }
+    new window.Microsoft.Maps.Location(43.787795, -116.658338), 
+    new window.Microsoft.Maps.Location(43.419856, -115.886613)
 );
 
 // Create push pin and info box for different buildings
@@ -135,14 +123,13 @@ class Map extends Component {
                 zoom: 15
             }
         );
-        // Add push pins, info boxes and border highlight to map
+        // Add push pins and info boxes to map
         adminBuildingInfo.setMap(map);
         map.entities.push(adminBuildingPin);
         yfrpBuildingInfo.setMap(map);
         map.entities.push(yfrpBuildingPin);
         ccpBuildingInfo.setMap(map);
         map.entities.push(ccpBuildingPin);
-        map.entities.push(boundsBorder);
     }
 
     componentDidMount() {
@@ -165,7 +152,7 @@ class Map extends Component {
     // need to move 240px right when sidebar is opened
     render() {
         return (
-            <div style={{ width: "calc(100VW - 112px)", height: "calc(100VH - 216px)", marginLeft: "56px", marginBottom: "56px" }} id={this.props.id}></div>
+            <div style={{ width: "calc(100VW - 120px)", height: "calc(100VH - 224px)", marginLeft: "60px", marginBottom: "60px" }} id={this.props.id}></div>
         );
     }
 }
