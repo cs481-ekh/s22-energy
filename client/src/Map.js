@@ -162,9 +162,10 @@ class Map extends Component {
         }
     }
 
+    // need to move 240px right when sidebar is opened
     render() {
         return (
-            <div style={{ width: "1100px", height: "950px", display: 'block', marginLeft: 'auto', marginRight: 'auto' }} id={this.props.id}></div>
+            <div style={{ width: "calc(100VW - 112px)", height: "calc(100VH - 216px)", marginLeft: "56px", marginBottom: "56px" }} id={this.props.id}></div>
         );
     }
 }
