@@ -97,6 +97,25 @@ var buildingData = [
   }
   */
 
+  var extraMileArenaLocation = new window.Microsoft.Maps.Location(43.603564, -116.198948);
+
+  var extraMileArena = new window.Microsoft.Maps.Polygon([
+    new window.Microsoft.Maps.Location(43.603964, -116.199576),
+    new window.Microsoft.Maps.Location(43.603964, -116.198326),
+    new window.Microsoft.Maps.Location(43.603160, -116.198326),
+    new window.Microsoft.Maps.Location(43.603160, -116.199576),], { fillColor: 'rgba(0, 0, 255, 0.5', strokeColor: 'orange', strokeThickness: 1 });
+
+    var extraMileArenaInfo = new window.Microsoft.Maps.Infobox(extraMileArenaLocation, 
+        { 
+            title: 'Extra Mile Arena', 
+            description: 'Uses some energy', 
+            visible: false 
+        }
+    );
+    window.Microsoft.Maps.Events.addHandler(extraMileArena, 'click', function() {
+        extraMileArenaInfo.setOptions({ visible: true });
+    });
+
 class Map extends Component {
     constructor(props) {
         super(props);
@@ -123,13 +142,15 @@ class Map extends Component {
                 zoom: 15
             }
         );
-        // Add push pins and info boxes to map
+        // Add push pins, info boxes and polygons to map
         adminBuildingInfo.setMap(map);
         map.entities.push(adminBuildingPin);
         yfrpBuildingInfo.setMap(map);
         map.entities.push(yfrpBuildingPin);
         ccpBuildingInfo.setMap(map);
         map.entities.push(ccpBuildingPin);
+        extraMileArenaInfo.setMap(map);
+        map.entities.push(extraMileArena);
     }
 
     componentDidMount() {
@@ -152,7 +173,14 @@ class Map extends Component {
     // need to move 240px right when sidebar is opened
     render() {
         return (
-            <div style={{ width: "calc(100VW - 120px)", height: "calc(100VH - 224px)", marginLeft: "60px", marginBottom: "60px" }} id={this.props.id}></div>
+            <div style={{ 
+                width: "calc(100VW - 120px)", 
+                height: "calc(100VH - 224px)", 
+                marginLeft: "60px", 
+                marginBottom: "60px" 
+                }} 
+                id={this.props.id}>
+            </div>
         );
     }
 }
