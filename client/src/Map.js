@@ -147,7 +147,7 @@ class Map extends Component {
             s.addEventListener('load', e => {
                 if (e != null) {
                     setTimeout(() => {  this.onScriptLoad(); }, 200);
-                }                
+                }
             });
         } else {
             this.onScriptLoad();
@@ -158,10 +158,8 @@ class Map extends Component {
     render() {
         return (
             <div style={{ 
-                width: "calc(100VW - 120px)", 
-                height: "calc(100VH - 224px)", 
-                marginLeft: "60px", 
-                marginBottom: "60px" 
+                width: "100VW",
+                height: "calc(100VH - 160px)"
                 }} 
                 id={this.props.id}>
             </div>
