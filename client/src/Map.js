@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// Create boundary for map (N, W, S, E)
-var bounds = new window.Microsoft.Maps.LocationRect.fromLocations(
-    new window.Microsoft.Maps.Location(43.787795, -116.658338), 
-    new window.Microsoft.Maps.Location(43.419856, -115.886613)
-);
-
 // Example array of building data for the function below it
 var buildingData = [
     {
@@ -26,8 +20,35 @@ var buildingData = [
       long: -116.203084,
       title: "CCP",
       description: "Uses some energy"
+    },
+    {
+        lat: 43.600704,
+        long: -116.19925,
+        title: "HEMG",
+        description: "Uses some energy"
+    },
+    {
+        lat: 43.601226,
+        long: -116.202232,
+        title: "HTPT",
+        description: "Uses some energy"
+    },
+    {
+        lat: 43.60458,
+        long: -116.198939,
+        title: "Chaffee Hall",
+        description: "Uses some energy"
     }
 ];
+
+// Create boundary for map (N, W, S, E)
+var bounds;
+function getBounds() {
+    bounds = new window.Microsoft.Maps.LocationRect.fromLocations(
+        new window.Microsoft.Maps.Location(43.787795, -116.658338), 
+        new window.Microsoft.Maps.Location(43.419856, -115.886613)
+    );    
+}
 
 // Adds building from buildingData to the map by creating a location, pin, infobox 
 // and event handler for each building.
@@ -92,6 +113,7 @@ class Map extends Component {
     }
 
     onScriptLoad() {
+        getBounds();
         const map = new window.Microsoft.Maps.Map(document.getElementById(this.props.id), 
             {
                 maxBounds: bounds,
@@ -116,16 +138,16 @@ class Map extends Component {
     }
 
     componentDidMount() {
-        if (!window.Microsoft) {
+        if (!window.Microsoft.Maps.Location) {
             var s = document.createElement('script');
             s.type = 'text/javascript';
-            s.src = 'https://www.bing.com/api/maps/mapcontrol?key=' + process.env.REACT_MAP_API_KEY;
+            s.src = 'https://www.bing.com/api/maps/mapcontrol?key=' + process.env.REACT_APP_API_KEY;
             var x = document.getElementsByTagName('script')[0];
             x.parentNode.insertBefore(s, x);
             s.addEventListener('load', e => {
                 if (e != null) {
-                    this.onScriptLoad();
-                }
+                    setTimeout(() => {  this.onScriptLoad(); }, 200);
+                }                
             });
         } else {
             this.onScriptLoad();
