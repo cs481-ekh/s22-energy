@@ -79,19 +79,32 @@ public class SmallElectricParser extends CsvParser {
             System.exit(0);
         }
         while((rowData = reader.readNext()) != null){
-
             Usage usage = new Usage();
             errorGroup.setUsage(usage);
-
-            final int Start_date = 12;
-            final int End_date = 13;
-            BigDecimal smallUsage = new BigDecimal(rowData[17]);
+            Timestamp endDate = null;
+            String date = rowData[13]; // column date
+            final BigDecimal smallUsage = new BigDecimal(rowData[17]);
+            if(date != null || date!= ""){
+                endDate = getTimestamp(date, errorGroup, 17);
+                usage.timestamp = endDate;
+            }else {
+                String errorMessage = "Row " + reader.getLinesRead() + ": column 13";
+                logger.error(errorMessage);
+            }
+            if(smallUsage != null || smallUsage.compareTo(BigDecimal.ZERO) != 0) {
+                usage.utilityUsage = smallUsage;
+            }else{
+                String errorMessage = "Row " + reader.getLinesRead() + ": column 17";
+                logger.error(errorMessage);
+            }
             usage.utilityID = utilityID;
-            usage.utilityUsage = smallUsage;
 
-
+            boolean added = response.addErrorGroup(errorGroup);
+            if (!added)
+                response.addSuccess(usage);
 
         }
         return null;
     }
+
 }
