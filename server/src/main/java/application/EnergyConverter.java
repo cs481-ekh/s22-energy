@@ -36,14 +36,14 @@ public class EnergyConverter {
     }
 
     /**
-     * Convert a double to a string with format "0.##"
+     * Convert a double to a string with format "0.###"
      * We will need this for our parsers because the BigDecimal 
      * constructor with a string works more cleanly than with a double
      * @param num
-     * @return "0.##"
+     * @return
      */
     public static String doubleToString(double num) {
-        DecimalFormat df = new DecimalFormat("0.##");
+        DecimalFormat df = new DecimalFormat("0.###");
         return df.format(num);
     }
 }
