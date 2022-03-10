@@ -65,6 +65,9 @@ public class NaturalGasParser extends CsvParser {
             var usage = new Usage();
             errorGroup.setUsage(usage);
 
+            // assign the utility id that we got from the arguments
+            usage.utilityID = utilityID;
+
             // grab the date from the row, parse it, and add it to the usage object
             try {
                 usage.timestamp = getTimestamp(row[DATE], errorGroup, DATE);
@@ -72,7 +75,6 @@ public class NaturalGasParser extends CsvParser {
                 String errorMessage = "Failed to parse MeterEndDate on row " + reader.getLinesRead();
                 logger.error(errorMessage);
                 errorGroup.addError(new Error(errorMessage, Error.Errors.DATEFORMAT));
-                response.addErrorGroup(errorGroup);
                 successfulRow = false;
             }
 
@@ -83,7 +85,6 @@ public class NaturalGasParser extends CsvParser {
                 String errorMessage = "Failed to parse CurrentGasCharges on row " + reader.getLinesRead();
                 logger.error(errorMessage);
                 errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
-                response.addErrorGroup(errorGroup);
                 successfulRow = false;
             }
 
@@ -95,7 +96,6 @@ public class NaturalGasParser extends CsvParser {
                 String errorMessage = "Failed to parse ThermsBilled on row " + reader.getLinesRead();
                 logger.error(errorMessage);
                 errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
-                response.addErrorGroup(errorGroup);
                 successfulRow = false;
             }
 
@@ -103,12 +103,12 @@ public class NaturalGasParser extends CsvParser {
             if (therms > -1) {
                 try {
                     double kBTU = EnergyConverter.thermsToKbtu(therms);
-                    usage.utilityUsage = new BigDecimal(EnergyConverter.doubleToString(kBTU));
+//                    usage.utilityUsage = new BigDecimal(EnergyConverter.doubleToString(kBTU));
+                    usage.utilityUsage = new BigDecimal(kBTU);
                 } catch (Exception e) {
                     String errorMessage = "Failed to convert therms to kBTU on row " + reader.getLinesRead();
                     logger.error(errorMessage);
                     errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
-                    response.addErrorGroup(errorGroup);
                     successfulRow = false;
                 }
             }
@@ -121,7 +121,6 @@ public class NaturalGasParser extends CsvParser {
                 String errorMessage = "Failed to parse PremiseID on row " + reader.getLinesRead();
                 logger.error(errorMessage);
                 errorGroup.addError(new Error(errorMessage, Error.Errors.MISSINGPREMISE));
-                response.addErrorGroup(errorGroup);
                 successfulRow = false;
             }
 
@@ -131,10 +130,9 @@ public class NaturalGasParser extends CsvParser {
 
                 // verify we got a non-null response or report an error
                 if (queryPremise.isEmpty()) {
-                    String errorMessage = "Building code does not exist for premise: " + premiseId;
+                    String errorMessage = "Building code does not exist for [Row number | PremiseID] -> [" + reader.getLinesRead() + "  |  " + premiseId + "]";
                     logger.error(errorMessage);
                     errorGroup.addError(new Error(errorMessage, Error.Errors.NOBUILDING));
-                    response.addErrorGroup(errorGroup);
                     successfulRow = false;
                 } else {
                     // assign the building code to the usage object
@@ -142,10 +140,13 @@ public class NaturalGasParser extends CsvParser {
                 }
             }
 
-
-
+            // if we made it this far and successfulRow == true... it's a christmas miracle :)
+            if (successfulRow)
+                response.addSuccess(usage);
+            else
+                response.addErrorGroup(errorGroup);
 
         }
-        return null;
+        return response;
     }
 }
