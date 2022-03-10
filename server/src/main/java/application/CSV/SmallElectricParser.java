@@ -16,6 +16,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static application.EnergyConverter.kWhToKbtu;
+
 
 public class SmallElectricParser extends CsvParser {
     private final PremiseRepo premiseRepo;
@@ -67,20 +69,17 @@ public class SmallElectricParser extends CsvParser {
             headerMap.put(header[i].toLowerCase(), i);
         }
 
-        while((rowData = reader.readNext()) != null){
-            Usage usage = new Usage();
-            errorGroup.setUsage(usage);
-            Timestamp endDate = null;
-            String date = null;
-            final BigDecimal smallUsage;
+        if(headerMap.containsKey("premise#") && headerMap.containsKey("billperiodenddate") && headerMap.containsKey(
+                "actualkw") && headerMap.containsKey("billamount")){
 
-            long premiseCode = 0;
-            Integer rowNum = 0;
+            while((rowData = reader.readNext()) != null) {
+                Usage usage = new Usage();
+                errorGroup.setUsage(usage);
+                Timestamp endDate = null;
+                String date = null;
 
-            // Check that premise exit in csv file
-            if(headerMap.containsKey("premise#")) {
-                rowNum = headerMap.get("premise#");
-                premiseCode = Long.parseLong(rowData[rowNum]);
+                Integer premiseColNum = headerMap.get("premise#");
+                long premiseCode = Long.parseLong(rowData[premiseColNum]);
 
                 //Queries database to retrieve building code using premise number
                 Optional<Building> queryPremise = premiseRepo.getPremiseBuilding(premiseCode);
@@ -92,32 +91,28 @@ public class SmallElectricParser extends CsvParser {
                     response.addErrorGroup(errorGroup);
                 }else {
                     usage.buildingCode = queryPremise.get().buildingCode;
-                    if (headerMap.containsKey("billperiodenddate")) {
-                        rowNum = headerMap.get("billperiodenddate");
-                        endDate = getTimestamp(rowData[rowNum], errorGroup, rowNum);
-                        usage.timestamp = endDate;
-                    }
-                    if (headerMap.containsKey("actualkw")) {
-                        rowNum = headerMap.get("actualkw");
-                        smallUsage = new BigDecimal(rowData[rowNum]);
-                        usage.utilityUsage = smallUsage;
-                    }
-                    if (headerMap.containsKey("billamount")) {
-                        rowNum = headerMap.get("billamount");
-                        BigDecimal cost = new BigDecimal(rowData[rowNum]);
-                        usage.cost = cost;
-                    }
+                    Integer dateColNum = headerMap.get("billperiodenddate");
+                    endDate = getTimestamp(rowData[dateColNum], errorGroup, dateColNum);
+                    usage.timestamp = endDate;
+                    Integer usageColNum = headerMap.get("actualkw");
+                    double smallUsage = Double.parseDouble(rowData[usageColNum]);
+                    BigDecimal usageKbtu = new BigDecimal(kWhToKbtu(smallUsage));
+                    usage.utilityUsage = usageKbtu;
+                    Integer billColNum = headerMap.get("billamount");
+                    BigDecimal cost = new BigDecimal(rowData[billColNum]);
+                    usage.cost = cost;
+                    usage.utilityID = utilityID;
+
+                    // add Aidan's Validation check for nulls or empty strings
                     response.addSuccess(usage);
                 }
-            }else{
-                String errorMessage = "No Premise found for:  " + premiseCode;
-                logger.error(errorMessage);
-                Error error = new Error(errorMessage, Error.Errors.FAILEDREGEX);
-                errorGroup.addError(error);
-                response.addErrorGroup(errorGroup);
             }
-            usage.utilityID = utilityID;
-
+        }else{
+            String errorMessage = "File header format incorrect";
+            logger.error(errorMessage);
+            Error error = new Error(errorMessage, Error.Errors.FAILEDREGEX);
+            errorGroup.addError(error);
+            response.addErrorGroup(errorGroup);
         }
         return response;
     }
