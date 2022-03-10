@@ -2,33 +2,27 @@ package application.CSV;
 
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
-import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
+import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
 import application.Model.Error;
 import application.Model.ErrorGroup;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
-//import jdk.internal.jimage.BasicImageReader;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 public class SmallElectricParser extends CsvParser {
-    private final BuildingRepo buildingRepo;
+    private final PremiseRepo premiseRepo;
 
-    public SmallElectricParser(String csvPath, int utilityID, BuildingRepo repo) throws FileNotFoundException {
+    public SmallElectricParser(String csvPath, int utilityID, PremiseRepo repo) throws FileNotFoundException {
         super(csvPath,utilityID);
-        this.buildingRepo = repo;
+        this.premiseRepo = repo;
     }
 
     /**
@@ -64,47 +58,68 @@ public class SmallElectricParser extends CsvParser {
     public Response readData() throws CsvValidationException, IOException {
         Response response = new Response();
         ErrorGroup errorGroup = new ErrorGroup();
+        HashMap<String, Integer> headerMap = new HashMap<>();
+
         String[] rowData = null;
 
-        // Validate header
-        String[] headerLine = new String[]{"brian","BPName","Account#","Contract#","ContractStartDt","ContractEndDt",
-                "Rate","Premise#","PremiseAddress","UsageMonth","Invoice#","Bill#","BillPeriodStartDate",
-                "BillPeriodEndDate","BillPeriodDays","BillAmount","kWhQty","BilledkW","ActualkW","BLC","Meter#"};
-        List<String> expectedHeaders = Arrays.asList(headerLine);
         String[] header = reader.readNext();
-        if (!Arrays.asList(header).containsAll(expectedHeaders)){
-            String errorMessage = "Incorrect header format";
-            logger.error(errorMessage);
-            response.addErrorGroup(errorGroup);
-            System.exit(0);
+        for(int i = 0; i < header.length ; i++) {
+            headerMap.put(header[i].toLowerCase(), i);
         }
+
         while((rowData = reader.readNext()) != null){
             Usage usage = new Usage();
             errorGroup.setUsage(usage);
             Timestamp endDate = null;
-            String date = rowData[13]; // column date
-            final BigDecimal smallUsage = new BigDecimal(rowData[17]);
-            if(date != null || date!= ""){
-                endDate = getTimestamp(date, errorGroup, 17);
-                usage.timestamp = endDate;
-            }else {
-                String errorMessage = "Row " + reader.getLinesRead() + ": column 13";
-                logger.error(errorMessage);
-            }
-            if(smallUsage != null || smallUsage.compareTo(BigDecimal.ZERO) != 0) {
-                usage.utilityUsage = smallUsage;
+            String date = null;
+            final BigDecimal smallUsage;
+
+            long premiseCode = 0;
+            Integer rowNum = 0;
+
+            // Check that premise exit in csv file
+            if(headerMap.containsKey("premise#")) {
+                rowNum = headerMap.get("premise#");
+                premiseCode = Long.parseLong(rowData[rowNum]);
+
+                //Queries database to retrieve building code using premise number
+                Optional<Building> queryPremise = premiseRepo.getPremiseBuilding(premiseCode);
+                if (queryPremise.isEmpty()) {
+                    String errorMessage = "Building code does not exist for premise: " + premiseCode;
+                    logger.error(errorMessage);
+                    Error error = new Error(errorMessage, Error.Errors.NOBUILDING);
+                    errorGroup.addError(error);
+                    response.addErrorGroup(errorGroup);
+                }else {
+                    usage.buildingCode = queryPremise.get().buildingCode;
+                    if (headerMap.containsKey("billperiodenddate")) {
+                        rowNum = headerMap.get("billperiodenddate");
+                        endDate = getTimestamp(rowData[rowNum], errorGroup, rowNum);
+                        usage.timestamp = endDate;
+                    }
+                    if (headerMap.containsKey("actualkw")) {
+                        rowNum = headerMap.get("actualkw");
+                        smallUsage = new BigDecimal(rowData[rowNum]);
+                        usage.utilityUsage = smallUsage;
+                    }
+                    if (headerMap.containsKey("billamount")) {
+                        rowNum = headerMap.get("billamount");
+                        BigDecimal cost = new BigDecimal(rowData[rowNum]);
+                        usage.cost = cost;
+                    }
+                    response.addSuccess(usage);
+                }
             }else{
-                String errorMessage = "Row " + reader.getLinesRead() + ": column 17";
+                String errorMessage = "No Premise found for:  " + premiseCode;
                 logger.error(errorMessage);
+                Error error = new Error(errorMessage, Error.Errors.FAILEDREGEX);
+                errorGroup.addError(error);
+                response.addErrorGroup(errorGroup);
             }
             usage.utilityID = utilityID;
 
-            boolean added = response.addErrorGroup(errorGroup);
-            if (!added)
-                response.addSuccess(usage);
-
         }
-        return null;
+        return response;
     }
 
 }
