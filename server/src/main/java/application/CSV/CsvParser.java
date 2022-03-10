@@ -2,6 +2,7 @@ package application.CSV;
 
 import application.Database.EnergyDB.Models.Usage;
 import application.Datasource;
+import application.Model.ErrorGroup;
 import application.Model.Response;
 import application.Server;
 import com.opencsv.CSVReader;
@@ -14,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 
 public abstract class CsvParser implements Datasource {
 
@@ -26,9 +28,10 @@ public abstract class CsvParser implements Datasource {
 
     /**
      * Creates a new CSV parser
-     * @param csvPath - Path to the csv file
+     *
+     * @param csvPath   - Path to the csv file
      * @param utilityID - The utility id the csv is parsing
-     * @throws InvalidPathException - If csv path is invalid
+     * @throws InvalidPathException  - If csv path is invalid
      * @throws FileNotFoundException - If file is not found.
      */
     public CsvParser(String csvPath, int utilityID) throws InvalidPathException, FileNotFoundException {
@@ -47,6 +50,7 @@ public abstract class CsvParser implements Datasource {
 
     /**
      * Sets the response to a new reference
+     *
      * @param repsonse - Response to change to.
      */
     public void setRepsonse(Response repsonse) {
@@ -55,6 +59,7 @@ public abstract class CsvParser implements Datasource {
 
     /**
      * Gets the response object.
+     *
      * @return - Response object.
      */
     public Response getRepsonse() {
@@ -63,9 +68,18 @@ public abstract class CsvParser implements Datasource {
 
     /**
      * The File object for the csv file
+     *
      * @return - Java file representation of the CSV file
      */
     public File getCsvFile() {
         return csvFile;
     }
+
+    /**
+     * Convert the csv's timestamp string to a sql timestamp object
+     *
+     * @return - sql Timestamp object
+     */
+    protected abstract Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn);
+
 }

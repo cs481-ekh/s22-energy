@@ -38,7 +38,7 @@ public class SmallElectricParser extends CsvParser {
      * @param dateColumn - index of the date column
      * @return - Timestamp
      */
-    private Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn) {
+    protected Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn) {
         Timestamp stamp = null;
         try {
             DateFormat format = new SimpleDateFormat("MM/dd/yy");
