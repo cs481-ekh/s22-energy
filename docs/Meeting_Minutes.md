@@ -7,7 +7,7 @@
    * Victor will be setting up a meeting with Brian so he can understand how he gets his data and if there might be ways to clean up the issues we are seeing
    * Keegan/Khaled worked on updating the latitude/Longitude in our Buildings database.  Found that you can't use address to get these values.  So they manually found the lat/long
    * Heroku queries are extremely slow.  Trying to identify how we can speed up this process.  75 queries took almost 3 to 4 seconds per query
-   * Front end map reload issue.  **** Keegan can you explain the issue here
+   * Front end map reload issue. When refreshing the home page or navigating to it from a different page the React components are loading before the script has finished loading resulting in the map not displaying. We have a temporary solution but a permanent solution needs to be implemented. 
    * Discussed ways to test our front end.  Aidan mentioned JEST, but none of use have every used it, but we may try and work with it.
    * Login Page - Taylor and Jack will work together to get this page going.  
    * Disussed identifying ways to create highlight over building we want to display.  Keegan showed a manual example, which looked great.  
