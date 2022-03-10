@@ -1,3 +1,118 @@
+## 3/8/2022 9:00am
+#### Attendees: Jack, Aidan, Keegan, Khaled, Victor, Taylor
+
+<p>
+   
+   * Aidan discussed handling csv data errors.  He is working on a error management class, so we can return errors to the user
+   * Victor will be setting up a meeting with Brian so he can understand how he gets his data and if there might be ways to clean up the issues we are seeing
+   * Keegan/Khaled worked on updating the latitude/Longitude in our Buildings database.  Found that you can't use address to get these values.  So they manually found the lat/long
+   * Heroku queries are extremely slow.  Trying to identify how we can speed up this process.  75 queries took almost 3 to 4 seconds per query
+   * Front end map reload issue.  **** Keegan can you explain the issue here
+   * Discussed ways to test our front end.  Aidan mentioned JEST, but none of use have every used it, but we may try and work with it.
+   * Login Page - Taylor and Jack will work together to get this page going.  
+   * Disussed identifying ways to create highlight over building we want to display.  Keegan showed a manual example, which looked great.  
+   
+   #### Action Items:
+      * Work on application reload issue
+      * Create error management class
+      * Login page creation
+      * Meet with Brian to discuss data concerns
+   
+ </p>
+
+## 3/3/2022 9:30am after class meeting
+#### Attendees: Jack, Aidan, Keegan, Khaled, Victor
+
+<p>
+   
+   * Discussed Aidan implementation of JPQL scripts(allows use to access database)
+   * Discussed our Main Page layout.  What could we improve on.  
+      - Map will be fit-to-page.  
+      - Identied what Map and Analytics buttons would do
+      - Discussed Admin login page
+   * Explained Database additions
+      - Add lat/Long to x/y columns in Building database.  Discussed where to get this value from(right click on Bing map will display it)
+      - Add a User table with needed column values(first/last name, ID, admin privilage(yes/no))
+   * Retrospect was completed
+   * Need to complete peer assessment
+ </p>
+
+## 3/1/2022 9:30am after class meeting
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+
+<p>
+   
+   * Discussed User table we needing added to our database.  Also discussed updating our Buildings table with Long/Lat values.
+   * Talked about Keegan's addition of Bing Map to our application.  Looked really good.  We discussed the difference between Google and Bing.  Big difference
+   * Discussed having everyone add their retrospects to our Meeting doc.
+   * Reminded everyone not to delete their branchs as the Professor mentioned in class
+   * Setup everything for Sprint2 and assigned task to everyone.
+   * Planning on meeting again on Thursday and making more tasks then.
+   
+   #### Action Items:
+      * Find out if we can get Google API key from BSU
+      * Start working on our tasks
+      
+</p>
+
+## Sprint1 Retrospect
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+
+<p>
+   We got done with all the tasks that we planned to do, 
+   a lot of work was done to get the backend done. We had a serveral meetings during 
+   the last two weeks and we had a lot of discussions, the backend might still need more work.  
+   
+   So we pretty much split into two groups on this sprint. 
+   Once for backend and one to start up the front end. 
+   I think that this sprint was successful because we achieved all 
+   (or most) of the tasks that we set out to complete. We got 
+   a good mockup of front end and are on the way to a working 
+   backend! Work seemed well distributed and everyone was busy 
+   with their tasks.
+   
+   I think there was a lot of collaboration between all members of our team.  We had several meetings that helped clear 
+   up ideas we had.  I do feel like we could have spent some more time on each piece of the sprint.  We have discussed this 
+   and next sprint we will spend a lot more time working on our task.  
+   
+
+   The sprint went well, we were able to accomplish all the tasks we set out to do. I think some of the tasks could have been tackled in Sprint 0 since 1/4
+   of the tasks involved setting up and configuring different aspects of the project. This was mostly due to the fact that we hadn't analyzed the CSV data files
+   enough beforehand and figured out how to tackle them. 
+   
+   Overall, I think everyone did a good job of getting their pieces done, but as others have said a lot of the work was done near the end of the sprint, rather
+   than towards the beginning and middle. Given how much we were able to get done in that short period of time I am optimistic about what we can accomplish in
+   Sprint 2.
+
+   A good start to the development process for our project. The front end guys
+   are doing a great job and the database guys are also doing great work
+   getting the data mapped and ready to be useable. I personally didn't do
+   enough on this Sprint (Taylor). I volunteered for a task that was originally
+   going to be difficult and then we ended up changing our mind on how we
+   wanted to do it. This made my task relatively easy, I need to make sure to
+   get a heavier work load this next sprint so I can make a bigger impact.
+   
+   Thought this sprint went well. The way we divided up tasks made sense and we 
+   were able to accomplish a fair amount. For this next sprint more work could 
+   be done towards the beginning to prevent as much last minute work as possible.
+   Along with this I know personally I could have created some additional tasks to
+   demonstrate the time I spent researching and learning new technologies. 
+
+</p>
+   
+## 2/28/2022 12:30pm -Sponser checkin
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor, Brian Emtman
+<p>
+   
+   * Discussed spreadsheet/data issues.  Missing building codes and unknown address location(Jerome).  Had to determine what to do with this type of data.
+   * Discussed Map API issue and our plan to use Bing Map API.  This could be a problem if BSU wants us to use Google API, would require a complete change to the application
+   
+   #### Action items:
+      
+      *  Brian is looking into geting us the needed Building Codes
+      *  Brian is also going to see if we can utilize BSU map application.  This is so we don't have complication with having to use Bing Map API
+ </p>
+
 ## 2/25/2022 10am
 #### Attendees: Jack, Aidan, Keegan, Khaled
 <p>
@@ -12,6 +127,20 @@
     * Taylor/Keegan continue working on current tasks
 
  </p>
+
+## 2/24/2022 9am
+#### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+
+<p>
+  
+   * Google map API requires a credit card number.  We made the decision to move to Bing map API.  They do not require one. 
+   * Conversion class method.  Discussed what we would need it to do and they types of measurments it would need to address.  
+   * We will have to manually load the database.
+   
+   #### Action Items:
+   
+      * Everyone continue working on their task
+</p>
 
 ## 2/22/2022 9am
 #### Attendees: Jack, Aidan, Keegan, Khaled, Taylor, Victor

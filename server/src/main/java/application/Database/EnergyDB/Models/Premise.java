@@ -1,9 +1,7 @@
 package application.Database.EnergyDB.Models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Entity for premise table in db.
@@ -20,4 +18,8 @@ public class Premise {
 
 	@Column(name = "utility_id", nullable = false)
 	public int utilityID;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "building_code", insertable = false, updatable = false)
+	public Building building;
 }
