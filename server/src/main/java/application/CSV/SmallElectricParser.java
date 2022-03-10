@@ -25,13 +25,6 @@ public class SmallElectricParser extends CsvParser {
         this.premiseRepo = repo;
     }
 
-    /**
-     * Parses and validates timestamp
-     * @param date - Date to parse
-     * @param errorGroup - Error group to add to
-     * @param dateColumn - index of the date column
-     * @return - Timestamp
-     */
     protected Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn) {
         Timestamp stamp = null;
         try {

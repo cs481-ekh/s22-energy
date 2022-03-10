@@ -76,9 +76,11 @@ public abstract class CsvParser implements Datasource {
     }
 
     /**
-     * Convert the csv's timestamp string to a sql timestamp object
-     *
-     * @return - sql Timestamp object
+     * Parses and validates timestamp
+     * @param date - Date to parse
+     * @param errorGroup - Error group to add to
+     * @param dateColumn - index of the date column
+     * @return - Timestamp
      */
     protected abstract Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn);
 
