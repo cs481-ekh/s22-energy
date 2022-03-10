@@ -102,8 +102,8 @@ public class NaturalGasParser extends CsvParser {
             // convert the therms (if we got them) to kBTU and add them to the usage object
             if (therms > -1) {
                 try {
-                    String kBTU = EnergyConverter.thermsToKbtu(therms);
-                    usage.utilityUsage = new BigDecimal(kBTU);
+                    double kBTU = EnergyConverter.thermsToKbtu(therms);
+                    usage.utilityUsage = new BigDecimal(EnergyConverter.doubleToString(kBTU));
                 } catch (Exception e) {
                     String errorMessage = "Failed to convert therms to kBTU on row " + reader.getLinesRead();
                     logger.error(errorMessage);
