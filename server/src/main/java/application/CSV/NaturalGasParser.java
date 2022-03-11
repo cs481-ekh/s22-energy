@@ -32,7 +32,7 @@ public class NaturalGasParser extends CsvParser {
     protected Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn) {
         Timestamp stamp = null;
         try {
-            DateFormat format = new SimpleDateFormat("dd-MMMM-yy");
+            DateFormat format = new SimpleDateFormat("yy-MMMM-dd");
             stamp = new Timestamp(format.parse(date).getTime());
         } catch (ParseException e) {
             String errorMessage = "Failed to parse date " + date + " at row " + reader.getLinesRead() + " column " + dateColumn;
@@ -60,10 +60,11 @@ public class NaturalGasParser extends CsvParser {
 
         // iterate through the csv grabbing rows and parsing them into usage objects
         String[] row;
-        boolean successfulRow = true;
         while ((row = reader.readNext()) != null) {
             var usage = new Usage();
             errorGroup.setUsage(usage);
+            boolean successfulRow = true;
+
 
             // assign the utility id that we got from the arguments
             usage.utilityID = utilityID;
@@ -130,7 +131,7 @@ public class NaturalGasParser extends CsvParser {
 
                 // verify we got a non-null response or report an error
                 if (queryPremise.isEmpty()) {
-                    String errorMessage = "Building code does not exist for [Row number | PremiseID] -> [" + reader.getLinesRead() + "  |  " + premiseId + "]";
+                    String errorMessage = "Building code does not exist for [Row | PremiseID] -> [" + reader.getLinesRead() + " | " + premiseId + "]";
                     logger.error(errorMessage);
                     errorGroup.addError(new Error(errorMessage, Error.Errors.NOBUILDING));
                     successfulRow = false;
