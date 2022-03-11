@@ -60,7 +60,7 @@ public class Server implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments arg0) throws Exception {
-        CsvParser parser = new ElectricDemandParser("/home/aidanleuck/Downloads/Data.csv", buildRepo);
+        //CsvParser parser = new SmallElectricParser("/home/aidanleuck/Downloads/Data.csv", buildRepo);
         Response response = parser.readData();
     }
 }
