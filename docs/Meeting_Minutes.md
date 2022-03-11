@@ -10,7 +10,12 @@
    * Front end map reload issue. When refreshing the home page or navigating to it from a different page the React components are loading before the script has finished loading resulting in the map not displaying. We have a temporary solution but a permanent solution needs to be implemented. 
    * Discussed ways to test our front end.  Aidan mentioned JEST, but none of use have every used it, but we may try and work with it.
    * Login Page - Taylor and Jack will work together to get this page going.  
-   * Disussed identifying ways to create highlight over building we want to display.  Keegan showed a manual example, which looked great.  
+   * Disussed identifying ways to create highlight over building we want to display.  Keegan showed a manual example, which looked great.
+   * Decided we are going to use a pin with a colored radius for the heatmap
+       instead of mapping out all of the lat/long coordinated for the corners
+       of the buildings.
+   * Decided we aren't going to put effort into "remember password" logic on
+       login page"
    
    #### Action Items:
       * Work on application reload issue
