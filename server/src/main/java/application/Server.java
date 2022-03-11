@@ -1,7 +1,6 @@
 package application;
 
 import application.CSV.CsvParser;
-import application.CSV.ElectricDemandParser;
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
@@ -60,7 +59,5 @@ public class Server implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments arg0) throws Exception {
-        CsvParser parser = new ElectricDemandParser("/home/aidanleuck/Downloads/Data.csv", buildRepo);
-        Response response = parser.readData();
     }
 }
