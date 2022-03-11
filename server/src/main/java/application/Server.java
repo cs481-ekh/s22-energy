@@ -61,7 +61,5 @@ public class Server implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments arg0) throws Exception {
-        CsvParser parser = new NaturalGasParser("~/Code/Energy/docs/testNaturalGas.csv", 1, premRepo);
-        Response response = parser.readData();
     }
 }
