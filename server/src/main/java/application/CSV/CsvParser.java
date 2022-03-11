@@ -17,32 +17,46 @@ import java.nio.file.Paths;
 
 public abstract class CsvParser implements Datasource {
 
-    private Response repsonse;
-    private File csvFile;
-    protected int lineNumber;
+    protected Response response;
+    private final File csvFile;
+    protected int utilityID;
 
-    @Autowired
     final transient Logger logger = LoggerFactory.getLogger(getClass());
-    protected CSVReader reader;
+    protected final CSVReader reader;
 
-    public CsvParser(String csvPath) throws InvalidPathException, FileNotFoundException {
+    /**
+     * Creates a new CSV parser
+     * @param csvPath - Path to the csv file
+     * @param utilityID - The utility id the csv is parsing
+     * @throws InvalidPathException - If csv path is invalid
+     * @throws FileNotFoundException - If file is not found.
+     */
+    public CsvParser(String csvPath, int utilityID) throws InvalidPathException, FileNotFoundException {
         // Validates the path, throws an exception if false
         Paths.get(csvPath);
         csvFile = new File(csvPath);
+
+        // Creates new file reader
         FileReader fileReader = new FileReader(csvFile);
+
+        // Creates openCSV reader
         reader = new CSVReader(fileReader);
-        lineNumber = 0;
-    }
-    // getter & setter
-
-    public void setRepsonse(Response repsonse) {
-        this.repsonse = repsonse;
+        response = new Response();
+        this.utilityID = utilityID;
     }
 
-    public Response getRepsonse() {
-        return repsonse;
+    /**
+     * Gets the response object.
+     * @return - Response object.
+     */
+    public Response getResponse() {
+        return response;
     }
 
+    /**
+     * The File object for the csv file
+     * @return - Java file representation of the CSV file
+     */
     public File getCsvFile() {
         return csvFile;
     }
