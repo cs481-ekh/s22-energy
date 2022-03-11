@@ -46,18 +46,10 @@ public abstract class CsvParser implements Datasource {
     }
 
     /**
-     * Sets the response to a new reference
-     * @param repsonse - Response to change to.
-     */
-    public void setRepsonse(Response repsonse) {
-        this.response = repsonse;
-    }
-
-    /**
      * Gets the response object.
      * @return - Response object.
      */
-    public Response getRepsonse() {
+    public Response getResponse() {
         return response;
     }
 
