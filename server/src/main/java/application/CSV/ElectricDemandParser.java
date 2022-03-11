@@ -164,7 +164,9 @@ public class ElectricDemandParser extends CsvParser {
                     if (!data.equals("") && !data.equals("NULL")) {
                         try {
                             double utilityUsage = Double.parseDouble(data);
+
                             utilityUsage = EnergyConverter.kWhToKbtu(utilityUsage);
+
                             BigDecimal result = new BigDecimal(utilityUsage);
                             usage.utilityUsage = result;
                         } catch (NumberFormatException exception) {
