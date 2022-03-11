@@ -1,13 +1,13 @@
 package application.CSV;
 
+import ErrorManagement.CSV.Sheet;
+import ErrorManagement.ErrorManager;
 import application.Database.EnergyDB.Models.Usage;
 import application.Datasource;
 import application.Model.Response;
-import application.Server;
 import com.opencsv.CSVReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +20,8 @@ public abstract class CsvParser implements Datasource {
     protected Response response;
     private final File csvFile;
     protected int utilityID;
+    protected ErrorManager<SheetData, Usage> errorManager;
+    protected SheetData sData;
 
     final transient Logger logger = LoggerFactory.getLogger(getClass());
     protected final CSVReader reader;
@@ -35,6 +37,7 @@ public abstract class CsvParser implements Datasource {
         // Validates the path, throws an exception if false
         Paths.get(csvPath);
         csvFile = new File(csvPath);
+        sData = new SheetData(0, 0);
 
         // Creates new file reader
         FileReader fileReader = new FileReader(csvFile);
@@ -43,6 +46,8 @@ public abstract class CsvParser implements Datasource {
         reader = new CSVReader(fileReader);
         response = new Response();
         this.utilityID = utilityID;
+        errorManager = new Sheet();
+        errorManager.setManagerData(sData);
     }
 
     /**

@@ -3,8 +3,7 @@ package application.CSV;
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
-import application.Model.Error;
-import application.Model.ErrorGroup;
+import ErrorManagement.Error;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileNotFoundException;
@@ -56,12 +55,15 @@ public class ElectricDemandParser extends CsvParser {
 
         // Reads the first line (headers of the csv file)
         List<String> rowHeaders = List.of(reader.readNext());
+        sData.currentColumn = reader.getLinesRead();
 
         Map<Integer, Building> mappedHeaders = IntStream.range(0, rowHeaders.size())
                 .boxed()
                 .collect(Collectors.toMap(index -> index + 1, index -> {
                     // Gets value in list at current index
                     String listValue = rowHeaders.get(index);
+
+                    sData.currentRow = index + 1;
 
                     // Runs regex on the header
                     Matcher match = headerPattern.matcher(listValue);
@@ -80,7 +82,8 @@ public class ElectricDemandParser extends CsvParser {
                             String errorMessage = "Building code not found for building code " + buildingCode + " on " + listValue;
                             logger.error(errorMessage);
                             Error error = new Error(errorMessage, Error.Errors.NOBUILDING);
-                            headerErrors.addError(error);
+                            sData.setAddType(SheetData.addType.Column);
+                            errorManager.addPropError(error);
                         } else {
                             building = queriedBuilding.get();
                         }
@@ -89,12 +92,13 @@ public class ElectricDemandParser extends CsvParser {
                         String errorMessage = "Regex match failed for " + listValue;
                         logger.error(errorMessage);
                         Error error = new Error(errorMessage, Error.Errors.FAILEDREGEX);
-                        headerErrors.addError(error);
+                        sData.setAddType(SheetData.addType.Column);
+                        errorManager.addPropError(error);
                     }
                     return building;
                 }));
         // Adds errors if necessary
-        response.addErrorGroup(headerErrors);
+        //response.addErrorGroup(headerErrors);
         return mappedHeaders;
     }
 
@@ -105,7 +109,7 @@ public class ElectricDemandParser extends CsvParser {
      * @param dateColumn - index of the date column
      * @return - Timestamp
      */
-    private Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn) {
+    private Timestamp getTimestamp(String date, ErrorGroup errorGroup, long dateColumn) {
         Timestamp stamp = null;
         try {
             DateFormat format = new SimpleDateFormat("MM/dd/yy HH:mm");
@@ -116,7 +120,9 @@ public class ElectricDemandParser extends CsvParser {
             logger.error(errorMessage);
             Error timestampError = new Error();
             timestampError.setErrorMessage(errorMessage, Error.Errors.DATEFORMAT);
-            errorGroup.addError(timestampError);
+
+            sData.setAddType(SheetData.addType.Row);
+            errorManager.addPropError(timestampError);
         }
         return stamp;
     }
@@ -138,16 +144,18 @@ public class ElectricDemandParser extends CsvParser {
 
         // Read row by row
         while ((rowData = reader.readNext()) != null) {
+            sData.currentRow = reader.getLinesRead();
             Usage usage = new Usage();
 
             // Date/timestamp is always at index 0
             String date = rowData[DATE_COLUMN];
             ErrorGroup errorGroup = new ErrorGroup();
-            errorGroup.setUsage(usage);
+            errorGroup.addGroupData(usage);
             Timestamp stamp = getTimestamp(date, errorGroup, DATE_COLUMN);
 
             // Read column by column starting after the date field
             for (int i = 1; i < rowData.length; i++) {
+                sData.currentColumn = i + 1;
                 usage.timestamp = stamp;
                 Building building = headersMap.get(i);
                 String buildingCode = building.buildingCode;
@@ -170,16 +178,17 @@ public class ElectricDemandParser extends CsvParser {
                             logger.error(errorMessage);
                             Error numberFormatError = new Error();
                             numberFormatError.setErrorMessage(errorMessage, Error.Errors.DATAFORMAT);
-                            errorGroup.addError(numberFormatError);
+                            errorManager.addError(numberFormatError, usage);
                         }
                     } else {
                         logger.debug("Skipping data at row " + reader.getLinesRead() + " column " + currentColumn);
                     }
 
                     // Determines if there were errors in the group and adds them.
-                    boolean added = response.addErrorGroup(errorGroup);
-                    if (!added)
+                   // boolean added = response.addErrorGroup(errorGroup);
+                    //if (!added)
                         response.addSuccess(usage);
+                        errorManager.setPropagation(usage);
                 }
             }
         }

@@ -26,31 +26,6 @@ public class Response {
         summary.generateSummary(success);
     }
 
-    /**
-     * Returns the number of errors
-     * @return error count
-     */
-    public int getErrorCount(){
-        int sum = 0;
-        for(ErrorGroup group : errors){
-            sum += group.getErrorCount();
-        }
-        return sum;
-    }
-
-    /**
-     * Adds error group to the response
-     * @param errorGroup - Error group to add
-     * @return
-     */
-    public boolean addErrorGroup(ErrorGroup errorGroup) {
-        boolean added = false;
-        if(errorGroup.getErrorCount() > 0){
-            errors.add(errorGroup);
-            added = true;
-        }
-        return added;
-    }
 
     /**
      * Overwrites the success list with new reference
