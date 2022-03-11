@@ -9,7 +9,7 @@ const ResponsiveAppBar = () => {
         <div>
             <NavBar/>
             <SideDrawer/>
-            <Map id="myMap"/>
+            <Map id="myMap"/>            
         </div>
     );
 };

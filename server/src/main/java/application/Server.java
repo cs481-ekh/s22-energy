@@ -44,7 +44,7 @@ public class Server implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments arg0) throws Exception {
-//        CsvParser parser = new SmallElectricParser("docs/small_elec.csv",2, premiseRepo);
-//        Response response = parser.readData();
+        CsvParser parser = new ElectricDemandParser("/home/aidanleuck/Downloads/Data.csv", 2, buildRepo);
+        Response response = parser.readData();
     }
 }

@@ -3,6 +3,7 @@ package application.CSV;
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
+import application.EnergyConverter;
 import application.Model.Error;
 import application.Model.ErrorGroup;
 import application.Model.Response;
@@ -52,7 +53,7 @@ public class ElectricDemandParser extends CsvParser {
         ErrorGroup headerErrors = new ErrorGroup();
 
         // Regex to match Utility.ddd
-        Pattern headerPattern = Pattern.compile("Utility\\.([a-zA-Z_]+)?(\\d{3})", Pattern.CASE_INSENSITIVE);
+        Pattern headerPattern = Pattern.compile("Utility\\.([a-zA-Z]+)?(\\d{3})", Pattern.CASE_INSENSITIVE);
 
         // Reads the first line (headers of the csv file)
         List<String> rowHeaders = List.of(reader.readNext());
@@ -163,6 +164,9 @@ public class ElectricDemandParser extends CsvParser {
                     if (!data.equals("") && !data.equals("NULL")) {
                         try {
                             double utilityUsage = Double.parseDouble(data);
+
+                            utilityUsage = EnergyConverter.kWhToKbtu(utilityUsage);
+
                             BigDecimal result = new BigDecimal(utilityUsage);
                             usage.utilityUsage = result;
                         } catch (NumberFormatException exception) {
@@ -189,3 +193,5 @@ public class ElectricDemandParser extends CsvParser {
         return response;
     }
 }
+
+
