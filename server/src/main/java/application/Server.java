@@ -1,7 +1,6 @@
 package application;
 
 import application.CSV.CsvParser;
-import application.CSV.ElectricDemandParser;
 import application.CSV.NaturalGasParser;
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
