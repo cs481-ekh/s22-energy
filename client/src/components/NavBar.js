@@ -10,18 +10,22 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import logo from "./imgs/gray-logo-scaled.jpeg";
-import bar from "./imgs/bar.jpeg";
-import "./App.css";
+import logo from "../imgs/gray-logo-scaled.jpeg";
+import bar from "../imgs/bar.jpeg";
+
+import "../App.css";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import {useNavigate} from "react-router";
+//import SideDrawer from "./SideDrawer";
 
 
 const pages = ['Map', 'Analytics'];
 const settings = ['Admin Login'];
 
 function NavBar(){
-
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -32,11 +36,17 @@ function NavBar(){
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
+        let path = `/map`;
+        navigate(path);
     };
 
+    let navigate = useNavigate();
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+        let path = `/login`;
+        navigate(path);
     };
+
     return (
         <div>
             <AppBar position="static" sx={{ bgcolor: "#E5E5E5", position: 'relative', zIndex: 1251}}>
@@ -81,6 +91,7 @@ function NavBar(){
                             </Menu>
                         </Box>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+
                             {pages.map((page) => (
                                 <Button
                                     key={page}
@@ -90,12 +101,15 @@ function NavBar(){
                                     {page}
                                 </Button>
                             ))}
+
                         </Box>
 
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    <Avatar sx={{ m: 1, bgcolor: '#E87121' }}>
+                                        <LockOutlinedIcon />
+                                    </Avatar>
                                 </IconButton>
                             </Tooltip>
                             <Menu
@@ -114,6 +128,7 @@ function NavBar(){
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
+
                                 {settings.map((setting) => (
                                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
                                         <Typography textAlign="center">{setting}</Typography>
@@ -126,6 +141,7 @@ function NavBar(){
 
 
             </AppBar>
+
         </div>
 
     );
