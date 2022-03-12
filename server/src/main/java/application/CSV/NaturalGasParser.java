@@ -29,7 +29,6 @@ public class NaturalGasParser extends CsvParser {
         this.premiseRepo = repo;
     }
 
-    @Override
     protected Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn) {
         Timestamp stamp = null;
         try {
