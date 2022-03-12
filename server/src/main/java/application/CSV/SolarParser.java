@@ -1,13 +1,11 @@
 package application.CSV;
 
-import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.EnergyConverter;
 import application.Model.Error;
 import application.Model.ErrorGroup;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,7 +14,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Optional;
+import java.util.HashMap;
 
 public class SolarParser extends CsvParser {
 
@@ -24,7 +22,6 @@ public class SolarParser extends CsvParser {
         super(csvPath, utilityID);
     }
 
-    @Override
     protected Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn) {
         Timestamp stamp = null;
         try {
@@ -45,13 +42,19 @@ public class SolarParser extends CsvParser {
         var response = new Response();
         var errorGroup = new ErrorGroup();
 
-        // get the index for each of the columns we care about (assuming the columns will always be in the same order...)
-        final int DATE = 0;
-        final int ENERGY = 3;
-        // solar has no dollar amount associated with it
+        // parse the header
+        String[] header = reader.readNext();
+        var headerMap = new HashMap<String, Integer>();
+        for (int i = 0; i < header.length; i++) {
+            headerMap.put(header[i].toLowerCase(), i);
+        }
 
-        // skip the header lines
-        reader.readNext();
+        // assign the column values based on expected header name or expected column number
+        // cost : solar has no dollar amount associated with it
+        final int DATE = headerMap.getOrDefault("date and time", 0);
+        final int ENERGY = headerMap.getOrDefault("total system", 3);
+
+        // skip the second header line
         reader.readNext();
 
         // iterate through the csv grabbing rows and parsing them into usage objects
@@ -82,10 +85,10 @@ public class SolarParser extends CsvParser {
                 successfulRow = false;
             }
 
-            // convert the therms (if we got them) to kBTU and add them to the usage object
+            // convert the kWh (if we got them) to kBTU and add them to the usage object
             if (kWh > -1) {
                 try {
-                    double kBTU = EnergyConverter.thermsToKbtu(kWh);
+                    double kBTU = EnergyConverter.kWhToKbtu(kWh);
                     usage.utilityUsage = new BigDecimal(EnergyConverter.doubleToString(kBTU));
                 } catch (Exception e) {
                     String errorMessage = "Failed to convert kWh to kBTU on row " + reader.getLinesRead();
