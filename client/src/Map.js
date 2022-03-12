@@ -1,69 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// Create boundary for map (N, W, S, E)
-var bounds = new window.Microsoft.Maps.LocationRect.fromLocations(
-    new window.Microsoft.Maps.Location(43.616630, -116.220600), 
-    new window.Microsoft.Maps.Location(43.592898, -116.181414)
-);
-
-
-// Highlighting the border of bounds on the map 
-// (just to show where the boundary is set, probably not something to keep cause it's ugly)
-var boundsBorder = new window.Microsoft.Maps.Polyline([
-    bounds.getNorthwest(),
-    new window.Microsoft.Maps.Location(bounds.getNorthwest().latitude, bounds.getSoutheast().longitude),
-    bounds.getSoutheast(),
-    new window.Microsoft.Maps.Location(bounds.getSoutheast().latitude, bounds.getNorthwest().longitude),
-    bounds.getNorthwest()], 
-    { strokeColor: 'orange', strokeThickness: 5 }
-);
-
-// Create push pin and info box for different buildings
-    // Administration Building
-    var adminBuildingLocation = new window.Microsoft.Maps.Location(43.603714, -116.204826);
-    var adminBuildingPin = new window.Microsoft.Maps.Pushpin(adminBuildingLocation, { color: 'blue' });
-    var adminBuildingInfo = new window.Microsoft.Maps.Infobox(adminBuildingLocation, 
-        { 
-            title: 'Administration Building', 
-            description: 'Uses some energy', 
-            visible: false 
-        }
-    );
-    window.Microsoft.Maps.Events.addHandler(adminBuildingPin, 'click', function() {
-        adminBuildingInfo.setOptions({ visible: true });
-    });
-        
-    // Ron and Linda Yanke Family Research Park (YFRP)
-    var yfrpBuildingLocation = new window.Microsoft.Maps.Location(43.599887, -116.183733);
-    var yfrpBuildingPin = new window.Microsoft.Maps.Pushpin(yfrpBuildingLocation, { color: 'blue' });
-    var yfrpBuildingInfo = new window.Microsoft.Maps.Infobox(yfrpBuildingLocation, 
-        { 
-            title: 'Ron and Linda Yanke Family Research Park (YFRP)', 
-            description: 'Uses some energy', 
-            visible: false 
-        }
-    );
-    window.Microsoft.Maps.Events.addHandler(yfrpBuildingPin, 'click', function() {
-        yfrpBuildingInfo.setOptions({ visible: true });
-    });
-
-    // Clearwater Building at City Center Plaza (CCP)
-    var ccpBuildingLocation = new window.Microsoft.Maps.Location(43.615197, -116.203549);
-    var ccpBuildingPin = new window.Microsoft.Maps.Pushpin(ccpBuildingLocation, { color: 'blue' });
-    var ccpBuildingInfo = new window.Microsoft.Maps.Infobox(ccpBuildingLocation, 
-        { 
-            title: 'Clearwater Building at City Center Plaza', 
-            description: 'Uses some energy', 
-            visible: false 
-        }
-    );
-    window.Microsoft.Maps.Events.addHandler(ccpBuildingPin, 'click', function() {
-        ccpBuildingInfo.setOptions({ visible: true });
-    });
-
 // Example array of building data for the function below it
-/*
 var buildingData = [
     {
       lat: 43.603714,
@@ -82,32 +20,91 @@ var buildingData = [
       long: -116.203084,
       title: "CCP",
       description: "Uses some energy"
+    },
+    {
+        lat: 43.600704,
+        long: -116.19925,
+        title: "HEMG",
+        description: "Uses some energy"
+    },
+    {
+        lat: 43.601226,
+        long: -116.202232,
+        title: "HTPT",
+        description: "Uses some energy"
+    },
+    {
+        lat: 43.60458,
+        long: -116.198939,
+        title: "Chaffee Hall",
+        description: "Uses some energy"
     }
-  ];
-*/
+];
 
-  // Loop through building data and create a pin, info box and event handler for each
-  // TODO: fix so that an individual event handler is created for each pushpin, currently each 
-  //       pin pulls up the last building info in the array instead of their own
-  /*
-  for (let i = 0; i < buildingData.length; i++) {
-    var building = buildingData[i];
-    var location = new Microsoft.Maps.Location(building.lat, building.long);
-    var pin = new Microsoft.Maps.Pushpin(location, null);
-    var infoBox = new Microsoft.Maps.Infobox(location,
+// Create boundary for map (N, W, S, E)
+var bounds;
+function getBounds() {
+    bounds = new window.Microsoft.Maps.LocationRect.fromLocations(
+        new window.Microsoft.Maps.Location(43.787795, -116.658338), 
+        new window.Microsoft.Maps.Location(43.419856, -115.886613)
+    );    
+}
+
+// Adds building from buildingData to the map by creating a location, pin, infobox 
+// and event handler for each building.
+function createBuildings(map) {
+
+    // Create empty array for building pins and info boxes
+    var pinArray = [];
+    var infoBoxArray = [];
+
+    // Create new location, pin and infobox
+    for (let i = 0; i < buildingData.length; i++) {
+        var building = buildingData[i];
+        var location = new window.Microsoft.Maps.Location(building.lat, building.long);
+        var pin = new window.Microsoft.Maps.Pushpin(location, { color: 'blue' });
+        var infoBox = new window.Microsoft.Maps.Infobox(location,
+            { 
+                title: building.title, 
+                description: building.description, 
+                visible: false 
+            }
+        );
+        pinArray.push(pin);
+        infoBoxArray.push(infoBox);
+    }
+
+    // Create event handler for each pin/infobox and add them to the map
+    for (let i = 0; i < pinArray.length; i++) {
+        window.Microsoft.Maps.Events.addHandler(pinArray[i], 'click', function() {
+            infoBoxArray[i].setOptions({ visible: true });
+        });
+        infoBoxArray[i].setMap(map);
+        map.entities.push(pinArray[i]);
+    }
+}
+
+// Currently just creates an example polygon for the Extra Mile Arena
+function createPolygons(map) {
+    var extraMileArenaLocation = new window.Microsoft.Maps.Location(43.603564, -116.198948);
+    var extraMileArena = new window.Microsoft.Maps.Polygon([
+    new window.Microsoft.Maps.Location(43.603964, -116.199576),
+    new window.Microsoft.Maps.Location(43.603964, -116.198326),
+    new window.Microsoft.Maps.Location(43.603160, -116.198326),
+    new window.Microsoft.Maps.Location(43.603160, -116.199576),], { fillColor: 'rgba(0, 0, 255, 0.3', strokeColor: 'orange', strokeThickness: 1 });
+    var extraMileArenaInfo = new window.Microsoft.Maps.Infobox(extraMileArenaLocation, 
         { 
-            title: building.title, 
-            description: building.description, 
+            title: 'Extra Mile Arena', 
+            description: 'Uses some energy', 
             visible: false 
         }
     );
-    infoBox.setMap(map);
-    Microsoft.Maps.Events.addHandler(pin, 'click', function() {
-      infoBox.setOptions({ visible: true });
+    window.Microsoft.Maps.Events.addHandler(extraMileArena, 'click', function() {
+        extraMileArenaInfo.setOptions({ visible: true });
     });
-    map.entities.push(pin);
-  }
-  */
+    extraMileArenaInfo.setMap(map);
+    map.entities.push(extraMileArena);
+}
 
 class Map extends Component {
     constructor(props) {
@@ -116,6 +113,7 @@ class Map extends Component {
     }
 
     onScriptLoad() {
+        getBounds();
         const map = new window.Microsoft.Maps.Map(document.getElementById(this.props.id), 
             {
                 maxBounds: bounds,
@@ -135,26 +133,20 @@ class Map extends Component {
                 zoom: 15
             }
         );
-        // Add push pins, info boxes and border highlight to map
-        adminBuildingInfo.setMap(map);
-        map.entities.push(adminBuildingPin);
-        yfrpBuildingInfo.setMap(map);
-        map.entities.push(yfrpBuildingPin);
-        ccpBuildingInfo.setMap(map);
-        map.entities.push(ccpBuildingPin);
-        map.entities.push(boundsBorder);
+        createBuildings(map);
+        createPolygons(map);
     }
 
     componentDidMount() {
-        if (!window.Microsoft) {
+        if (!window.Microsoft.Maps.Location) {
             var s = document.createElement('script');
             s.type = 'text/javascript';
-            s.src = 'https://www.bing.com/api/maps/mapcontrol?key=' + process.env.REACT_MAP_API_KEY;
+            s.src = 'https://www.bing.com/api/maps/mapcontrol?key=' + process.env.REACT_APP_API_KEY;
             var x = document.getElementsByTagName('script')[0];
             x.parentNode.insertBefore(s, x);
             s.addEventListener('load', e => {
                 if (e != null) {
-                    this.onScriptLoad();
+                    setTimeout(() => {  this.onScriptLoad(); }, 200);
                 }
             });
         } else {
@@ -162,9 +154,15 @@ class Map extends Component {
         }
     }
 
+    // need to move 240px right when sidebar is opened
     render() {
         return (
-            <div style={{ width: "1100px", height: "950px", display: 'block', marginLeft: 'auto', marginRight: 'auto' }} id={this.props.id}></div>
+            <div style={{ 
+                width: "100VW",
+                height: "calc(100VH - 160px)"
+                }} 
+                id={this.props.id}>
+            </div>
         );
     }
 }
