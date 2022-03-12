@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Optional;
 
 public class NaturalGasParser extends CsvParser {
@@ -49,14 +50,18 @@ public class NaturalGasParser extends CsvParser {
         var response = new Response();
         var errorGroup = new ErrorGroup();
 
-        // get the index for each of the columns we care about (assuming the columns will always be in the same order...)
-        final int PREMISE = 2;
-        final int DATE = 5;
-        final int COST = 7;
-        final int ENERGY = 8;
+        // parse the header
+        String[] header = reader.readNext();
+        var headerMap = new HashMap<String, Integer>();
+        for (int i = 0; i < header.length; i++) {
+            headerMap.put(header[i].toLowerCase(), i);
+        }
 
-        // skip the header line
-        reader.readNext();
+        // assign the column values based on expected header name or expected column number
+        final int PREMISE = headerMap.getOrDefault("premiseid", 2);
+        final int DATE = headerMap.getOrDefault("meterenddate", 5);
+        final int COST = headerMap.getOrDefault("currentgascharges", 7);
+        final int ENERGY = headerMap.getOrDefault("thermsbilled", 8);
 
         // iterate through the csv grabbing rows and parsing them into usage objects
         String[] row;
