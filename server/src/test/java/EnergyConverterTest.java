@@ -1,5 +1,7 @@
 import org.testng.annotations.Test;
 import org.testng.asserts.*;
+
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import application.EnergyConverter;
@@ -7,77 +9,70 @@ import application.EnergyConverter;
 
 class EnergyConverterTest {
     // we want at least 3 decimal points of precision
-    private final double DELTA = .0001;
+//    private final var DELTA = .0001;
     private Assertion a = new Assertion();
 
 
     @Test
     public void test1_btuToKbtu() {
-        double btu = 5000;
-        double kbtu = EnergyConverter.btuToKbtu(btu);
-        a.assertEquals(kbtu, (double)5, DELTA);
+        var btu = BigDecimal.valueOf(5000);
+        var kbtu = EnergyConverter.btuToKbtu(btu);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(5)), 0);
     }
 
     @Test
     public void test2_btuToKbtu() {
-        double btu = 12345;
-        double kbtu = EnergyConverter.btuToKbtu(btu);
-        a.assertEquals(kbtu, (double)12.345, DELTA);
+        var btu = BigDecimal.valueOf(12345);
+        var kbtu = EnergyConverter.btuToKbtu(btu);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(12.345)), 0);
     }
 
     @Test
     public void test3_btuToKbtu() {
-        double btu = 12345.6789;
-        double kbtu = EnergyConverter.btuToKbtu(btu);
-        a.assertEquals(kbtu, (double)12.3456, DELTA);
+        var btu = BigDecimal.valueOf(12345.6789);
+        var kbtu = EnergyConverter.btuToKbtu(btu);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(12.3456789)), 0);
     }
 
     @Test
-    public void test1_kwhToKbtu() {
-        double kWh = 1;
-        double kbtu = EnergyConverter.kWhToKbtu(kWh);
-        a.assertEquals(kbtu, (double)3.41214163312794, DELTA);
+    public void test4_kwhToKbtu() {
+        var kWh = BigDecimal.valueOf(1);
+        var kbtu = EnergyConverter.kWhToKbtu(kWh);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(3.41214163312794)),0);
     }
 
     @Test
-    public void test2_kwhToKbtu() {
-        double kWh = 1;
-        double kbtu = EnergyConverter.kWhToKbtu(kWh);
-        a.assertEquals(kbtu, (double)3.4121, DELTA);
+    public void test5_kwhToKbtu() {
+        var kWh = BigDecimal.valueOf(1);
+        var kbtu = EnergyConverter.kWhToKbtu(kWh);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(3.41214163312794)), 0);
     }
 
     @Test
-    public void test3_kwhToKbtu() {
-        double kWh = 123;
-        double kbtu = EnergyConverter.kWhToKbtu(kWh);
-        a.assertEquals(kbtu, (double)419.693420875, DELTA);
+    public void test6_thermsToKbtu() {
+        var therms = BigDecimal.valueOf(1);
+        var kbtu = EnergyConverter.thermsToKbtu(therms);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(100)), 0);
     }
 
     @Test
-    public void test1_thermsToKbtu() {
-        double therms = 1;
-        double kbtu = EnergyConverter.thermsToKbtu(therms);
-        a.assertEquals(kbtu, (double)100, DELTA);
+    public void test7_thermsToKbtu() {
+        var therms = BigDecimal.valueOf(12345);
+        var kbtu = EnergyConverter.thermsToKbtu(therms);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(1234500)), 0);
     }
 
     @Test
-    public void test2_thermsToKbtu() {
-        double therms = 12345;
-        double kbtu = EnergyConverter.thermsToKbtu(therms);
-        a.assertEquals(kbtu, (double)1234500, DELTA);
+    public void test8_thermsToKbtu() {
+        var therms = BigDecimal.valueOf(-1);
+        var kbtu = EnergyConverter.thermsToKbtu(therms);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(-100)), 0);
     }
 
     @Test
-    public void test3_thermsToKbtu() {
-        double therms = -1;
-        double kbtu = EnergyConverter.thermsToKbtu(therms);
-        a.assertEquals(kbtu, (double)-100, DELTA);
-    }
-
-    @Test
-    public void test4_thermsToKbtu() {
-        double therms = 0;
-        double kbtu = EnergyConverter.thermsToKbtu(therms);
-        a.assertEquals(kbtu, (double)0, DELTA);
+    public void test9_thermsToKbtu() {
+        var therms = BigDecimal.valueOf(0);
+        var kbtu = EnergyConverter.thermsToKbtu(therms);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(0)), 0);
     }
 }

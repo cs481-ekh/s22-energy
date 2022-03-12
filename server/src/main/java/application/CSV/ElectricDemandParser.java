@@ -163,12 +163,11 @@ public class ElectricDemandParser extends CsvParser {
                     // Skip empty or null columns
                     if (!data.equals("") && !data.equals("NULL")) {
                         try {
-                            double utilityUsage = Double.parseDouble(data);
+                            BigDecimal utilityUsage = new BigDecimal(data);
 
                             utilityUsage = EnergyConverter.kWhToKbtu(utilityUsage);
 
-                            BigDecimal result = new BigDecimal(utilityUsage);
-                            usage.utilityUsage = result;
+                            usage.utilityUsage = utilityUsage;
                         } catch (NumberFormatException exception) {
                             String errorMessage = "Failed to parse usage to double " + data + " at row " + reader.getLinesRead() + " column " + currentColumn;
                             logger.error(errorMessage);
