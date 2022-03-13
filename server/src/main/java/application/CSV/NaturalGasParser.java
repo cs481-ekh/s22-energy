@@ -2,14 +2,12 @@ package application.CSV;
 
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
-import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
 import application.EnergyConverter;
 import application.Model.Error;
 import application.Model.ErrorGroup;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
