@@ -5,8 +5,17 @@ public abstract class ErrorType {
         WARNING,
         CRITICAL
     }
-    public Severity severity;
-    public abstract String generateErrorMessage();
+    protected Severity severity;
+    protected String value;
+
+    public ErrorType(Severity severity, String value){
+        this.severity = severity;
+        this.value = value;
+    }
+    public String generateErrorMessage(){
+        String baseMessage = "[" + severity.toString() + " " + getClass().getSimpleName() + "] ->";
+        return baseMessage;
+    }
     public Severity getSeverity(){
         return severity;
     }

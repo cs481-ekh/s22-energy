@@ -56,7 +56,6 @@ public class EnergyDBConfig {
 		properties.put("hibernate.dialect",
 				env.getProperty("hibernate.dialect"));
 		em.setJpaPropertyMap(properties);
-
 		return em;
 	}
 
