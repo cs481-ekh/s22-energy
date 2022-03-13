@@ -37,8 +37,6 @@ public class EnergyConverter {
 
     /**
      * Convert a BigDecimal to a string with format "0.###"
-     * We will need this for our parsers because the BigDecimal 
-     * constructor with a string works more cleanly than with a BigDecimal
      * @param num
      * @return
      */
