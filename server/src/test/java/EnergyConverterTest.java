@@ -8,8 +8,6 @@ import application.EnergyConverter;
 
 
 class EnergyConverterTest {
-    // we want at least 3 decimal points of precision
-//    private final var DELTA = .0001;
     private Assertion a = new Assertion();
 
 
