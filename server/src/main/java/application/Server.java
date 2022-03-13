@@ -1,12 +1,11 @@
 package application;
 
-<<<<<<< HEAD
+
 import application.CSV.CsvParser;
 import application.CSV.NaturalGasParser;
 import application.CSV.SmallElectricParser;
-=======
 import application.CSV.SolarParser;
->>>>>>> solarParser
+
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
 import application.Database.EnergyDB.Repo.JPARepository.UsageRepo;
@@ -47,11 +46,8 @@ public class Server implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments arg0) throws Exception {
-<<<<<<< HEAD
-        var p = new NaturalGasParser("/Users/tpoulsen/Code/Energy/docs/naturalGas.csv", 1, premiseRepo);
-=======
+        // var p = new NaturalGasParser("/Users/tpoulsen/Code/Energy/docs/naturalGas.csv", 1, premiseRepo);
         var p = new SolarParser("/Users/tpoulsen/Code/Energy/docs/solar.csv", 7);
->>>>>>> solarParser
         p.readData();
     }
 }
