@@ -92,9 +92,9 @@ public class NaturalGasParser extends CsvParser {
             }
 
             // grab the therms-expended from the row
-            double therms = -1;
+            BigDecimal therms = BigDecimal.valueOf(-1);
             try {
-                therms = Double.parseDouble(row[ENERGY]);
+                therms = new BigDecimal(row[ENERGY]);
             } catch (Exception e) {
                 String errorMessage = "Failed to parse ThermsBilled on row " + reader.getLinesRead();
                 logger.error(errorMessage);
@@ -103,10 +103,9 @@ public class NaturalGasParser extends CsvParser {
             }
 
             // convert the therms (if we got them) to kBTU and add them to the usage object
-            if (therms > -1) {
+            if (therms.compareTo(BigDecimal.valueOf(-1)) > 0) {
                 try {
-                    double kBTU = EnergyConverter.thermsToKbtu(therms);
-                    usage.utilityUsage = new BigDecimal(EnergyConverter.doubleToString(kBTU));
+                    usage.utilityUsage = EnergyConverter.thermsToKbtu(therms);
                 } catch (Exception e) {
                     String errorMessage = "Failed to convert therms to kBTU on row " + reader.getLinesRead();
                     logger.error(errorMessage);

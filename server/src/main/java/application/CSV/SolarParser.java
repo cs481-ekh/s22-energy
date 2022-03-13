@@ -25,7 +25,7 @@ public class SolarParser extends CsvParser {
     protected Timestamp getTimestamp(String date, ErrorGroup errorGroup, int dateColumn) {
         Timestamp stamp = null;
         try {
-            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
             stamp = new Timestamp(format.parse(date).getTime());
         } catch (ParseException e) {
             String errorMessage = "Failed to parse date " + date + " at row " + reader.getLinesRead() + " column " + dateColumn;
@@ -75,9 +75,9 @@ public class SolarParser extends CsvParser {
             }
 
             // grab the kWh-generated from the row
-            double kWh = -1;
+            var kWh = BigDecimal.valueOf(-1);
             try {
-                kWh = Double.parseDouble(row[ENERGY]);
+                kWh = new BigDecimal(row[ENERGY]);
             } catch (Exception e) {
                 String errorMessage = "Failed to parse Total System kWh on row " + reader.getLinesRead();
                 logger.error(errorMessage);
@@ -86,10 +86,9 @@ public class SolarParser extends CsvParser {
             }
 
             // convert the kWh (if we got them) to kBTU and add them to the usage object
-            if (kWh > -1) {
+            if (kWh.compareTo(BigDecimal.valueOf(-1)) > 0) {
                 try {
-                    double kBTU = EnergyConverter.kWhToKbtu(kWh);
-                    usage.utilityUsage = new BigDecimal(EnergyConverter.doubleToString(kBTU));
+                    usage.utilityUsage = EnergyConverter.kWhToKbtu(kWh);
                 } catch (Exception e) {
                     String errorMessage = "Failed to convert kWh to kBTU on row " + reader.getLinesRead();
                     logger.error(errorMessage);

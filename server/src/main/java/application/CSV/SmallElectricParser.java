@@ -95,8 +95,8 @@ public class SmallElectricParser extends CsvParser {
                     endDate = getTimestamp(rowData[dateColNum], errorGroup, dateColNum);
                     usage.timestamp = endDate;
                     Integer usageColNum = headerMap.get("kWhQty");
-                    double smallUsage = Double.parseDouble(rowData[usageColNum]);
-                    BigDecimal usageKbtu = new BigDecimal(kWhToKbtu(smallUsage));
+                    BigDecimal smallUsage = new BigDecimal(rowData[usageColNum]);
+                    BigDecimal usageKbtu = kWhToKbtu(smallUsage);
                     usage.utilityUsage = usageKbtu;
                     Integer billColNum = headerMap.get("billamount");
                     BigDecimal cost = new BigDecimal(rowData[billColNum]);

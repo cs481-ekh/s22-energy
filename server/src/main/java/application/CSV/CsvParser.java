@@ -1,13 +1,10 @@
 package application.CSV;
 
-import application.Database.EnergyDB.Models.Usage;
 import application.Datasource;
 import application.Model.Response;
-import application.Server;
 import com.opencsv.CSVReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileNotFoundException;
