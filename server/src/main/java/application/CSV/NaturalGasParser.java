@@ -2,14 +2,12 @@ package application.CSV;
 
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
-import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
 import application.EnergyConverter;
 import application.Model.Error;
 import application.Model.ErrorGroup;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -108,8 +106,7 @@ public class NaturalGasParser extends CsvParser {
             if (therms > -1) {
                 try {
                     double kBTU = EnergyConverter.thermsToKbtu(therms);
-//                    usage.utilityUsage = new BigDecimal(EnergyConverter.doubleToString(kBTU));
-                    usage.utilityUsage = new BigDecimal(kBTU);
+                    usage.utilityUsage = new BigDecimal(EnergyConverter.doubleToString(kBTU));
                 } catch (Exception e) {
                     String errorMessage = "Failed to convert therms to kBTU on row " + reader.getLinesRead();
                     logger.error(errorMessage);

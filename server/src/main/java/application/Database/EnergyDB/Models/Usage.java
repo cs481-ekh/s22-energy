@@ -39,5 +39,6 @@ public class Usage {
 	public Usage(){
 		utilityUsage = new BigDecimal(0);
 		cost = new BigDecimal(0);
+		buildingCode = "0";
 	}
 }
