@@ -2,7 +2,6 @@ package application.CSV;
 
 import application.Database.EnergyDB.Models.Usage;
 import application.EnergyConverter;
-import application.Model.Error;
 import application.Model.ErrorGroup;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
@@ -29,9 +28,9 @@ public class SolarParser extends CsvParser {
             stamp = new Timestamp(format.parse(date).getTime());
         } catch (ParseException e) {
             String errorMessage = "Failed to parse date " + date + " at row " + reader.getLinesRead() + " column " + dateColumn;
-            logger.error(errorMessage);
+           // logger.error(errorMessage);
             Error timestampError = new Error();
-            timestampError.setErrorMessage(errorMessage, Error.Errors.DATEFORMAT);
+            //timestampError.setErrorMessage(errorMessage, Error.Errors.DATEFORMAT);
             errorGroup.addError(timestampError);
         }
         return stamp;
@@ -69,8 +68,8 @@ public class SolarParser extends CsvParser {
                 usage.timestamp = getTimestamp(row[DATE], errorGroup, DATE);
             } catch (Exception e) {
                 String errorMessage = "Failed to parse Date on row " + reader.getLinesRead();
-                logger.error(errorMessage);
-                errorGroup.addError(new Error(errorMessage, Error.Errors.DATEFORMAT));
+               // logger.error(errorMessage);
+                //errorGroup.addError(new Error(errorMessage, Error.Errors.DATEFORMAT));
                 successfulRow = false;
             }
 
@@ -80,8 +79,8 @@ public class SolarParser extends CsvParser {
                 kWh = new BigDecimal(row[ENERGY]);
             } catch (Exception e) {
                 String errorMessage = "Failed to parse Total System kWh on row " + reader.getLinesRead();
-                logger.error(errorMessage);
-                errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
+                //logger.error(errorMessage);
+                //errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
                 successfulRow = false;
             }
 
@@ -91,8 +90,8 @@ public class SolarParser extends CsvParser {
                     usage.utilityUsage = EnergyConverter.kWhToKbtu(kWh);
                 } catch (Exception e) {
                     String errorMessage = "Failed to convert kWh to kBTU on row " + reader.getLinesRead();
-                    logger.error(errorMessage);
-                    errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
+                    //logger.error(errorMessage);
+                    //errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
                     successfulRow = false;
                 }
             }
@@ -100,8 +99,8 @@ public class SolarParser extends CsvParser {
             // check for row success and store it appropriately
             if (successfulRow)
                 response.addSuccess(usage);
-            else
-                response.addErrorGroup(errorGroup);
+            else{}
+                //response.addErrorGroup(errorGroup);
 
         }
         return response;

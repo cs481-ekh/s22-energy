@@ -4,7 +4,6 @@ import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
 import application.EnergyConverter;
-import application.Model.Error;
 import application.Model.ErrorGroup;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
@@ -34,9 +33,9 @@ public class NaturalGasParser extends CsvParser {
             stamp = new Timestamp(format.parse(date).getTime());
         } catch (ParseException e) {
             String errorMessage = "Failed to parse date " + date + " at row " + reader.getLinesRead() + " column " + dateColumn;
-            logger.error(errorMessage);
+            //logger.error(errorMessage);
             Error timestampError = new Error();
-            timestampError.setErrorMessage(errorMessage, Error.Errors.DATEFORMAT);
+            //timestampError.setErrorMessage(errorMessage, Error.Errors.DATEFORMAT);
             errorGroup.addError(timestampError);
         }
         return stamp;
@@ -76,8 +75,8 @@ public class NaturalGasParser extends CsvParser {
                 usage.timestamp = getTimestamp(row[DATE], errorGroup, DATE);
             } catch (Exception e) {
                 String errorMessage = "Failed to parse MeterEndDate on row " + reader.getLinesRead();
-                logger.error(errorMessage);
-                errorGroup.addError(new Error(errorMessage, Error.Errors.DATEFORMAT));
+                //logger.error(errorMessage);
+                //errorGroup.addError(new Error(errorMessage, Error.Errors.DATEFORMAT));
                 successfulRow = false;
             }
 
@@ -86,8 +85,8 @@ public class NaturalGasParser extends CsvParser {
                 usage.cost = new BigDecimal(row[COST]);
             } catch (Exception e) {
                 String errorMessage = "Failed to parse CurrentGasCharges on row " + reader.getLinesRead();
-                logger.error(errorMessage);
-                errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
+                //logger.error(errorMessage);
+                //errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
                 successfulRow = false;
             }
 
@@ -97,8 +96,8 @@ public class NaturalGasParser extends CsvParser {
                 therms = new BigDecimal(row[ENERGY]);
             } catch (Exception e) {
                 String errorMessage = "Failed to parse ThermsBilled on row " + reader.getLinesRead();
-                logger.error(errorMessage);
-                errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
+                //logger.error(errorMessage);
+               // errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
                 successfulRow = false;
             }
 
@@ -108,8 +107,8 @@ public class NaturalGasParser extends CsvParser {
                     usage.utilityUsage = EnergyConverter.thermsToKbtu(therms);
                 } catch (Exception e) {
                     String errorMessage = "Failed to convert therms to kBTU on row " + reader.getLinesRead();
-                    logger.error(errorMessage);
-                    errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
+                    //logger.error(errorMessage);
+                    //errorGroup.addError(new Error(errorMessage, Error.Errors.DATAFORMAT));
                     successfulRow = false;
                 }
             }
@@ -120,8 +119,8 @@ public class NaturalGasParser extends CsvParser {
                 premiseId = Long.parseLong(row[PREMISE]);
             } catch (Exception e) {
                 String errorMessage = "Failed to parse PremiseID on row " + reader.getLinesRead();
-                logger.error(errorMessage);
-                errorGroup.addError(new Error(errorMessage, Error.Errors.MISSINGPREMISE));
+                //logger.error(errorMessage);
+                //errorGroup.addError(new Error(errorMessage, Error.Errors.MISSINGPREMISE));
                 successfulRow = false;
             }
 
@@ -132,8 +131,8 @@ public class NaturalGasParser extends CsvParser {
                 // verify we got a non-null response or report an error
                 if (queryPremise.isEmpty()) {
                     String errorMessage = "Building code does not exist for [Row | PremiseID] -> [" + reader.getLinesRead() + " | " + premiseId + "]";
-                    logger.error(errorMessage);
-                    errorGroup.addError(new Error(errorMessage, Error.Errors.NOBUILDING));
+                    //logger.error(errorMessage);
+                    //errorGroup.addError(new Error(errorMessage, Error.Errors.NOBUILDING));
                     successfulRow = false;
                 } else {
                     // assign the building code to the usage object
@@ -144,8 +143,8 @@ public class NaturalGasParser extends CsvParser {
             // if we made it this far and successfulRow == true... it's a christmas miracle :)
             if (successfulRow)
                 response.addSuccess(usage);
-            else
-                response.addErrorGroup(errorGroup);
+            else{}
+                //response.addErrorGroup(errorGroup);
 
         }
         return response;
