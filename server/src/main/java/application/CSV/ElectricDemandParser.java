@@ -130,7 +130,7 @@ public class ElectricDemandParser extends CsvParser {
                         Double utilityUsage = sheetValidator.validateDouble(lines, currentColumn, data, usage);
                         BigDecimal result = new BigDecimal(utilityUsage);
                         usage.utilityUsage = result;
-                    }
+
                     manager.applyErrors(lines, currentColumn, usage);
                 }
             }
