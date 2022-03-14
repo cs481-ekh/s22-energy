@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Map from "./components/Map";
 import Login from "./components/Login";
 import ScrollToTop from "./components/ScrollToTop";
+import CsvReader from "./components/CsvReader";
 
 const ResponsiveAppBar = () => {
     return (
@@ -18,6 +19,7 @@ const ResponsiveAppBar = () => {
                 <Route exact path="/" element={<Map id="myMap"/>} />
                 <Route exact path="/map" element={<Map id="myMap"/>} />
                 <Route path="/login" element={<Login/>} />
+                <Route exact path="/CsvReader" element={<CsvReader/>} />
             </Routes>
         </Router>
     );
