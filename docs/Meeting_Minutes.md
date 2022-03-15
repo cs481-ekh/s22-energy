@@ -1,3 +1,13 @@
+## Sprint2 Retrospect
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   I think this sprint went well! We basically have all the csv upload and data 
+   insert ready to go. Just need some tests and then we will shift primary work 
+   to front end which will go faster when everyone is hands on deck!
+   Good progress on front end, need to keep grinding to get the product we want!
+   
+ </p>
+
 ## 3/11/2022 9:00am - Clarification on Data(30 min timeframe)
 #### Attendees: Victor, Brian Emtman
 
