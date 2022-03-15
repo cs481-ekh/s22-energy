@@ -437,4 +437,26 @@ GRANT ALL ON LANGUAGE plpgsql TO vbmltwzifkbhsk;
 --
 -- PostgreSQL database dump complete
 --
+ 
+--
+-- TOC entry 
+-- Name: users; Type: TABLE; Schema: public; Owner: vbmltwzifkbhsk
+--
 
+CREATE TABLE public.users (
+    id serial,
+   firstName  text NOT NULL,
+    lastName text NOT NULL,
+    password text NOT NULL,
+    admin  text not null 
+);
+
+ALTER TABLE public.users OWNER TO vbmltwzifkbhsk;
+
+--
+-- TOC entry 
+-- Name: users; Type: CONSTRAINT; Schema: public; Owner: vbmltwzifkbhsk
+--
+
+ALTER TABLE users 
+ADD PRIMARY KEY (id);

@@ -9,7 +9,6 @@ import application.CSV.SolarParser;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
 import application.Database.EnergyDB.Repo.JPARepository.UsageRepo;
-import application.Model.Response;
 import application.controller.filecontroller.FileStorageProperties;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -50,5 +49,6 @@ public class Server implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments arg0) throws Exception {
+        
     }
 }
