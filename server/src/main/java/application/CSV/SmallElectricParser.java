@@ -3,7 +3,6 @@ package application.CSV;
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
-import application.Model.Error;
 import application.Model.ErrorGroup;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
@@ -42,9 +41,9 @@ public class SmallElectricParser extends CsvParser {
             stamp = new Timestamp(time.getTime());
         } catch (ParseException ex) {
             String errorMessage = "Failed to parse date " + date + " at row " + reader.getLinesRead() + " column " + dateColumn;
-            logger.error(errorMessage);
+            //logger.error(errorMessage);
             Error timestampError = new Error();
-            timestampError.setErrorMessage(errorMessage, Error.Errors.DATEFORMAT);
+            //timestampError.setErrorMessage(errorMessage, Error.Errors.DATEFORMAT);
             errorGroup.addError(timestampError);
         }
         return stamp;
@@ -85,18 +84,18 @@ public class SmallElectricParser extends CsvParser {
                 Optional<Building> queryPremise = premiseRepo.getPremiseBuilding(premiseCode);
                 if (queryPremise.isEmpty()) {
                     String errorMessage = "Building code does not exist for premise: " + premiseCode;
-                    logger.error(errorMessage);
-                    Error error = new Error(errorMessage, Error.Errors.NOBUILDING);
-                    errorGroup.addError(error);
-                    response.addErrorGroup(errorGroup);
+                    //logger.error(errorMessage);
+                    //Error error = new Error(errorMessage, Error.Errors.NOBUILDING);
+                    //errorGroup.addError(error);
+                   // response.addErrorGroup(errorGroup);
                 }else {
                     usage.buildingCode = queryPremise.get().buildingCode;
                     Integer dateColNum = headerMap.get("billperiodenddate");
                     endDate = getTimestamp(rowData[dateColNum], errorGroup, dateColNum);
                     usage.timestamp = endDate;
                     Integer usageColNum = headerMap.get("kWhQty");
-                    double smallUsage = Double.parseDouble(rowData[usageColNum]);
-                    BigDecimal usageKbtu = new BigDecimal(kWhToKbtu(smallUsage));
+                    BigDecimal smallUsage = new BigDecimal(rowData[usageColNum]);
+                    BigDecimal usageKbtu = kWhToKbtu(smallUsage);
                     usage.utilityUsage = usageKbtu;
                     Integer billColNum = headerMap.get("billamount");
                     BigDecimal cost = new BigDecimal(rowData[billColNum]);
@@ -109,10 +108,10 @@ public class SmallElectricParser extends CsvParser {
             }
         }else{
             String errorMessage = "File header format incorrect";
-            logger.error(errorMessage);
-            Error error = new Error(errorMessage, Error.Errors.FAILEDREGEX);
-            errorGroup.addError(error);
-            response.addErrorGroup(errorGroup);
+            //logger.error(errorMessage);
+            //Error error = new Error(errorMessage, Error.Errors.FAILEDREGEX);
+            //errorGroup.addError(error);
+            //response.addErrorGroup(errorGroup);
         }
         return response;
     }

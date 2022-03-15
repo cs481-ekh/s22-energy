@@ -7,6 +7,8 @@ import Map from "./components/Map";
 import Login from "./components/Login";
 import ScrollToTop from "./components/ScrollToTop";
 import CsvReader from "./components/CsvReader";
+import Admin from "./components/Admin-Splash";
+
 
 const ResponsiveAppBar = () => {
     return (
@@ -20,6 +22,7 @@ const ResponsiveAppBar = () => {
                 <Route exact path="/map" element={<Map id="myMap"/>} />
                 <Route path="/login" element={<Login/>} />
                 <Route exact path="/CsvReader" element={<CsvReader/>} />
+                <Route path="/admin" element={<Admin/>} />
             </Routes>
         </Router>
     );

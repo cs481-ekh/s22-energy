@@ -36,3 +36,34 @@ ON meter.building_code = premise.building_code;
 SELECT COUNT(building_code)
 FROM buildings
 WHERE (building_name = 'University Square - D');
+
+/*
+sample of the update method that was used to add the x-y coordniates to the buildings table
+*/
+Update buildings
+set x_coord = 43.5168310089446 , y_coord = -112.00443846765
+where building_code = '399';
+
+Update buildings
+set x_coord = 43.6017852248315 , y_coord = -116.204399622206
+where building_code = '400';
+
+Update buildings
+set x_coord = 43.6009956582703 , y_coord = -116.20539343338
+where building_code = '401';
+
+Update buildings
+set x_coord = 43.6010422746069 , y_coord = -116.205557048126
+where building_code = '402';
+
+ Update buildings
+set x_coord = 43.6017742558921 , y_coord = -116.201692148587
+where building_code = '102N'; 
+
+Update buildings
+set x_coord = 43.6021116656548 , y_coord = -116.207447378642
+where building_code = '396';
+
+Update buildings
+set x_coord = 43.6027441356528 , y_coord = -116.203369072543
+where building_code = '398';
