@@ -161,7 +161,7 @@ class Map extends Component {
             <>
                 <SideDrawer/>
                 <div style={{ 
-                    width: "100VW",
+                    width: "100%",
                     height: "calc(100VH - 160px)"
                     }} 
                     id={this.props.id}>
