@@ -16,7 +16,6 @@ import bar from "../imgs/bar.jpeg";
 import "../App.css";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {useNavigate} from "react-router";
-//import SideDrawer from "./SideDrawer";
 
 
 const pages = ['Map', 'Analytics'];
