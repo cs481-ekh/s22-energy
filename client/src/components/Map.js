@@ -8,37 +8,36 @@ var buildingData = [
       lat: 43.603714,
       long: -116.204826,
       title: "Administration Building",
-      description: "Uses some energy"
+      description: "Uses some energy",
+      size: '150'
     },
     {
-      lat: 43.603465,
+      lat: 43.6029000,
       long: -116.195803,
       title: "Albertsons Stadium",
-      description: "Uses some energy"
+      description: "Uses some energy",
+      size: '300'
     },
     {
       lat: 43.614856,
       long: -116.203084,
       title: "CCP",
-      description: "Uses some energy"
+      description: "Uses some energy",
+      size: '150'
     },
     {
         lat: 43.600704,
         long: -116.19925,
         title: "HEMG",
-        description: "Uses some energy"
-    },
-    {
-        lat: 43.601226,
-        long: -116.202232,
-        title: "HTPT",
-        description: "Uses some energy"
+        description: "Uses some energy",
+        size: '150'
     },
     {
         lat: 43.60458,
         long: -116.198939,
         title: "Chaffee Hall",
-        description: "Uses some energy"
+        description: "Uses some energy",
+        size: '200'
     }
 ];
 
