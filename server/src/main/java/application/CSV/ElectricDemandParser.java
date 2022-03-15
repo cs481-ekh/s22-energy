@@ -1,17 +1,13 @@
 package application.CSV;
 
+import ErrorManagement.CSV.SheetErrorData;
+import ErrorManagement.SheetValidator;
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
-import application.Model.Error;
+import ErrorManagement.Error;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,108 +24,121 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.zip.DataFormatException;
+
 
 public class ElectricDemandParser extends CsvParser {
     private final BuildingRepo buildingRepo;
 
-    public ElectricDemandParser(String csvPath, BuildingRepo repo) throws FileNotFoundException {
-        super(csvPath);
+    /**
+     * Creates new ElectricDemandParser
+     *
+     * @param csvPath   - Path to the csv file to parse.
+     * @param utilityID - Utility id for electric
+     * @param repo      - Building repository to query
+     * @throws FileNotFoundException
+     */
+    public ElectricDemandParser(String csvPath, int utilityID, BuildingRepo repo) throws FileNotFoundException {
+        super(csvPath, utilityID);
         buildingRepo = repo;
     }
 
-    private Map<Integer, Building> generateHeaderMap(Response response) throws CsvValidationException, IOException {
+    /**
+     * Generates map of the header to building relationship
+     *
+     * @return - Map where key = index in csv, and value is the building that represents it
+     * @throws CsvValidationException - Throws if csv is incorrect format
+     * @throws IOException            - Throws if can't access file or other IO errors
+     */
+    private Map<Integer, Building> generateHeaderMap() throws CsvValidationException, IOException {
+        // Regex to match Utility.ddd
         Pattern headerPattern = Pattern.compile("Utility\\.([a-zA-Z_]+)?(\\d{3})", Pattern.CASE_INSENSITIVE);
 
+        // Reads the first line (headers of the csv file)
         List<String> rowHeaders = List.of(reader.readNext());
+        final int HEADER_ROW = 0;
+
         Map<Integer, Building> mappedHeaders = IntStream.range(0, rowHeaders.size())
                 .boxed()
                 .collect(Collectors.toMap(index -> index + 1, index -> {
+                    // Gets value in list at current index
                     String listValue = rowHeaders.get(index);
-                    Matcher match = headerPattern.matcher(listValue);
+
+                    // Runs regex on the header
+                    Matcher match = sheetValidator.validateRegex(HEADER_ROW, index + 1, listValue, headerPattern);
                     Building building = new Building();
+
                     if (match.find()) {
+                        // Extracts digits
                         String buildingCode = match.group(2);
+
+                        // Query db for building code
                         Optional<Building> queriedBuilding = buildingRepo.findById(buildingCode);
+
+                        // Error handling on a failed building code
                         if (queriedBuilding.isEmpty()) {
-                            String errorMessage = "Building code not found for building code " + buildingCode;
-                            logger.error(errorMessage);
-                            Error error = new Error(errorMessage, Error.Errors.NOBUILDING);
-                            response.setError(error);
+                            sheetValidator.handleFailedBuildingCode(HEADER_ROW, index + 1, buildingCode, listValue, SheetErrorData.Direction.COLUMN);
+
                         } else {
                             building = queriedBuilding.get();
                         }
-                    } else {
-                        String errorMessage = "Regex match failed for " + listValue;
-                        logger.error(errorMessage);
-                        Error error = new Error(errorMessage, Error.Errors.FAILEDREGEX);
-                        response.setError(error);
                     }
                     return building;
                 }));
-        lineNumber++;
+
         return mappedHeaders;
     }
 
-    private Timestamp getTimestamp(Response response, String date, Error error, int rowNumber) {
-        Timestamp stamp = null;
-        try {
-            DateFormat format = new SimpleDateFormat("MM/dd/yy HH:mm");
-            Date time = format.parse(date);
-            stamp = new Timestamp(time.getTime());
-        } catch (ParseException ex) {
-            String errorMessage = "Failed to parse date " + date + " at row " + lineNumber + " column " + rowNumber;
-            logger.error(errorMessage);
-            error.setErrorMessage(errorMessage, Error.Errors.DATEFORMAT);
-        }
-        return stamp;
-    }
-
+    /**
+     * Reads the data from the csv
+     *
+     * @return response object to send to client.
+     * @throws CsvValidationException - Throws if csv is invalid
+     * @throws IOException            - Throws if IOException occurs
+     */
     @Override
     public Response readData() throws CsvValidationException, IOException {
-        Response response = new Response();
-
-        Map<Integer, Building> headersMap = generateHeaderMap(response);
-
+        // Get map to header
+        Map<Integer, Building> headersMap = generateHeaderMap();
+        final int DATE_COLUMN = 0;
         String[] rowData = null;
+
+        // Read row by row
         while ((rowData = reader.readNext()) != null) {
-            String date = rowData[0];
-            Error errorDate = new Error();
-            final int DATE_ROW = 1;
-            Timestamp stamp = getTimestamp(response, date, errorDate, DATE_ROW);
-            if (errorDate.hasError()) {
-                response.setError(errorDate);
-            }
+            Usage usage = new Usage();
+            int lines = (int) reader.getLinesRead();
+
+            // Date/timestamp is always at index 0
+            String date = rowData[DATE_COLUMN];
+            DateFormat format = new SimpleDateFormat("MM/dd/yy");
+            Timestamp stamp = sheetValidator.validateTimestamp(lines, DATE_COLUMN + 1, format, date, usage, SheetErrorData.Direction.ROW);
+
+            // Read column by column starting after the date field
             for (int i = 1; i < rowData.length; i++) {
-                Error error = new Error();
-                Usage usage = new Usage();
                 usage.timestamp = stamp;
                 Building building = headersMap.get(i);
                 String buildingCode = building.buildingCode;
                 usage.buildingCode = buildingCode;
-                int rowNumber = i + 1;
-                String data = rowData[i];
-                if (!data.equals("") && !data.equals("NULL")) {
-                    try {
-                        double utilityUsage = Double.parseDouble(data);
+                usage.utilityID = utilityID;
+
+                // Skip the row if the building code is null.
+                if (buildingCode != null && stamp != null) {
+                    String data = rowData[i];
+                    int currentColumn = i + 1;
+
+                    // Skip empty or null columns
+                    if (!data.equals("") && !data.equals("NULL")) {
+                        Double utilityUsage = sheetValidator.validateDouble(lines, currentColumn, data, usage);
                         BigDecimal result = new BigDecimal(utilityUsage);
                         usage.utilityUsage = result;
-                    } catch (NumberFormatException exception) {
-                        String errorMessage = "Failed to parse usage to long " + data + " at row " + lineNumber + " column " + rowNumber;
-                        logger.error(errorMessage);
-                        error.setErrorMessage(errorMessage, Error.Errors.DATAFORMAT);
                     }
-
-                }
-                if (error.hasError()) {
-                    error.setErrorUsage(usage);
-                    response.setError(error);
-                } else {
-                    response.addSuccess(usage);
+                    manager.applyErrors(lines, currentColumn, usage);
                 }
             }
-            lineNumber++;
         }
+        // Calculates the summary in the response.
+        response.calculateSummary();
         return response;
     }
 }
+
+

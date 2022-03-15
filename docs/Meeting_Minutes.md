@@ -1,3 +1,37 @@
+## 3/11/2022 9:00am - Clarification on Data(30 min timeframe)
+#### Attendees: Victor, Brian Emtman
+
+<p>
+   
+   * There were some data points that concerned us.  Three data points showed an excess of $50K dollars in billing.  We weren't sure how to handle this
+      *  Brian explained that Idaho power put three parts of the BSU campus on a single charge(3 loops).  That is why the charge is so high and for us to use the cost/kWh used.  Then use the Utility spreadsheet to find the total cost of each builing. 
+   
+   * Discussed our concerns with the data missing a lot of information. 
+      * Brian told us to focus on the big picture and don't worry about the data that can't be validated
+      * I suggested to Brian that maybe we identify the buildings that we can and possibly add a way to insert buildings once data becomes available.  
+   
+   It was a very quick meeting, but I think we were able to come up with some managable solutions. 
+   
+</p>
+
+
+## 3/10/2022 9:00am
+#### Attendees: Jack, Aidan, Keegan, Khaled, Victor, Taylor
+
+<p>
+   
+   * Meeting with the professor went well.  
+      * We discussed outlineour roles better during the sprints. 
+      * We discussed not having our README file updated with information on how to run our application
+      * We expressed our concern of the data we will be using for this project.  Data has a lot of errors or missing information.  
+   
+   * After Professor meeting
+      * Discussed issue with data.  May have to us the values that are consistant and accurate.  Possible later feature would be to add buildings in later.  
+      * 
+
+   
+</p>
+
 ## 3/8/2022 9:00am
 #### Attendees: Jack, Aidan, Keegan, Khaled, Victor, Taylor
 
@@ -10,7 +44,12 @@
    * Front end map reload issue. When refreshing the home page or navigating to it from a different page the React components are loading before the script has finished loading resulting in the map not displaying. We have a temporary solution but a permanent solution needs to be implemented. 
    * Discussed ways to test our front end.  Aidan mentioned JEST, but none of use have every used it, but we may try and work with it.
    * Login Page - Taylor and Jack will work together to get this page going.  
-   * Disussed identifying ways to create highlight over building we want to display.  Keegan showed a manual example, which looked great.  
+   * Disussed identifying ways to create highlight over building we want to display.  Keegan showed a manual example, which looked great.
+   * Decided we are going to use a pin with a colored radius for the heatmap
+       instead of mapping out all of the lat/long coordinated for the corners
+       of the buildings.
+   * Decided we aren't going to put effort into "remember password" logic on
+       login page"
    
    #### Action Items:
       * Work on application reload issue

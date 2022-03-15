@@ -1,38 +1,58 @@
 package application.Model;
 
+import ErrorManagement.Error;
 import application.Database.EnergyDB.Models.Usage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Response {
-    // MODIFY Usage to UsageSummary class when PR Merges
-    private Usage usage;
+/**
+ * Model for returning a response to the front end.
+ */
+public class Response<T> {
+    private UsageSummary summary;
     private List<Error> errors;
     private List<Usage> success;
 
     public Response(){
-        usage = new Usage();
-        errors = new ArrayList<Error>();
+        summary = new UsageSummary();
         success = new ArrayList<Usage>();
+        errors = new ArrayList<Error>();
     }
 
-    public void setError(Error error){
-        errors.add(error);
+    /**
+     * Generates summary based off successfully implemented usages.
+     */
+    public void calculateSummary(){
+        summary.generateSummary(success);
     }
-    public void setUsage(Usage summary){
-        usage = summary;
-    }
-    public int getErrorCount(){
-        return errors.size();
-    }
+
+
+    /**
+     * Overwrites the success list with new reference
+     * @param successList - list to set internal list to.
+     */
     public void setSuccessList(List<Usage> successList){
         success = successList;
     }
+
+    /**
+     * Adds a success to the list.
+     * @param usage
+     */
     public void addSuccess(Usage usage){
         success.add(usage);
     }
+
+    /**
+     * Determines if there are errors in the response.
+     * @return
+     */
     public boolean hasError(){
         return errors.size() > 0;
+    }
+
+    public void addError(Error error){
+        errors.add(error);
     }
 }

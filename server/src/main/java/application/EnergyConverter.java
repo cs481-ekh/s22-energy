@@ -11,8 +11,8 @@ public class EnergyConverter {
      * @param therms
      * @return
      */
-    public static double thermsToKbtu(double therms) {
-        double btu = therms * 100000;
+    public static BigDecimal thermsToKbtu(BigDecimal therms) {
+        BigDecimal btu = therms.multiply(BigDecimal.valueOf(100000));
         return btuToKbtu(btu);
     }
 
@@ -21,8 +21,8 @@ public class EnergyConverter {
      * @param kWh
      * @return
      */
-    public static double kWhToKbtu(double kWh) {
-        double btu = kWh * 3412.14163312794;
+    public static BigDecimal kWhToKbtu(BigDecimal kWh) {
+        BigDecimal btu = kWh.multiply(BigDecimal.valueOf(3412.14163312794));
         return btuToKbtu(btu);
     }
 
@@ -31,18 +31,16 @@ public class EnergyConverter {
      * @param btu
      * @return
      */
-    public static double btuToKbtu(double btu) {
-        return btu / 1000;
+    public static BigDecimal btuToKbtu(BigDecimal btu) {
+        return btu.divide(BigDecimal.valueOf(1000));
     }
 
     /**
-     * Convert a double to a string with format "0.###"
-     * We will need this for our parsers because the BigDecimal 
-     * constructor with a string works more cleanly than with a double
+     * Convert a BigDecimal to a string with format "0.###"
      * @param num
      * @return
      */
-    public static String doubleToString(double num) {
+    public static String toString(BigDecimal num) {
         DecimalFormat df = new DecimalFormat("0.###");
         return df.format(num);
     }
