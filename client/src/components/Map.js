@@ -8,37 +8,36 @@ var buildingData = [
       lat: 43.603714,
       long: -116.204826,
       title: "Administration Building",
-      description: "Uses some energy"
+      description: "Uses some energy",
+      size: '150'   // size of circle around building in feet
     },
     {
-      lat: 43.603465,
+      lat: 43.6029000,
       long: -116.195803,
       title: "Albertsons Stadium",
-      description: "Uses some energy"
+      description: "Uses some energy",
+      size: '300'
     },
     {
       lat: 43.614856,
       long: -116.203084,
       title: "CCP",
-      description: "Uses some energy"
+      description: "Uses some energy",
+      size: '150'
     },
     {
         lat: 43.600704,
         long: -116.19925,
         title: "HEMG",
-        description: "Uses some energy"
-    },
-    {
-        lat: 43.601226,
-        long: -116.202232,
-        title: "HTPT",
-        description: "Uses some energy"
+        description: "Uses some energy",
+        size: '150'
     },
     {
         lat: 43.60458,
         long: -116.198939,
         title: "Chaffee Hall",
-        description: "Uses some energy"
+        description: "Uses some energy",
+        size: '200'
     }
 ];
 
@@ -53,7 +52,8 @@ function getBounds() {
 
 // Adds building from buildingData to the map by creating a location, pin, infobox 
 // and event handler for each building.
-function createBuildings(map) {
+/*
+function createPins(map) {
 
     // Create empty array for building pins and info boxes
     var pinArray = [];
@@ -84,8 +84,10 @@ function createBuildings(map) {
         map.entities.push(pinArray[i]);
     }
 }
+*/
 
 // Currently just creates an example polygon for the Extra Mile Arena
+/*
 function createPolygons(map) {
     var extraMileArenaLocation = new window.Microsoft.Maps.Location(43.603564, -116.198948);
     var extraMileArena = new window.Microsoft.Maps.Polygon([
@@ -105,6 +107,40 @@ function createPolygons(map) {
     });
     extraMileArenaInfo.setMap(map);
     map.entities.push(extraMileArena);
+}
+*/
+
+// Create circular polygon around each building with specified size
+function createCircles(map) {
+    // Create empty array for circles around building and info boxes
+    var infoBoxArray = [];
+    var circleArray = [];
+
+    for (let i = 0; i < buildingData.length; i++) {
+        var building = buildingData[i];
+        var location = new window.Microsoft.Maps.Location(building.lat, building.long);
+        var infoBox = new window.Microsoft.Maps.Infobox(location,
+            {
+                title: building.title,
+                description: building.description,
+                visible: false
+            }  
+        );
+            // Calculate the locations for a regular polygon that has 36 locations which will rssult in an approximate circle.
+            var locs = window.Microsoft.Maps.SpatialMath.getRegularPolygon(location, building.size, 36, window.Microsoft.Maps.SpatialMath.DistanceUnits.Feet);
+            var circle = new window.Microsoft.Maps.Polygon(locs, { fillColor: 'rgba(0, 0, 255, 0.3)', strokeColor: 'orange', strokeThickness: 1 });
+            circleArray.push(circle);
+        infoBoxArray.push(infoBox);
+    }
+
+    // Create event handler for each circle/infobox and add them to the map
+    for (let i = 0; i < circleArray.length; i++) {
+        window.Microsoft.Maps.Events.addHandler(circleArray[i], 'click', function() {
+            infoBoxArray[i].setOptions({ visible: true });
+        });
+        infoBoxArray[i].setMap(map);
+        map.entities.push(circleArray[i]);
+    }
 }
 
 class Map extends Component {
@@ -134,8 +170,11 @@ class Map extends Component {
                 zoom: 15
             }
         );
-        createBuildings(map);
-        createPolygons(map);
+        window.Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function() {
+            createCircles(map);
+        });
+        //createPins(map);
+        //createPolygons(map);
     }
 
     componentDidMount() {
@@ -155,13 +194,12 @@ class Map extends Component {
         }
     }
 
-    // need to move 240px right when sidebar is opened
     render() {
         return (
             <>
                 <SideDrawer/>
                 <div style={{ 
-                    width: "100VW",
+                    width: "100%",
                     height: "calc(100VH - 160px)"
                     }} 
                     id={this.props.id}>
