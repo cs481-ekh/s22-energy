@@ -6,6 +6,10 @@
    to front end which will go faster when everyone is hands on deck!
    Good progress on front end, need to keep grinding to get the product we want!
    
+   This sprint went very well. We were much better about getting the work done
+   toward the front/middle instead of the end and we also were able to get a
+   log of good work done. We have a demo with our sponsor this friday and I
+   think we are going to have some good progress to show off.
  </p>
 
 ## 3/11/2022 9:00am - Clarification on Data(30 min timeframe)
