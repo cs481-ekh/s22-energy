@@ -9,7 +9,7 @@ var buildingData = [
       long: -116.204826,
       title: "Administration Building",
       description: "Uses some energy",
-      size: '150'
+      size: '150'   // size of circle around building in feet
     },
     {
       lat: 43.6029000,
@@ -52,6 +52,7 @@ function getBounds() {
 
 // Adds building from buildingData to the map by creating a location, pin, infobox 
 // and event handler for each building.
+/*
 function createPins(map) {
 
     // Create empty array for building pins and info boxes
@@ -83,8 +84,10 @@ function createPins(map) {
         map.entities.push(pinArray[i]);
     }
 }
+*/
 
 // Currently just creates an example polygon for the Extra Mile Arena
+/*
 function createPolygons(map) {
     var extraMileArenaLocation = new window.Microsoft.Maps.Location(43.603564, -116.198948);
     var extraMileArena = new window.Microsoft.Maps.Polygon([
@@ -104,6 +107,43 @@ function createPolygons(map) {
     });
     extraMileArenaInfo.setMap(map);
     map.entities.push(extraMileArena);
+}
+*/
+
+// Create circular polygon around each building with specified size
+function createCircles(map) {
+    
+    // Create empty array for circles around building and info boxes
+    var infoBoxArray = [];
+    var circleArray = [];
+
+    for (let i = 0; i < buildingData.length; i++) {
+        var building = buildingData[i];
+        var location = new window.Microsoft.Maps.Location(building.lat, building.long);
+        var infoBox = new window.Microsoft.Maps.Infobox(location,
+            {
+                title: building.title,
+                description: building.description,
+                visible: false
+            }  
+        );
+        window.Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function() {
+            // Calculate the locations for a regular polygon that has 36 locations which will rssult in an approximate circle.
+            var locs = window.Microsoft.Maps.SpatialMath.getRegularPolygon(location, building.size, 36, window.Microsoft.Maps.SpatialMath.DistanceUnits.Feet);
+            var circle = new window.Microsoft.Maps.Polygon(locs, { fillColor: 'rgba(0, 0, 255, 0.3)', strokeColor: 'orange', strokeThickness: 1 });
+            circleArray.push(circle);
+        });
+        infoBoxArray.push(infoBox);
+    }
+
+    // Create event handler for each circle/infobox and add them to the map
+    for (let i = 0; i < circleArray.length; i++) {
+        window.Microsoft.Maps.Events.addHandler(circleArray[i], 'click', function() {
+            infoBoxArray[i].setOptions({ visible: true });
+        });
+        infoBoxArray[i].setMap(map);
+        map.entities.push(circleArray[i]);
+    }
 }
 
 class Map extends Component {
@@ -133,8 +173,9 @@ class Map extends Component {
                 zoom: 15
             }
         );
-        createPins(map);
-        createPolygons(map);
+        createCircles(map);
+        //createPins(map);
+        //createPolygons(map);
     }
 
     componentDidMount() {
