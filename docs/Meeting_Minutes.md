@@ -10,6 +10,10 @@
    toward the front/middle instead of the end and we also were able to get a
    log of good work done. We have a demo with our sponsor this friday and I
    think we are going to have some good progress to show off.
+   
+   I feel good about this sprint. We all proved we were capable of not procrastinating
+   and got a good chunk done towards the beginning. I am looking forward to the focus 
+   shifting on front end now that we have most of the back end done! 
  </p>
 
 ## 3/11/2022 9:00am - Clarification on Data(30 min timeframe)
