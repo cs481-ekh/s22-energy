@@ -14,6 +14,12 @@
    I feel good about this sprint. We all proved we were capable of not procrastinating
    and got a good chunk done towards the beginning. I am looking forward to the focus 
    shifting on front end now that we have most of the back end done! 
+   
+   This sprint covered a lot of times and a lot more was contributed or built off other ideas.
+   I think we all did a great interacting with each other and pointing out mistakes.  I do think
+   we need to do a better job at having more frequent reviews of project task, so we aren't waiting 
+   until the end to get approval.  
+   
  </p>
 
 ## 3/11/2022 9:00am - Clarification on Data(30 min timeframe)
