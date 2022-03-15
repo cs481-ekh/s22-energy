@@ -53,7 +53,7 @@ function getBounds() {
 
 // Adds building from buildingData to the map by creating a location, pin, infobox 
 // and event handler for each building.
-function createBuildings(map) {
+function createPins(map) {
 
     // Create empty array for building pins and info boxes
     var pinArray = [];
@@ -134,7 +134,7 @@ class Map extends Component {
                 zoom: 15
             }
         );
-        createBuildings(map);
+        createPins(map);
         createPolygons(map);
     }
 
@@ -155,7 +155,6 @@ class Map extends Component {
         }
     }
 
-    // need to move 240px right when sidebar is opened
     render() {
         return (
             <>
