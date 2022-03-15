@@ -16,10 +16,6 @@ function CsvReader() {
       .post("/api/upload", {
         data: data,
       })
-      // .then((res) => {
-      //   console.log(res);
-      //   props.onRefresh();
-      // })
       .catch((err) => {
         console.log(err);
       });
@@ -28,10 +24,6 @@ function CsvReader() {
   const handleReset = () => {
     axios
       .post("/api/reset")
-      // .then((res) => {
-      //   console.log(res);
-      //   props.onReset();
-      // })
       .catch((err) => {
         console.log(err);
       });
