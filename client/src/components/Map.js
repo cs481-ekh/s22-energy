@@ -112,7 +112,6 @@ function createPolygons(map) {
 
 // Create circular polygon around each building with specified size
 function createCircles(map) {
-    
     // Create empty array for circles around building and info boxes
     var infoBoxArray = [];
     var circleArray = [];
@@ -127,12 +126,10 @@ function createCircles(map) {
                 visible: false
             }  
         );
-        window.Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function() {
             // Calculate the locations for a regular polygon that has 36 locations which will rssult in an approximate circle.
             var locs = window.Microsoft.Maps.SpatialMath.getRegularPolygon(location, building.size, 36, window.Microsoft.Maps.SpatialMath.DistanceUnits.Feet);
             var circle = new window.Microsoft.Maps.Polygon(locs, { fillColor: 'rgba(0, 0, 255, 0.3)', strokeColor: 'orange', strokeThickness: 1 });
             circleArray.push(circle);
-        });
         infoBoxArray.push(infoBox);
     }
 
@@ -173,7 +170,9 @@ class Map extends Component {
                 zoom: 15
             }
         );
-        createCircles(map);
+        window.Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function() {
+            createCircles(map);
+        });
         //createPins(map);
         //createPolygons(map);
     }
