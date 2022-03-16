@@ -25,6 +25,12 @@
    we need to do a better job at having more frequent reviews of project task, so we aren't waiting 
    until the end to get approval.  
    
+   This sprint was definetly better than our last one. Everyone kept on track and finished 2-3 tasks per 
+   person. We made a lot of headway and got most of what we set out to accomplish done. The backend is 
+   "nearly" feature complete and just needs some in depth testing and final touches put on it. The front end 
+   has a littlemore work so we will probably be putting a lot of effort towards this next sprint. Overall there 
+   was a lot less procrastinating and I am happy with our team dynamic and progress.
+   
  </p>
 
 ## 3/11/2022 9:00am - Clarification on Data(30 min timeframe)
