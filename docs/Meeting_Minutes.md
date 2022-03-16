@@ -2,10 +2,10 @@
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
    - Talked about front end design
-      - Considered making sidebar more noticeable since it doesn't stand out very well on the page.
-      - Talked about removing the whitespace between the map and the sidebar.
-      - Considered how we could dynamically generate heatmaps for the buildings to represent energy usage.
-      - Talked about getting the login feature up and running.
+   - Considered making sidebar more noticeable since it doesn't stand out very well on the page.
+   - Talked about removing the whitespace between the map and the sidebar.
+   - Considered how we could dynamically generate heatmaps for the buildings to represent energy usage.
+   - Talked about getting the login feature up and running.
    
    - Discussed what needed to be finished on backend before front end work could continue
    - Discussed what was the best way to handle file upload on the back end (switch statement vs
