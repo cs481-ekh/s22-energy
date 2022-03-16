@@ -1,18 +1,24 @@
 ## 3/15/22 Morning Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
-   - Talked about front end design
-   - Considered making sidebar more noticeable since it doesn't stand out very well on the page.
-   - Talked about removing the whitespace between the map and the sidebar.
-   - Considered how we could dynamically generate heatmaps for the buildings to represent energy usage.
-   - Talked about getting the login feature up and running.
    
+   - Talked about front end design
+      - Considered making sidebar more noticeable since it doesn't stand out very well on the page.
+      - Talked about removing the whitespace between the map and the sidebar.
+      - Considered how we could dynamically generate heatmaps for the buildings to represent energy usage.
+         - Possible ideas include using markers with a gradient
+         - calculating the size of the circle by sq ft of a building
+         - Making the circle size static.
+   
+   - Talked about getting the login feature up and running.
    - Discussed what needed to be finished on backend before front end work could continue
+      - Finish up file upload controller and implement login authentication.
    - Discussed what was the best way to handle file upload on the back end (switch statement vs
    constructor injection vs repository composition)
    - Talked about data issues that we were having and let everyone know that we will only be working
    with the good data and discarding the bad ones.
    - Discussed what needs to be done before Friday for our demo.
+   - Started rough sprint planning and reminded everyone to do their sprint retro.
 </p>
 
 ## Sprint2 Retrospect
