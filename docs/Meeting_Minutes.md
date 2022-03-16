@@ -1,6 +1,11 @@
 ## Sprint2 Retrospect
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
+   This sprint went very well. A lot of work has been done to the backend so we 
+   we are almost done with that. We also did some progress on the frontend and 
+   we are going to shift the work to the frontend for the next sprint. Also we 
+   have the first demo on friday, I believe we will some progress to show off. 
+   
    I think this sprint went well! We basically have all the csv upload and data 
    insert ready to go. Just need some tests and then we will shift primary work 
    to front end which will go faster when everyone is hands on deck!
