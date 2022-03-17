@@ -1,4 +1,4 @@
-## 3/16/22 Demo Planning
+## 3/16/22 1:30 PM Demo Planning
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
    
@@ -11,7 +11,7 @@
       * Create usage controller, have front end able to parse and load usage data.
 </p>
 
-## 3/15/22 Morning Meeting
+## 3/15/22 9:00 AM Morning Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
    
