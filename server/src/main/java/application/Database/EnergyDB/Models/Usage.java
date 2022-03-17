@@ -1,6 +1,7 @@
 package application.Database.EnergyDB.Models;
 
 import application.Model.UsageSummary;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ public class Usage {
 	public int utilityID;
 
 	@Column(name = "time_stamp", nullable = false)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
 	public Timestamp timestamp;
 
 	@Column(name = "usage", nullable = false)

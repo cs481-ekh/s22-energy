@@ -3,7 +3,6 @@ package application.controller.filecontroller;
 import application.CSV.ElectricDemandParser;
 import application.CSV.NaturalGasParser;
 import application.CSV.SolarParser;
-import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
@@ -20,11 +19,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.nio.file.Path;
 
 @CrossOrigin("*")
 @RestController
