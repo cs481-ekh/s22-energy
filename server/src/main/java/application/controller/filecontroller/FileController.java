@@ -33,7 +33,6 @@ public class FileController {
 
     @Autowired
     private FileStorageService fileStorageService;
-
     @Autowired
     private UsageRepo usageRepo;
     @Autowired
@@ -41,6 +40,13 @@ public class FileController {
     @Autowired
     private BuildingRepo buildingRepo;
 
+    /**
+     * Uploads a csv file to the database using one of the specific parsers.
+     * @param file - File sent by front end to parse.
+     * @param utilID - The utility id to parse
+     * @return A response objects
+     * @throws IOException
+     */
     @PostMapping("/uploadFile") // Add another parameter for Utility ID
     public Response<Usage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
         // Get the directory where the file was stored.
@@ -67,6 +73,7 @@ public class FileController {
                     break;
             }
 
+            // Makes sure one of the cases was hit.
             if (source != null) {
                 try {
                     // Read data from the data source.
@@ -86,6 +93,12 @@ public class FileController {
         return response;
     }
 
+    /**
+     * Gives ability to download file
+     * @param fileName - File name to download
+     * @param request - The request to download the item.
+     * @return - The requested resource.
+     */
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
