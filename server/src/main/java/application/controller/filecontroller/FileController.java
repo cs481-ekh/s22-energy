@@ -3,6 +3,7 @@ package application.controller.filecontroller;
 import application.CSV.ElectricDemandParser;
 import application.CSV.NaturalGasParser;
 import application.CSV.SolarParser;
+import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
@@ -34,46 +35,52 @@ public class FileController {
     private FileStorageService fileStorageService;
 
     @Autowired
-    PremiseRepo repo;
-
+    private UsageRepo usageRepo;
     @Autowired
-    UsageRepo usageRepo;
-
+    private PremiseRepo premiseRepo;
     @Autowired
-    BuildingRepo buildingRepo;
+    private BuildingRepo buildingRepo;
 
     @PostMapping("/uploadFile") // Add another parameter for Utility ID
     public Response<Usage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
-
+        // Get the directory where the file was stored.
         String fileDir = fileStorageService.storeFile(file);
+        Response<Usage> response = new Response<>();
 
+        try {
+            int utilityID = Integer.parseInt(utilID);
+            // Initialize data source
+            Datasource source = null;
+            switch (utilityID) {
+                case 1:
+                    source = new NaturalGasParser(fileDir, utilityID, premiseRepo);
+                    break;
+                case 2:
+                    source = new ElectricDemandParser(fileDir, utilityID, buildingRepo);
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    source = new SolarParser(fileDir, utilityID);
+                    break;
+            }
 
-        Datasource source = null;
-        switch(utilID){
-            case "1":
-                source = new NaturalGasParser(fileDir, 1, repo);
-                break;
-            case "2":
-                source = new ElectricDemandParser(fileDir, 2, buildingRepo);
-                break;
-            case "3":
-                break;
-            case "4":
-
-            case "5":
-                source = new SolarParser(fileDir, 4);
-                break;
-            default:
-                source = new NaturalGasParser(fileDir, 2, repo);
-        }
-        Response response = null;
-        try{
-            response = source.readData();
+            if (source != null) {
+                try {
+                    response = source.readData();
+                } catch (Exception ex) {
+                    logger.error("Error uploading" + fileDir + " " + ex.getMessage());
+                }
+                usageRepo.saveAll(response.getSuccess());
+            } else {
+                logger.error("Failed to initialize data source for utility id " + utilID);
+            }
         }
         catch(Exception ex){
-            logger.error("Error uploading" + fileDir.toString() + " " + ex.getMessage());
+            logger.error("Exception occurred during parsing " + ex.getMessage());
         }
-        usageRepo.saveAll(response.getSuccess());
         return response;
     }
 

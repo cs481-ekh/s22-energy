@@ -7,6 +7,7 @@ import application.EnergyConverter;
 import application.Model.ErrorGroup;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,7 +20,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class NaturalGasParser extends CsvParser {
-    private final PremiseRepo premiseRepo;
+    private PremiseRepo premiseRepo;
 
     public NaturalGasParser(String csvPath, int utilityID, PremiseRepo repo) throws FileNotFoundException {
         super(csvPath, utilityID);
@@ -141,12 +142,12 @@ public class NaturalGasParser extends CsvParser {
             }
 
             // if we made it this far and successfulRow == true... it's a christmas miracle :)
-            if (successfulRow)
+            if (successfulRow) {
                 response.addSuccess(usage);
-            else{}
-                //response.addErrorGroup(errorGroup);
 
-        }
+                //response.addErrorGroup(errorGroup);
+            }
+            }
         return response;
     }
 }
