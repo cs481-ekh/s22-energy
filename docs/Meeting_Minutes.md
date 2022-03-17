@@ -3,7 +3,7 @@
 <p>
    
    - Planned out what needs to be done before our demo to Brian on Friday, March 18th
-   - Divied out a task to each developer to get done before Friday so we have a succesful sprint.
+   - Divied out a task to each developer to get done before Friday so we have a succesful demo.
    - Created a few broad tasks to encapsulate things needed to be done before the demo.
    #### Action Items:
       * Finish backend file uploading, Update client to add ability to upload.
