@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Path;
 
+@CrossOrigin("*")
 @RestController
 public class FileController {
 
@@ -47,7 +48,7 @@ public class FileController {
      * @return A response objects
      * @throws IOException
      */
-    @PostMapping("/uploadFile") // Add another parameter for Utility ID
+    @PostMapping(value ="/uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Add another parameter for Utility ID
     public Response<Usage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
         // Get the directory where the file was stored.
         String fileDir = fileStorageService.storeFile(file);
