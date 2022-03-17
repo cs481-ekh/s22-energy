@@ -10,17 +10,21 @@ import {utility} from "./Admin-Splash";
 
 function CsvReader() {
   const { readString } = usePapaParse();
-  const [data, setData] = useState(null);
   const [fileName, setFile] = useState("");
 
-  const handleUpload = () => {
-    axios
-      .post("/api/upload", {
-        data: data,
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleUpload = async () => {
+    let formData = new FormData();
+
+    formData.append("file", fileName);
+    formData.append("utilID", utility);
+
+    const requestOptions = {
+      method: 'POST',
+      mode: 'cors',
+      body: formData,
+    };
+    const response = await fetch("http://localhost:5000/uploadFile", requestOptions);
+    console.log(response);
 
   };
 
@@ -35,12 +39,11 @@ function CsvReader() {
   const handleCSVRead = (data) => {
     const file = data.target.files[0];
     console.log(fileName);
-    setFile(file.name);
+    setFile(file);
     readString(file, {
       header: true,
       worker: true,
       complete: (results) => {
-        setData(results.data);
         console.log("---------------------------");
         console.log(results);
         console.log("---------------------------");
@@ -73,7 +76,7 @@ function CsvReader() {
         <br />
       </div>
       <div  className="fileName">
-        {fileName.length > 0 ? <p>Selected File: {fileName}</p> : <p >No File Selected</p>}
+        {fileName.name.length > 0 ? <p>Selected File: {fileName.name}</p> : <p >No File Selected</p>}
       </div>
       <div className="buttons">
         <Stack spacing={2} direction="row">

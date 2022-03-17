@@ -14,7 +14,6 @@ import {useNavigate} from "react-router";
 import Box from "@mui/material/Box";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Avatar from "@mui/material/Avatar";
-// import {utilityType} from './CsvReader';
 
 export var utility = {};
 export default function Admin() {
@@ -23,23 +22,25 @@ export default function Admin() {
     const electricOnClick = () => {
         let path = `/CsvReader`;
         navigate(path);
-        //utilityType('1');
-        utility = '1';
+        utility = '2';
     };
 
     const gasOnClick = () => {
         let path = `/CsvReader`;
         navigate(path);
+        utility = '1';
     };
 
     const solarOnClick = () => {
         let path = `/CsvReader`;
         navigate(path);
+        utility = '5';
     };
 
     const steamOnClick = () => {
         let path = `/CsvReader`;
         navigate(path);
+        utility = '3';
     };
 
     return (
