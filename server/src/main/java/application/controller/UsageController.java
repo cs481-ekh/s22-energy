@@ -30,7 +30,7 @@ public class UsageController {
      * @param utilityID - The utility id to filter usages by
      * @return list of usage that matched criteria.
      */
-    @GetMapping(value = "/usage", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/usage")
     public List<Usage> uploadFile(@RequestParam ("start")
                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<Date> startDate,
                                   @RequestParam ("end")
