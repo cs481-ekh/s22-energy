@@ -1,3 +1,61 @@
+## 3/15/22 Morning Meeting
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Talked about front end design
+      - Considered making sidebar more noticeable since it doesn't stand out very well on the page.
+      - Talked about removing the whitespace between the map and the sidebar.
+      - Considered how we could dynamically generate heatmaps for the buildings to represent energy usage.
+         - Possible ideas include using markers with a gradient
+         - calculating the size of the circle by sq ft of a building
+         - Making the circle size static.
+   
+   - Talked about getting the login feature up and running.
+   - Discussed what needed to be finished on backend before front end work could continue
+      - Finish up file upload controller and implement login authentication.
+   - Discussed what was the best way to handle file upload on the back end (switch statement vs
+   constructor injection vs repository composition)
+   - Talked about data issues that we were having and let everyone know that we will only be working
+   with the good data and discarding the bad ones.
+   - Discussed what needs to be done before Friday for our demo.
+   - Started rough sprint planning and reminded everyone to do their sprint retro.
+</p>
+
+## Sprint2 Retrospect
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   This sprint went very well. A lot of work has been done to the backend so we 
+   we are almost done with that. We also did some progress on the frontend and 
+   we are going to shift the work to the frontend for the next sprint. Also we 
+   have the first demo on friday, I believe we will some progress to show off. 
+   
+   I think this sprint went well! We basically have all the csv upload and data 
+   insert ready to go. Just need some tests and then we will shift primary work 
+   to front end which will go faster when everyone is hands on deck!
+   Good progress on front end, need to keep grinding to get the product we want!
+   
+   This sprint went very well. We were much better about getting the work done
+   toward the front/middle instead of the end and we also were able to get a
+   log of good work done. We have a demo with our sponsor this friday and I
+   think we are going to have some good progress to show off.
+   
+   I feel good about this sprint. We all proved we were capable of not procrastinating
+   and got a good chunk done towards the beginning. I am looking forward to the focus 
+   shifting on front end now that we have most of the back end done! 
+   
+   This sprint covered a lot of times and a lot more was contributed or built off other ideas.
+   I think we all did a great interacting with each other and pointing out mistakes.  I do think
+   we need to do a better job at having more frequent reviews of project task, so we aren't waiting 
+   until the end to get approval.  
+   
+   This sprint was definetly better than our last one. Everyone kept on track and finished 2-3 tasks per 
+   person. We made a lot of headway and got most of what we set out to accomplish done. The backend is 
+   "nearly" feature complete and just needs some in depth testing and final touches put on it. The front end 
+   has a littlemore work so we will probably be putting a lot of effort towards this next sprint. Overall there 
+   was a lot less procrastinating and I am happy with our team dynamic and progress.
+   
+ </p>
+
 ## 3/11/2022 9:00am - Clarification on Data(30 min timeframe)
 #### Attendees: Victor, Brian Emtman
 
