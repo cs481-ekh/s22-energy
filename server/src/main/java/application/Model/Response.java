@@ -27,7 +27,6 @@ public class Response<T> {
         summary.generateSummary(success);
     }
 
-
     /**
      * Overwrites the success list with new reference
      * @param successList - list to set internal list to.
@@ -54,5 +53,29 @@ public class Response<T> {
 
     public void addError(Error error){
         errors.add(error);
+    }
+
+    /**
+     * Gets the summary
+     * @return - summary
+     */
+    public UsageSummary getSummary(){
+        return summary;
+    }
+
+    /**
+     * Gets the errors
+     * @return - errors
+     */
+    public List<Error> getErrors(){
+        return errors;
+    }
+
+    /**
+     * Gets successes
+     * @return - sucesses
+     */
+    public List<Usage> getSuccess(){
+        return success;
     }
 }

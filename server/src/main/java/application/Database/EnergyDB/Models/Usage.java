@@ -2,13 +2,12 @@ package application.Database.EnergyDB.Models;
 
 import application.Model.UsageSummary;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-import javax.persistence.Column;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
+
+import static javax.persistence.GenerationType.SEQUENCE;
 
 /**
  * Entity for usage table in db.
@@ -16,9 +15,9 @@ import java.util.List;
 @Entity
 @Table(schema = "public", name = "usage")
 public class Usage {
-
 	@Id
-	@Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, insertable = false)
 	public int id;
 
 	@Column(name = "building_code", nullable = false)

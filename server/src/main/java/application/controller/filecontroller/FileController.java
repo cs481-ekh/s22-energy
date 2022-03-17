@@ -1,6 +1,16 @@
 package application.controller.filecontroller;
 
+import application.CSV.ElectricDemandParser;
 import application.CSV.NaturalGasParser;
+import application.CSV.SolarParser;
+import application.Database.EnergyDB.Models.Building;
+import application.Database.EnergyDB.Models.Usage;
+import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
+import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
+import application.Database.EnergyDB.Repo.JPARepository.UsageRepo;
+import application.Datasource;
+
+import application.Model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
 import java.io.IOException;
+import java.nio.file.Path;
 
+@CrossOrigin("*")
 @RestController
 public class FileController {
 
@@ -23,37 +34,72 @@ public class FileController {
 
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private UsageRepo usageRepo;
+    @Autowired
+    private PremiseRepo premiseRepo;
+    @Autowired
+    private BuildingRepo buildingRepo;
 
-    @PostMapping("/uploadFile") // Add another parameter for Utility ID
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
+    /**
+     * Uploads a csv file to the database using one of the specific parsers.
+     * @param file - File sent by front end to parse.
+     * @param utilID - The utility id to parse
+     * @return A response objects
+     * @throws IOException
+     */
+    @PostMapping(value ="/uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Add another parameter for Utility ID
+    public Response<Usage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
+        // Get the directory where the file was stored.
+        String fileDir = fileStorageService.storeFile(file);
+        Response<Usage> response = new Response<>();
 
-        String fileName = fileStorageService.storeFile(file);
+        try {
+            int utilityID = Integer.parseInt(utilID);
+            // Initialize data source
+            Datasource source = null;
+            switch (utilityID) {
+                case 1:
+                    source = new NaturalGasParser(fileDir, utilityID, premiseRepo);
+                    break;
+                case 2:
+                    source = new ElectricDemandParser(fileDir, utilityID, buildingRepo);
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    source = new SolarParser(fileDir, utilityID);
+                    break;
+            }
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
-
-        DataSource source;
-        // Set up Parsers on next sprint
-        switch(utilID){
-            case "1":
-//                source = new NaturalGasParser();
-                break;
-            case "2":
-                break;
-            case "3":
-                break;
-            case "6":
-                break;
-            case "7":
-                break;
-
+            // Makes sure one of the cases was hit.
+            if (source != null) {
+                try {
+                    // Read data from the data source.
+                    response = source.readData();
+                } catch (Exception ex) {
+                    logger.error("Error uploading" + fileDir + " " + ex.getMessage());
+                }
+                // Upload succesful usages.
+                usageRepo.saveAll(response.getSuccess());
+            } else {
+                logger.error("Failed to initialize data source for utility id " + utilID);
+            }
         }
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize(), utilID);
+        catch(Exception ex){
+            logger.error("Exception occurred during parsing " + ex.getMessage());
+        }
+        return response;
     }
 
+    /**
+     * Gives ability to download file
+     * @param fileName - File name to download
+     * @param request - The request to download the item.
+     * @return - The requested resource.
+     */
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
