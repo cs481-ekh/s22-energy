@@ -9,6 +9,7 @@ import gas from "../imgs/Natural-Gas.jpg";
 import solar from "../imgs/Solar.jpg";
 import admin from "../imgs/admin.jpg";
 import steam from "../imgs/Steam.jpg";
+import geo from "../imgs/Geothermal.jpg";
 
 import {useNavigate} from "react-router";
 import Box from "@mui/material/Box";
@@ -45,6 +46,12 @@ export default function Admin() {
         utility = '3';
     };
 
+    const geoOnClick = () => {
+        let path = `/CsvReader`;
+        navigate(path);
+        utility = '3';
+    };
+
     return (
 
         <Box
@@ -70,11 +77,11 @@ export default function Admin() {
 
             >
             <Grid item xs>
-            <Card sx={{ width: 345, marginTop: 4}} onClick={electricOnClick}>
+            <Card sx={{ width: 345, marginTop: 4, marginLeft: 5, marginRight: 5}} onClick={electricOnClick}>
                 <CardActionArea>
                     <CardMedia
                         component="img"
-                        height="100"
+                        height="130"
                         image={admin}
                         alt="Admin"
                     />
@@ -87,11 +94,11 @@ export default function Admin() {
             </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345, marginTop: 4 }} onClick={electricOnClick}>
+                <Card sx={{ width: 345, marginTop: 4 , marginLeft: 5, marginRight: 5}} onClick={electricOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
-                            height="100"
+                            height="130"
                             image={electric}
                             alt="Electric"
                         />
@@ -104,11 +111,11 @@ export default function Admin() {
                 </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345, marginTop: 4 }} onClick={gasOnClick}>
+                <Card sx={{ width: 345, marginTop: 4 , marginLeft: 5, marginRight: 5}} onClick={gasOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
-                            height="100"
+                            height="130"
                             image={gas}
                             alt="Gas"
                         />
@@ -121,11 +128,11 @@ export default function Admin() {
                 </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345, marginTop: 4 }} onClick={solarOnClick}>
+                <Card sx={{ width: 345, marginTop: 4 , marginLeft: 5, marginRight: 5}} onClick={solarOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
-                            height="100"
+                            height="130"
                             image={solar}
                             alt="Solar"
                         />
@@ -138,17 +145,34 @@ export default function Admin() {
                 </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345 , height: 200,  marginTop: 4}} onClick={steamOnClick}>
+                <Card sx={{ width: 345 ,  marginTop: 4, marginLeft: 5, marginRight: 5}} onClick={steamOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
-                            height="100"
+                            height="130"
                             image={steam}
                             alt="Steam"
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Upload Steam Data
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
+            </Grid>
+            <Grid item xs>
+                <Card sx={{ width: 345 ,  marginTop: 4, marginLeft: 5, marginRight: 5}} onClick={geoOnClick}>
+                    <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            height="130"
+                            image={geo}
+                            alt="Geo"
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Upload Geothermal Data
                             </Typography>
                         </CardContent>
                     </CardActionArea>
