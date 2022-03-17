@@ -6,6 +6,8 @@ import Button from "@mui/material/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import "../CsvReader.css";
+import {utility} from "./Admin-Splash";
+
 function CsvReader() {
   const { readString } = usePapaParse();
   const [data, setData] = useState(null);
@@ -19,6 +21,7 @@ function CsvReader() {
       .catch((err) => {
         console.log(err);
       });
+
   };
 
   const handleReset = () => {
@@ -61,7 +64,7 @@ function CsvReader() {
               size="3x"
               className="fa fa-download"
             />
-            <div>Select a file or drag here</div>
+            <div>Select a file or drag here {utility}</div>
           </div>
           <span id="file-upload-btn" className="btn btn-primary">
             Select a file
@@ -77,7 +80,7 @@ function CsvReader() {
           <Button variant="contained" size="lg" o color="warning" onClick={handleUpload}>
             Upload
           </Button>
-          <Button variant="outlined" size="lg" o color="warning"  nClick={handleReset}>
+          <Button variant="outlined" size="lg" o color="warning"  onClick={handleReset}>
             Reset Data
           </Button>
         </Stack>

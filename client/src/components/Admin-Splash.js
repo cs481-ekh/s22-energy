@@ -14,14 +14,31 @@ import {useNavigate} from "react-router";
 import Box from "@mui/material/Box";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Avatar from "@mui/material/Avatar";
+// import {utilityType} from './CsvReader';
 
-
+export var utility = {};
 export default function Admin() {
-
 
     let navigate = useNavigate();
     const electricOnClick = () => {
-        let path = `/map`;
+        let path = `/CsvReader`;
+        navigate(path);
+        //utilityType('1');
+        utility = '1';
+    };
+
+    const gasOnClick = () => {
+        let path = `/CsvReader`;
+        navigate(path);
+    };
+
+    const solarOnClick = () => {
+        let path = `/CsvReader`;
+        navigate(path);
+    };
+
+    const steamOnClick = () => {
+        let path = `/CsvReader`;
         navigate(path);
     };
 
@@ -84,7 +101,7 @@ export default function Admin() {
                 </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345, marginTop: 4 }} onClick={electricOnClick}>
+                <Card sx={{ width: 345, marginTop: 4 }} onClick={gasOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
@@ -101,7 +118,7 @@ export default function Admin() {
                 </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345, marginTop: 4 }} onClick={electricOnClick}>
+                <Card sx={{ width: 345, marginTop: 4 }} onClick={solarOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
@@ -118,7 +135,7 @@ export default function Admin() {
                 </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345 , marginTop: 4}} onClick={electricOnClick}>
+                <Card sx={{ width: 345 , height: 200,  marginTop: 4}} onClick={steamOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
@@ -137,4 +154,5 @@ export default function Admin() {
         </Grid>
         </Box>
     );
+
 }
