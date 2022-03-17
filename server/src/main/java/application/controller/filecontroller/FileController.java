@@ -1,6 +1,15 @@
 package application.controller.filecontroller;
 
+import application.CSV.ElectricDemandParser;
 import application.CSV.NaturalGasParser;
+import application.CSV.SolarParser;
+import application.Database.EnergyDB.Models.Usage;
+import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
+import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
+import application.Database.EnergyDB.Repo.JPARepository.UsageRepo;
+import application.Datasource;
+
+import application.Model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
 import java.io.IOException;
+import java.nio.file.Path;
 
 @RestController
 public class FileController {
@@ -24,34 +33,48 @@ public class FileController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    PremiseRepo repo;
+
+    @Autowired
+    UsageRepo usageRepo;
+
+    @Autowired
+    BuildingRepo buildingRepo;
+
     @PostMapping("/uploadFile") // Add another parameter for Utility ID
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
+    public Response<Usage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
 
-        String fileName = fileStorageService.storeFile(file);
+        String fileDir = fileStorageService.storeFile(file);
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
 
-        DataSource source;
-        // Set up Parsers on next sprint
+        Datasource source = null;
         switch(utilID){
             case "1":
-//                source = new NaturalGasParser();
+                source = new NaturalGasParser(fileDir, 1, repo);
                 break;
             case "2":
+                source = new ElectricDemandParser(fileDir, 2, buildingRepo);
                 break;
             case "3":
                 break;
-            case "6":
-                break;
-            case "7":
-                break;
+            case "4":
 
+            case "5":
+                source = new SolarParser(fileDir, 4);
+                break;
+            default:
+                source = new NaturalGasParser(fileDir, 2, repo);
         }
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize(), utilID);
+        Response response = null;
+        try{
+            response = source.readData();
+        }
+        catch(Exception ex){
+            logger.error("Error uploading" + fileDir.toString() + " " + ex.getMessage());
+        }
+        usageRepo.saveAll(response.getSuccess());
+        return response;
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")

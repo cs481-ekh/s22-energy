@@ -44,4 +44,19 @@ public class UsageSummary {
             this.end = end;
         }
     }
+    public Timestamp getStart() {
+        return start;
+    }
+
+    public Timestamp getEnd() {
+        return end;
+    }
+
+    public BigDecimal getUtilityUsage() {
+        return utilityUsage;
+    }
+
+    public BigDecimal getCost() {
+        return cost;
+    }
 }

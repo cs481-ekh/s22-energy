@@ -36,13 +36,12 @@ public class FileStorageService {
     public String storeFile(MultipartFile file) throws IOException {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
         try {
             // Copy file to the target location (Replacing existing file with the same name)
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return fileName;
+            return targetLocation.toString();
         } catch (Exception ex) {
             throw new IOException(ex.getMessage());
         }
