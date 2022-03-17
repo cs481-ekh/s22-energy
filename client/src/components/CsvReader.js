@@ -18,13 +18,13 @@ const utils = ['non', 'Gas', 'Electric', 'Steam', 'Geothermal', 'Solar'];
 
 function CsvReader() {
   const { readString } = usePapaParse();
-  const [data, setData] = useState(null);
-  const [fileName, setFile] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState("");
 
   const handleUpload = async () => {
     let formData = new FormData();
 
-    formData.append("file", data);
+    formData.append("file", file);
     formData.append("utilID", utility);
 
     const requestOptions = {
@@ -40,12 +40,12 @@ function CsvReader() {
   const handleCSVRead = (data) => {
     const file = data.target.files[0];
     console.log(fileName);
-    setFile(file.name);
+    setFileName(file.name);
+    setFile(file);
     readString(file, {
       header: true,
       worker: true,
       complete: (results) => {
-        setData(results.data);
         console.log("---------------------------");
         console.log(results);
         console.log("---------------------------");
