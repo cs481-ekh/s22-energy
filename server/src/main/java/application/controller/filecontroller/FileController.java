@@ -69,10 +69,12 @@ public class FileController {
 
             if (source != null) {
                 try {
+                    // Read data from the data source.
                     response = source.readData();
                 } catch (Exception ex) {
                     logger.error("Error uploading" + fileDir + " " + ex.getMessage());
                 }
+                // Upload succesful usages.
                 usageRepo.saveAll(response.getSuccess());
             } else {
                 logger.error("Failed to initialize data source for utility id " + utilID);
