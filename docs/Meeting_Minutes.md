@@ -1,3 +1,16 @@
+## 3/16/22 Demo Planning
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Planned out what needs to be done before our demo to Brian on Friday, March 18th
+   - Divied out a task to each developer to get done before Friday so we have a succesful sprint.
+   - Created a few broad tasks to encapsulate things needed to be done before the demo.
+   #### Action Items:
+      * Finish backend file uploading, Update client to add ability to upload.
+      * Create building controller on backend, have front end able to parse and load building data
+      * Create usage controller, have front end able to parse and load usage data.
+</p>
+
 ## 3/15/22 Morning Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
