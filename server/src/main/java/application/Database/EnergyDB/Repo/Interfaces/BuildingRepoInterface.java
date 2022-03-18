@@ -13,6 +13,13 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface BuildingRepoInterface {
     /**
+     * Get all the buildings from the database
+     * @return the entire buildings table :)
+     */
+    @Query("SELECT b FROM Building b")
+    Optional<List<Building>> getAllBuildings();
+
+    /**
      * Finds the building associated with the building code.
      * @param buildingCode - Building code.
      * @return the building associated with code.
