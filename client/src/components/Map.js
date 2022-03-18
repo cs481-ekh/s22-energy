@@ -59,11 +59,13 @@ const getUsage = async () => {
     };
     const response = await fetch("http://localhost:5000/usage?start=2000-10-31&end=2022-03-17&utilIID=1", requestOptions);
     const responseJson = await response.json();
-    responseJson.forEach(building => usageData.push({
-        building: building.buildingCode,
-        utilityUseage: building.utilityUsage
-        // id, utilityID, timestamp, cost
-    }));
+    if (usageData.length == 0) {
+        responseJson.forEach(building => usageData.push({
+            building: building.buildingCode,
+            utilityUseage: building.utilityUsage
+            // id, utilityID, timestamp, cost
+        }));
+    }
 };
 
 // Adds buildings from buildingData to the map by creating a location, pin, infobox
