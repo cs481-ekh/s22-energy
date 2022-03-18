@@ -47,8 +47,10 @@ const getUsage = async (map) => {
     createDescriptions(map);
 };
 
+// Adds utility usage to building description
 function createDescriptions(map) {
     for (var i = 0; i < usageData.length; i++) {
+        // Check if utility data exists for specific building code
         if (buildingData.find(o => o.buildingCode === usageData[i].buildingCode)) {
             var buildingMatch = buildingData.find(o => o.buildingCode === usageData[i].buildingCode);
             buildingMatch.description = "Gas usage: " + usageData[i].utilityUsage.toString();
@@ -71,8 +73,8 @@ function createPins(map) {
         }
         var pin;
         var infoBox;
+        // If there is utility data for the building add it to the info box and color the pin
         if ('description' in building) {
-            console.log("found description");
             pin = new window.Microsoft.Maps.Pushpin(location, { color: 'blue' });
             infoBox = new window.Microsoft.Maps.Infobox(location,
                 {
@@ -82,7 +84,6 @@ function createPins(map) {
                 }
             );
         } else {
-            console.log("did not find a description");
             pin = new window.Microsoft.Maps.Pushpin(location, { color: 'gray' });
             infoBox = new window.Microsoft.Maps.Infobox(location,
                 {
@@ -122,8 +123,6 @@ class Map extends Component {
     }
 
     onScriptLoad() {
-        console.log(buildingData);
-        console.log(usageData);
         const map = new window.Microsoft.Maps.Map(document.getElementById(this.props.id),
             {
                 maxBounds: getBounds(),
@@ -144,7 +143,7 @@ class Map extends Component {
             }
         );
         getBuildings();
-        getUsage(map);
+        getUsage(map);  // pass map for create pins function
     }
 
     componentDidMount() {
