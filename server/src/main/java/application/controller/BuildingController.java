@@ -19,7 +19,7 @@ public class BuildingController {
      * Gets all the buildings from the buildings database
      * @return list of usage that matched criteria.
      */
-    @GetMapping(value = "/building", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/building")
     public List<Building> getBuildings(){
 
         List<Building> buildingResult = new ArrayList<>();
