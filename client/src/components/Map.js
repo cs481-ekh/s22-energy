@@ -8,84 +8,91 @@ import SideDrawer from "./SideDrawer";
 const usageData = [];
 
 // Holds building data
-//const buildingData = [];
+const buildingData = [];
 
-// Temp building data until building data endpoint is implemented
-var buildingData = [
-    {
-        lat: 43.603714,
-        long: -116.204826,
-        title: "Administration Building",
-        description: "Uses some energy",
-        building: '004',
-        size: '150'   // size of circle around building in feet
-    },
-    {
-        lat: 43.6029000,
-        long: -116.195803,
-        title: "Albertsons Stadium",
-        description: "Uses some energy",
-        size: '035'
-    },
-    {
-        lat: 43.614856,
-        long: -116.203084,
-        title: "CCP",
-        description: "Uses some energy",
-        size: '367'
-    },
-    {
-        lat: 43.600704,
-        long: -116.19925,
-        title: "HEMG",
-        description: "Uses some energy",
-        size: '005'
-    },
-    {
-        lat: 43.60458,
-        long: -116.198939,
-        title: "Chaffee Hall",
-        description: "Uses some energy",
-        size: '031'
+// GET request that populates building data array
+const getBuildings = async () => {
+    const requestOptions = {
+        method: 'GET',
+        mode: 'cors',
+    };
+    const response = await fetch("http://localhost:5000/building", requestOptions);
+    const responseJson = await response.json();
+    if (buildingData.length == 0) {
+        responseJson.forEach(building => buildingData.push({
+            buildingCode: building.buildingCode,
+            buildingName: building.buildingName,
+            lat: building.xCoord,
+            long: building.yCoord
+            // abbreviation, address, squareFt, yearBuilt
+        }));
     }
-];
-
+};
 
 // GET request that populates usage data array
-const getUsage = async () => {
+const getUsage = async (map) => {
     const requestOptions = {
         method: 'GET',
         mode: 'cors',
     };
     const response = await fetch("http://localhost:5000/usage?start=2000-10-31&end=2022-03-17&utilIID=1", requestOptions);
     const responseJson = await response.json();
-    responseJson.forEach(building => usageData.push({
-        building: building.buildingCode,
-        utilityUseage: building.utilityUsage
-        // id, utilityID, timestamp, cost
-    }));
+    if (usageData.length == 0) {
+        responseJson.forEach(building => usageData.push({
+            buildingCode: building.buildingCode,
+            utilityUsage: building.utilityUsage
+            // id, utilityID, timestamp, cost
+        }));
+    }
+    createDescriptions(map);
 };
+
+// Adds utility usage to building description
+function createDescriptions(map) {
+    for (var i = 0; i < usageData.length; i++) {
+        // Check if utility data exists for specific building code
+        if (buildingData.find(o => o.buildingCode === usageData[i].buildingCode)) {
+            var buildingMatch = buildingData.find(o => o.buildingCode === usageData[i].buildingCode);
+            buildingMatch.description = "Gas usage: " + usageData[i].utilityUsage.toString();
+        }
+    }
+    createPins(map);
+}
 
 // Adds buildings from buildingData to the map by creating a location, pin, infobox
 // and event handler for each building. Infobox displays each building's usage info
 function createPins(map) {
-
     // Create empty array for building pins and info boxes
     var pinArray = [];
     var infoBoxArray = [];
 
-    // Create new location, pin and infobox
     for (let i = 0; i < buildingData.length; i++) {
         var building = buildingData[i];
-        var location = new window.Microsoft.Maps.Location(building.lat, building.long);
-        var pin = new window.Microsoft.Maps.Pushpin(location, { color: 'blue' });
-        var infoBox = new window.Microsoft.Maps.Infobox(location,
-            { 
-                title: building.title, 
-                description: building.description, 
-                visible: false 
-            }
-        );
+        if (building.lat != null && building.long != null) {
+            var location = new window.Microsoft.Maps.Location(building.lat, building.long);
+        }
+        var pin;
+        var infoBox;
+        // If there is utility data for the building add it to the info box and color the pin
+        if ('description' in building) {
+            pin = new window.Microsoft.Maps.Pushpin(location, { color: 'blue' });
+            infoBox = new window.Microsoft.Maps.Infobox(location,
+                {
+                    title: building.buildingName,
+                    description: building.description,
+                    visible: false
+                }
+            );
+        } else {
+            pin = new window.Microsoft.Maps.Pushpin(location, { color: 'gray' });
+            infoBox = new window.Microsoft.Maps.Infobox(location,
+                {
+                    title: building.buildingName,
+                    description: "no data",
+                    visible: false
+                }
+            );
+        }
         pinArray.push(pin);
         infoBoxArray.push(infoBox);
     }
@@ -116,8 +123,6 @@ class Map extends Component {
     }
 
     onScriptLoad() {
-        getUsage();
-        console.log(usageData);
         const map = new window.Microsoft.Maps.Map(document.getElementById(this.props.id),
             {
                 maxBounds: getBounds(),
@@ -137,7 +142,8 @@ class Map extends Component {
                 zoom: 15
             }
         );
-        createPins(map);
+        getBuildings();
+        getUsage(map);  // pass map for create pins function
     }
 
     componentDidMount() {
