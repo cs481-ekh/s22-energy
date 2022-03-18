@@ -8,13 +8,14 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+//import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import {Checkbox, ListItemButton} from "@mui/material";
+import Button from "@mui/material/Button";
 
 const drawerWidth = 240;
 
@@ -29,7 +30,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 }));
 
-const filters = ['Electric', 'Gas', 'Solar', '...', 'Total EUI'];
+
+const filters = ['Electric', 'Gas', 'Solar', 'Steam'];
 
 export default function SideDrawer() {
     const theme = useTheme();
@@ -60,19 +62,21 @@ export default function SideDrawer() {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <Toolbar>
-                <IconButton
+            <Toolbar sx={ {zIndex: 1,
+                position: 'absolute'}}>
+                <Button
                     color="inherit"
                     aria-label="open drawer"
                     onClick={handleDrawerOpen}
                     edge="start"
-                    sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                    variant="contained"
+                    sx={{ mr: 2, ...(open && { display: 'none' }), bgcolor: "white", }}
                 >
-                    <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" noWrap component="div">
-                    Sidebar
-                </Typography>
+                    <ChevronRightIcon sx={{color: '#E87121'}}/>
+                    <Typography color="#E87121">
+                        Filter by utility type
+                    </Typography>
+                </Button>
             </Toolbar>
             <Drawer
                 sx={{
@@ -82,6 +86,7 @@ export default function SideDrawer() {
                         width: drawerWidth,
                         boxSizing: 'border-box',
                         zIndex: 1250,
+
                     },
                 }}
                 variant="persistent"
@@ -90,7 +95,7 @@ export default function SideDrawer() {
             >
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon sx={{color: '#E87121'}}/> : <ChevronRightIcon />}
                     </IconButton>
                 </DrawerHeader>
                 <Divider />

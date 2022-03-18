@@ -9,6 +9,7 @@ import gas from "../imgs/Natural-Gas.jpg";
 import solar from "../imgs/Solar.jpg";
 import admin from "../imgs/admin.jpg";
 import steam from "../imgs/Steam.jpg";
+import geo from "../imgs/Geothermal.jpg";
 
 import {useNavigate} from "react-router";
 import Box from "@mui/material/Box";
@@ -16,13 +17,39 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Avatar from "@mui/material/Avatar";
 
 
-export default function Admin() {
 
+export var utility = {};
+export default function Admin() {
 
     let navigate = useNavigate();
     const electricOnClick = () => {
-        let path = `/map`;
+        let path = `/CsvReader`;
         navigate(path);
+        utility = '2';
+    };
+
+    const gasOnClick = () => {
+        let path = `/CsvReader`;
+        navigate(path);
+        utility = '1';
+    };
+
+    const solarOnClick = () => {
+        let path = `/CsvReader`;
+        navigate(path);
+        utility = '5';
+    };
+
+    const steamOnClick = () => {
+        let path = `/CsvReader`;
+        navigate(path);
+        utility = '3';
+    };
+
+    const geoOnClick = () => {
+        let path = `/CsvReader`;
+        navigate(path);
+        utility = '3';
     };
 
     return (
@@ -50,11 +77,11 @@ export default function Admin() {
 
             >
             <Grid item xs>
-            <Card sx={{ width: 345, marginTop: 4}} onClick={electricOnClick}>
+            <Card sx={{ width: 345, marginTop: 4, marginLeft: 5, marginRight: 5}} onClick={electricOnClick}>
                 <CardActionArea>
                     <CardMedia
                         component="img"
-                        height="100"
+                        height="130"
                         image={admin}
                         alt="Admin"
                     />
@@ -67,11 +94,11 @@ export default function Admin() {
             </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345, marginTop: 4 }} onClick={electricOnClick}>
+                <Card sx={{ width: 345, marginTop: 4 , marginLeft: 5, marginRight: 5}} onClick={electricOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
-                            height="100"
+                            height="130"
                             image={electric}
                             alt="Electric"
                         />
@@ -84,11 +111,11 @@ export default function Admin() {
                 </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345, marginTop: 4 }} onClick={electricOnClick}>
+                <Card sx={{ width: 345, marginTop: 4 , marginLeft: 5, marginRight: 5}} onClick={gasOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
-                            height="100"
+                            height="130"
                             image={gas}
                             alt="Gas"
                         />
@@ -101,11 +128,11 @@ export default function Admin() {
                 </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345, marginTop: 4 }} onClick={electricOnClick}>
+                <Card sx={{ width: 345, marginTop: 4 , marginLeft: 5, marginRight: 5}} onClick={solarOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
-                            height="100"
+                            height="130"
                             image={solar}
                             alt="Solar"
                         />
@@ -118,11 +145,11 @@ export default function Admin() {
                 </Card>
             </Grid>
             <Grid item xs>
-                <Card sx={{ width: 345 , marginTop: 4}} onClick={electricOnClick}>
+                <Card sx={{ width: 345 ,  marginTop: 4, marginLeft: 5, marginRight: 5}} onClick={steamOnClick}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
-                            height="100"
+                            height="130"
                             image={steam}
                             alt="Steam"
                         />
@@ -134,7 +161,25 @@ export default function Admin() {
                     </CardActionArea>
                 </Card>
             </Grid>
+            <Grid item xs>
+                <Card sx={{ width: 345 ,  marginTop: 4, marginLeft: 5, marginRight: 5}} onClick={geoOnClick}>
+                    <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            height="130"
+                            image={geo}
+                            alt="Geo"
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Upload Geothermal Data
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
+            </Grid>
         </Grid>
         </Box>
     );
+
 }
