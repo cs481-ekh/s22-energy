@@ -1,3 +1,19 @@
+## 3/17/22 9:00 AM Morning Meeting
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Talked about progress on demo and any issues that we were having.
+   - Talked about issues with postgres and that we needed to update our test database with building coordinates
+   - Discussed front end design improvements for demo
+      - Make map 100% of viewport
+      - Increase height of upload cards
+      - Add upload component to a container.
+   
+    #### Action Items:
+      * Make sure all required tasks are finished before demo on Friday.
+   
+</p>
+
 ## 3/16/22 1:30 PM Demo Planning
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
