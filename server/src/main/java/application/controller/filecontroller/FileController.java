@@ -2,6 +2,7 @@ package application.controller.filecontroller;
 
 import application.CSV.ElectricDemandParser;
 import application.CSV.NaturalGasParser;
+import application.CSV.SmallElectricParser;
 import application.CSV.SolarParser;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
@@ -52,22 +53,27 @@ public class FileController {
         Response<Usage> response = new Response<>();
 
         try {
-            int utilityID = Integer.parseInt(utilID);
+            //int utilityID = Integer.parseInt(utilID);
             // Initialize data source
             Datasource source = null;
-            switch (utilityID) {
-                case 1:
-                    source = new NaturalGasParser(fileDir, utilityID, premiseRepo);
+            switch (utilID) {
+                case "1":
+                    source = new NaturalGasParser(fileDir, 1, premiseRepo);
                     break;
-                case 2:
-                    source = new ElectricDemandParser(fileDir, utilityID, buildingRepo);
+                case "2D":
+                    source = new ElectricDemandParser(fileDir, 2, buildingRepo);
                     break;
-                case 3:
+                case "2S":
+                    source = new SmallElectricParser(fileDir, 2, premiseRepo);
                     break;
-                case 4:
+                case "3":
+                    // Steam parser
                     break;
-                case 5:
-                    source = new SolarParser(fileDir, utilityID);
+                case "4":
+                    // Geothermal Parser
+                    break;
+                case "5":
+                    source = new SolarParser(fileDir, 5);
                     break;
             }
 
