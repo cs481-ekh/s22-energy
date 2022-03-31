@@ -31,10 +31,6 @@ export default function Admin() {
 
     let navigate = useNavigate();
     const electricOnClick = () => {
-        // alert('test');
-        // let path = `/CsvReader`;
-        // navigate(path);
-        // utility = '2';
 
         setOpen(true);
     };
