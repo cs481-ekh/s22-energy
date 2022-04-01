@@ -120,8 +120,23 @@ class Map extends Component {
     constructor(props) {
         super(props);
         this.onScriptLoad = this.onScriptLoad.bind(this);
+        const prevMonth = new Date();
+        prevMonth.setMonth(prevMonth.getMonth()-1);
+        this.state = {
+            endDate: new Date(),
+            startDate: prevMonth
+        };
+        this.setSDate = this.setStartDate.bind(this);
+        this.setEDate = this.setEndDate.bind(this);
     }
 
+    setStartDate(startDate){
+        this.setState({startDate});
+    }
+    setEndDate(endDate) {
+        this.setState({endDate});
+    }
+    
     onScriptLoad() {
         const map = new window.Microsoft.Maps.Map(document.getElementById(this.props.id),
             {
@@ -166,7 +181,13 @@ class Map extends Component {
     render() {
         return (
             <>
-                <SideDrawer/>
+                <SideDrawer 
+                startDate={this.state.startDate} 
+                setStartDate={this.setSDate}
+                endDate={this.state.endDate}
+                setEndDate={this.setEDate}
+                />
+                
                 <div id={this.props.id}/>
             </>
         );
