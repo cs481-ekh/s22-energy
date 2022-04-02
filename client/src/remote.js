@@ -1,3 +1,4 @@
+const serverPort = process.env.REACT_APP_SERVER_PORT || 5000;
 let remoteFunctions = {
   async getBuildings() {
     let responseJson = {};
@@ -7,7 +8,7 @@ let remoteFunctions = {
         mode: "cors",
       };
       const response = await fetch(
-        "http://localhost:8000/building",
+        `http://localhost:${serverPort}/building`,
         requestOptions
       );
       responseJson = await response.json();
@@ -27,7 +28,7 @@ let remoteFunctions = {
         method: "GET",
         mode: "cors",
       };
-      const response = await fetch(`http://localhost:8000/usage?start=${startDate}&end=${endDate}&utilIID=1`,requestOptions);
+      const response = await fetch(`http://localhost:${serverPort}/usage?start=${startDate}&end=${endDate}&utilIID=1`,requestOptions);
       responseJson = await response.json();
     } catch (err) {
       console.log(err);
@@ -35,5 +36,4 @@ let remoteFunctions = {
     return responseJson;
   },
 };
-
-module.exports = remoteFunctions;
+export default remoteFunctions;

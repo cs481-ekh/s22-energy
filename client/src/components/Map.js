@@ -68,7 +68,6 @@ class Map extends Component {
                 buildingMatch.description = "Gas usage: " + this.state.usageData[i].utilityUsage.toString();
             }
         }
-        console.log(this.state.buildings);
         this.createPins(buildingsCopy);
     }
 
@@ -129,7 +128,6 @@ class Map extends Component {
     async componentDidMount() {
         const mapRef = document.getElementById(this.props.id);
         this.state.map.current = await bingMapsAPI.waitGenerateMap(window, document, process.env.REACT_APP_API_KEY, mapRef);
-        console.log(this.state.map.current);
         const buildings = await remoteFunctions.getBuildings();
         this.setState({ buildings: buildings });
     }

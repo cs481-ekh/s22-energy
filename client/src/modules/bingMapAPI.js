@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 let bingMapsAPI = {
-
   /**
    * Injects the bing api javascript into our application
    * @param {*} document 
