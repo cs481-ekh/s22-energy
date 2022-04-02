@@ -54,12 +54,6 @@ public class Server implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments arg0) throws Exception {
-        Usage bob = new Usage();
-        bob.buildingCode = "306";
-        bob.cost = new BigDecimal(9876);
-        bob.timestamp = new Timestamp(1000000000);
-        bob.utilityID = 1;
-        bob.utilityUsage = new BigDecimal(89);
-        repo.upsertUsage(bob);
+
     }
 }
