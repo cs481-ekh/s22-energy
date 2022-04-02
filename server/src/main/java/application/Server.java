@@ -15,6 +15,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -55,10 +56,10 @@ public class Server implements ApplicationRunner {
     public void run(ApplicationArguments arg0) throws Exception {
         Usage bob = new Usage();
         bob.buildingCode = "306";
-        bob.cost = new BigDecimal(1000);
-        bob.timestamp = Timestamp.from(Instant.now());
+        bob.cost = new BigDecimal(9876);
+        bob.timestamp = new Timestamp(1000000000);
         bob.utilityID = 1;
-        bob.utilityUsage = new BigDecimal(5);
+        bob.utilityUsage = new BigDecimal(89);
         repo.upsertUsage(bob);
     }
 }

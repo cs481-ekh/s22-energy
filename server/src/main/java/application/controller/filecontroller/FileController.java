@@ -80,7 +80,9 @@ public class FileController {
                     logger.error("Error uploading" + fileDir + " " + ex.getMessage());
                 }
                 // Upload succesful usages.
-                usageRepo.saveAll(response.getSuccess());
+                for (Usage u : response.getSuccess()) {
+                    usageRepo.upsertUsage(u);
+                }
             } else {
                 logger.error("Failed to initialize data source for utility id " + utilID);
             }
