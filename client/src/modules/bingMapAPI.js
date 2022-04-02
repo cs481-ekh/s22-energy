@@ -92,4 +92,4 @@ let bingMapsAPI = {
   },
 };
 
-module.exports = bingMapsAPI;
+export default bingMapsAPI;
