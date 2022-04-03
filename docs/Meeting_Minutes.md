@@ -1,3 +1,24 @@
+## 3/29/22 9:00 AM Morning Meeting
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Planned second half of sprint 3 and assigned tasks to everyone.
+   - Talked about best way to handle parsing two different CSV files that are attached to one utility id
+      - Decided to create unique types by concatenating the utility id with a string so backend can figure out what parser to invoke
+   - Decided we needed more developers working on front end so Aidan decided to move from working on backend tasks to front end tasks.
+</p>
+
+## 3/18/22 12:30 PM Sponsor Demo
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Gave Brian a demo of our current work on the project
+   - Discussed future improvements and what still needed to be done.
+   - Talked about our data issues.
+   - Set up date for another check in and demo.
+   
+</p>
+
 ## 3/17/22 9:00 AM Morning Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
