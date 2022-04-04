@@ -9,7 +9,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import CsvReader from "./components/CsvReader";
 import Admin from "./components/Admin-Splash";
 import SignUp from "./components/SignUp";
-
 const ResponsiveAppBar = () => {
     return (
         <Router>

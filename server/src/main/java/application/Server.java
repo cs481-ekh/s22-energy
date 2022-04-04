@@ -5,7 +5,7 @@ import application.CSV.CsvParser;
 import application.CSV.NaturalGasParser;
 import application.CSV.SmallElectricParser;
 import application.CSV.SolarParser;
-
+import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
 import application.Database.EnergyDB.Repo.JPARepository.UsageRepo;
@@ -13,6 +13,11 @@ import application.controller.filecontroller.FileStorageProperties;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +54,6 @@ public class Server implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments arg0) throws Exception {
-        
+
     }
 }
