@@ -3,8 +3,13 @@ package application.Database.EnergyDB.Repo.Interfaces;
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Model.UsageSummary;
-import org.springframework.data.jpa.repository.Query;
 
+import org.hibernate.query.NativeQuery;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -45,4 +50,15 @@ public interface UsageInterface {
      */
     @Query("Select u from Usage u WHERE u.timestamp >= ?1 and u.timestamp <= ?2 and u.utilityID = ?3")
     Optional<List<Usage>> getUsageDateRange(Timestamp start, Timestamp end, int utilityID);
+
+    /**
+     * 
+     */
+    @Modifying
+    @Transactional
+    @Query(value = "Insert Into usage(building_code, utility_id, time_stamp, usage, cost) "
+        + "Values(:#{#u.buildingCode}, :#{#u.utilityID}, :#{#u.timestamp}, :#{#u.utilityUsage}, :#{#u.cost}) "
+        + "On Conflict On Constraint duplicate_usage Do Update Set usage = EXCLUDED.usage, cost = EXCLUDED.cost",
+        nativeQuery = true)
+    void upsertUsage(@Param("u") Usage usage);
 }
