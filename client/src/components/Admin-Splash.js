@@ -3,7 +3,13 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import {CardActionArea, Grid} from '@mui/material';
+import {
+    CardActionArea,
+    Dialog,
+    DialogActions,
+    DialogTitle,
+    Grid
+} from '@mui/material';
 import electric from "../imgs/Electric.jpg";
 import gas from "../imgs/Natural-Gas.jpg";
 import solar from "../imgs/Solar.jpg";
@@ -15,17 +21,34 @@ import {useNavigate} from "react-router";
 import Box from "@mui/material/Box";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
 
 
 
 export var utility = {};
 export default function Admin() {
+    const [open, setOpen] = React.useState(false);
 
     let navigate = useNavigate();
     const electricOnClick = () => {
+
+        setOpen(true);
+    };
+
+    const smallElecOnClick = () => {
         let path = `/CsvReader`;
         navigate(path);
-        utility = '2';
+        utility = '2S';
+    };
+
+    const demandElecOnClick = () => {
+        let path = `/CsvReader`;
+        navigate(path);
+        utility = '2D';
+    };
+
+    const handleClose = () => {
+        setOpen(false);
     };
 
     const gasOnClick = () => {
@@ -110,6 +133,22 @@ export default function Admin() {
                     </CardActionArea>
                 </Card>
             </Grid>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Choose which type of electric data you would like to upload"}
+                </DialogTitle>
+                <DialogActions sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <Button onClick={smallElecOnClick}>Small Electric</Button>
+                    <Button onClick={demandElecOnClick} autoFocus>
+                        Electric Demand
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <Grid item xs>
                 <Card sx={{ width: 345, marginTop: 4 , marginLeft: 5, marginRight: 5}} onClick={gasOnClick}>
                     <CardActionArea>
