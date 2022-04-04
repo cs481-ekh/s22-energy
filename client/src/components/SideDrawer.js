@@ -132,7 +132,7 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                                     disablePadding
                                 >
                                     <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
-                                        <ListItemIcon>
+                                        <ListItemIcon sx={{ ml: '15px' }}>
                                             {value.icon}
                                         </ListItemIcon>
                                         <ListItemText id={labelId} primary={`${value.label}`}/>
