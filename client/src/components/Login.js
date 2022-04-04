@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from "react-router";
+import remoteFunctions from '../remote';
 
 
 
@@ -16,7 +17,7 @@ const theme = createTheme();
 
 export default function SignIn() {
     let navigate = useNavigate();
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console
@@ -25,8 +26,17 @@ export default function SignIn() {
             password: data.get('password'),
         });
 
-        let path = `/admin`;
-        navigate(path);
+
+        const responseJson = await remoteFunctions.getUser(data.get('Username'), data.get('password'));
+
+        if(responseJson == true) {
+            let path = `/admin`;
+            navigate(path);
+        }else{
+            alert("Incorrect username or password");
+        }
+
+
     };
 
     return (

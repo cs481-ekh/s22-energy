@@ -28,7 +28,23 @@ let remoteFunctions = {
         method: "GET",
         mode: "cors",
       };
-      const response = await fetch(`http://localhost:${serverPort}/usage?start=${startDate}&end=${endDate}&utilIID=1`,requestOptions);
+      const response = await fetch(`http://localhost:${serverPort}/usage?start=${startDate}&end=${endDate}&utilID=1`,requestOptions);
+      responseJson = await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+    return responseJson;
+  },
+  async getUser(email, password) {
+
+    let responseJson = {};
+    try {
+      const requestOptions = {
+        method: "GET",
+        mode: "cors",
+
+      };
+      const response = await fetch(`http://localhost:${serverPort}/login?email=${email}&password=${password}`,requestOptions);
       responseJson = await response.json();
     } catch (err) {
       console.log(err);
