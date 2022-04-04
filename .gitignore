@@ -16,6 +16,9 @@ server/bin/
 #Ignore build dir
 server/build/
 
+#Ignore logs
+server/logs*
+
 #ignore vscode
 .vscode/
 

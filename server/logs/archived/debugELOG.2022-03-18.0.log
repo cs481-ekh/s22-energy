@@ -1,6 +1,0 @@
-2022-03-18 10:06:25 [main] INFO  application.Server - Starting Server using Java 17.0.2 on TP-Mac.local with PID 9658 (/Users/tpoulsen/Code/Energy/server/build/classes/java/main started by tpoulsen in /Users/tpoulsen/Code/Energy/server)
-2022-03-18 10:06:25 [main] DEBUG application.Server - Running with Spring Boot v2.6.3, Spring v5.3.15
-2022-03-18 10:06:25 [main] INFO  application.Server - No active profile set, falling back to default profiles: default
-2022-03-18 10:06:26 [main] DEBUG a.D.EnergyDBConfig$$EnhancerBySpringCGLIB$$7c8fe916 - Succesfully connected to db!
-2022-03-18 10:06:30 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2022-03-18 10:06:30 [main] INFO  application.Server - Started Server in 4.71 seconds (JVM running for 4.951)

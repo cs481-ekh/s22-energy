@@ -7,4 +7,4 @@ cd client; npm install; cd ..
 cd server; gradle build; cd ..
 
 # start the frontend and backend together using npm's concurrently
-concurrently "cd client; npm start" "cd server; gradle run --console=plain"
+concurrently "cd server; gradle run --console=plain" "cd client; npm start" 
