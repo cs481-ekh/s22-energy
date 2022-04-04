@@ -19,8 +19,8 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
     "buffer": "^6.0.3",
-    "date-fns": "^2.28.0",
     "concurrently": "^7.1.0",
+    "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
     "lodash": "^4.17.21",
     "papaparse": "^5.3.1",
@@ -37,6 +37,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
+    "concurrently": "concurrently \"npm run start\" \"cd ../; ./gradlew run\"",
     "eject": "react-scripts eject",
     "lint": "eslint ."
   },
