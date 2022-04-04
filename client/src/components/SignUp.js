@@ -9,8 +9,6 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -19,7 +17,7 @@ import Dialog from '@material-ui/core/Dialog';
 
 const theme = createTheme();
 function SignUp() {
-  const initialValues = { username: "", email: "", password: "", confirmPass: "", };
+  const initialValues = { email: "", password: "", confirmPass: "", };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -44,9 +42,6 @@ function SignUp() {
   const validate = (values) => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.username) {
-      errors.username = "Username is required!";
-    }
     if (!values.email) {
       errors.email = "Email is required!";
     } else if (!regex.test(values.email)) {
@@ -95,18 +90,16 @@ function SignUp() {
                    
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
-                         margin="normal"
-                         required
-                         fullWidth
+                        margin="normal"
+                        required
+                        fullWidth
                         type="text"
-                        label="Username"
-                        name="username"
-                        placeholder="Username"
-                        value={formValues.username}
+                        name="email"
+                        label="Email Address"
+                        value={formValues.email}
                         onChange={handleChange}
                         />
-                
-                        <span>{formErrors.username}</span>
+                        <span> {formErrors.email}</span>
                         <TextField
                         margin="normal"
                         required
@@ -131,18 +124,6 @@ function SignUp() {
                              onChange={handleChange}
                         />
                             <span>{formErrors.confirmPass}</span>
-                        <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        type="text"
-                        name="email"
-                        label="Email Address"
-                        placeholder="Email"
-                        value={formValues.email}
-                        onChange={handleChange}
-                        />
-                        <span> {formErrors.email}</span>
                         <Button
                             type="submit"
                             fullWidth
@@ -170,13 +151,6 @@ function SignUp() {
                         </Button>
                         </DialogActions>
                         </Dialog>
-                        <Grid container justifyContent="Center">
-                        <Grid item>
-                        <Link href="http://localhost:3000/login" variant="body2">
-                         Already have an account? Sign in
-                        </Link>
-                        </Grid>
-                        </Grid>
                     </Box>
                 </Box>
             </Container>
