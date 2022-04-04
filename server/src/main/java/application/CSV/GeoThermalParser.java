@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -53,7 +54,7 @@ public class GeoThermalParser extends CsvParser{
         HashMap<String, Integer> headerMap = new HashMap<>();
         String[] rowData = null;
         ErrorGroup errorGroup = new ErrorGroup();
-        String dateInString =new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        String dateInString =new SimpleDateFormat("MM/dd/yy").format(new Date());
 
         // Reads 1st line of file to parse header values
         String[] header = reader.readNext();
@@ -69,26 +70,32 @@ public class GeoThermalParser extends CsvParser{
                 errorGroup.setUsage(usage);
                 Timestamp endDate = null;
                 String date = null;
-                String buildingCode = String.valueOf(headerMap.get("bldg #"));
-
+                DecimalFormat df = new DecimalFormat("000");
+                String buildingCode = rowData[headerMap.get("bldg #")];
+                if(buildingCode.length() < 3){
+                    int len = buildingCode.length();
+                    buildingCode = "000".substring(len)+buildingCode;
+                }
 
                 //Queries database to retrieve building code using premise number
-
-                Optional<Building> queryPremise = buildingRepo.getBuildingByCode(buildingCode);
-                if (queryPremise.isEmpty()) {
+                Optional<Building> queryBuilding = buildingRepo.getBuildingByCode(buildingCode);
+                if (queryBuilding.isEmpty()) {
                     String errorMessage = "Building code does not exist: " + buildingCode;
                 }else {
-                    usage.buildingCode = queryPremise.get().buildingCode;
+                    usage.buildingCode = queryBuilding.get().buildingCode;
                     endDate = getTimestamp(dateInString, errorGroup);
                     usage.timestamp = endDate;
-                    Integer usageColNum = headerMap.get("gal");
-                    BigDecimal smallUsage = new BigDecimal(rowData[usageColNum]);
-                    BigDecimal usageKbtu = btuToKbtu(BigDecimal.valueOf(headerMap.get("btu")));
+                    Integer usageColNum = Integer.valueOf(headerMap.get("gal"));
+                    String value = rowData[usageColNum].replaceAll("[\\s+,]","");
+                    BigDecimal smallUsage = new BigDecimal(value);
+                    //YOU NEED TO CHANGE smallUsage to a decimal
+                    BigDecimal BTU = new BigDecimal(rowData[headerMap.get("btu")]);
+                    BigDecimal usageKbtu = btuToKbtu(BTU);
                     usage.utilityUsage = usageKbtu;
-                    // NO COST in the GeoThermal table
+                    // NO COST in the GeoThermal table, set cost to zero
 //                    Integer billColNum = headerMap.get("billamount");
-//                    BigDecimal cost = new BigDecimal(rowData[billColNum]);
-//                    usage.cost = cost;
+                    BigDecimal cost = new BigDecimal(0);
+                    usage.cost = cost;
                     usage.utilityID = utilityID;
 
                     // add Aidan's Validation check for nulls or empty strings
