@@ -15,6 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import {Checkbox, ListItemButton} from "@mui/material";
 import Button from "@mui/material/Button";
+import DateComponent from "./DatePicker";
 
 const drawerWidth = 240;
 
@@ -37,7 +38,8 @@ const filters = [
     { icon: <Factory sx={{ color: "#E87121" }} />, label: 'Steam' },
 ];
 
-export default function SideDrawer() {
+// eslint-disable-next-line react/prop-types
+export default function SideDrawer({startDate, setStartDate, endDate, setEndDate}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [checked, setChecked] = React.useState([0]);
@@ -81,6 +83,7 @@ export default function SideDrawer() {
                         Filter by utility type
                     </Typography>
                 </Button>
+                
             </Toolbar>
             <Drawer
                 sx={{
@@ -103,6 +106,12 @@ export default function SideDrawer() {
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
+                    <DateComponent
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                    ></DateComponent>
                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                         {filters.map((value, index) => {
                             const labelId = `checkbox-list-label-${index}`;

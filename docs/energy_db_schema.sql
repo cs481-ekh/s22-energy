@@ -131,6 +131,7 @@ CREATE TABLE public.usage (
     time_stamp timestamp without time zone NOT NULL,
     usage numeric NOT NULL,
     cost numeric
+    CONSTRAINT duplicate_usage UNIQUE(building_code, utility_id,time_stamp)
 );
 
 
