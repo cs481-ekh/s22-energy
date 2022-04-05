@@ -14,6 +14,13 @@
    Good work!
 </p>
 
+<p>
+  This sprint went very well for all of us. I was the one who design the sign up page and added some error
+  handlings for the texts fields for the signup/login pages. We accomplished almost all the goals for this sprint.
+  Time to wrap up our final product. 
+  Great work everybody!!
+</p>
+
 
 ## 4/5/22 4:30 PM Sprint Wrap Up
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
