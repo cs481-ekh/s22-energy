@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,12 +10,17 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from "react-router";
-
-
-
+ 
 const theme = createTheme();
-
-export default function SignIn() {
+export function SignIn() {
+    const initialValues = { email: "", password: ""};
+    const [formValues, setFormValues] = useState(initialValues);
+    const [formErrors, setFormErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormValues({ ...formValues, [name]: value });
+    };
     let navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -24,11 +30,44 @@ export default function SignIn() {
             email: data.get('Username'),
             password: data.get('password'),
         });
-
+        setFormErrors(validate(formValues));
+            setIsSubmit(true);
+     
+    };
+    useEffect(() => {
+      console.log(formErrors);
+      if (Object.keys(formErrors).length === 0 && isSubmit) {
+        console.log(formValues);
+      }
+     
+    }, [formErrors]);
+    const validate = (values) => {
+      const errors = {};
+      if (!values.email && !values.password) {
+        setIsSubmit(true);
         let path = `/admin`;
         navigate(path);
+       
+      }
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+      if (!values.email) {
+        errors.email = "Email is required!";
+        setIsSubmit(false);
+      } else if (!regex.test(values.email)) {
+        errors.email = "This is not a valid email format!";
+        setIsSubmit(false);
+      }
+      if (!values.password) {
+        errors.password = "Password is required";
+        setIsSubmit(false);
+      }
+      return errors;
     };
-
+    const [ setOpen] = React.useState(false);
+    const handleClickOpen = () => {
+        setOpen(true);
+      };
+ 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
@@ -48,30 +87,36 @@ export default function SignIn() {
                         Admin Login
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="Email Address"
-                            label="Email Address"
-                            name="Email Address"
-                            autoFocus
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        type="text"
+                        name="email"
+                        label="Email Address"
+                        value={formValues.email}
+                        onChange={handleChange}
                         />
+                        <span> {formErrors.email}</span>
                         <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
+                        margin="normal"
+                        required
+                        fullWidth
+                        label="Password"
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        value={formValues.password}
+                        onChange={handleChange}
                         />
+                        <span> {formErrors.password}</span>
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 , backgroundColor: '#E87121'}}
+                            onClick={handleClickOpen}
                         >
                             Sign In
                         </Button>
@@ -81,3 +126,6 @@ export default function SignIn() {
         </ThemeProvider>
     );
 }
+export default SignIn;
+ 
+
