@@ -5,10 +5,15 @@ import application.Database.EnergyDB.Repo.JPARepository.UserRepo;
 import application.Datasource;
 import application.Model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
@@ -44,5 +49,17 @@ public class UserController {
         }
 
         return response;
+    }
+
+
+    // hash the password
+    private String hashPassword(String password, String email) throws NoSuchAlgorithmException {
+        // hash the email to generate a unique salt for every user
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] salt = md.digest(email.getBytes(StandardCharsets.UTF_8));
+
+        // hash the password with the appended salt
+        PasswordEncoder pe = new BCryptPasswordEncoder();
+        return pe.encode(password + salt.toString());
     }
 }
