@@ -28,6 +28,13 @@
    in between, but otherwise excellent work!
 </p>
 
+<p>
+   This sprint seemed to have a mixture of task that everyone pulled together to complete.  Some group task and some individual task.  
+   Everyone did really well communicating and understanding/identifying requirements we need for this sprint.  I do feel like Spring 
+   Break set us back a little and took a little bit to get into our stride again.  Overall, I think we did a good job handling our task 
+   and the objective of this sprint.  Great work everyone.
+</p>
+
 
 ## 4/5/22 4:30 PM Sprint Wrap Up
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
