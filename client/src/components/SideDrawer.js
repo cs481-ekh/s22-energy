@@ -54,10 +54,7 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
             newChecked.splice(currentIndex, 1);
         }
 
-        // newChecked now holds utility types to be displayed
         setUtilTypes(newChecked);
-        console.log(setUtilTypes);
-
         setChecked(newChecked);
     };
 
