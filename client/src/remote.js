@@ -37,9 +37,11 @@ let remoteFunctions = {
    * @param {*} endDate - End date to retrieve usage
    * @returns - List of usages
    */
-  async getUsage(startDate, endDate) {
+  async getUsage(startDate, endDate, utilTypes) {
     startDate = startDate.toISOString().split("T")[0];
     endDate = endDate.toISOString().split("T")[0];
+
+    console.log(utilTypes);
 
     let responseJson = {};
     try {
@@ -51,7 +53,7 @@ let remoteFunctions = {
         },
       };
       const response = await fetch(
-        `http://localhost:${serverPort}/usage?start=${startDate}&end=${endDate}&utilIID=1`,
+        `http://localhost:${serverPort}/usage?start=${startDate}&end=${endDate}&utilID=${utilTypes}`,
         requestOptions
       );
       responseJson = await response.json();

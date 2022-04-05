@@ -14,12 +14,14 @@ class Map extends Component {
         this.state = {
             endDate: new Date(),
             startDate: prevMonth,
+            utilTypes: [0, 1, 2, 3],
             usageData: [],
             buildings: [],
             map: React.createRef()
         };
         this.boundStart = this.modifyStartDate.bind(this);
         this.boundEnd = this.modifyEndDate.bind(this);
+        this.boundUtil = this.modifyUtilTypes.bind(this);
     }
 
     // Create a function to modify start date state.
@@ -28,9 +30,14 @@ class Map extends Component {
         this.state.map.current.entities.clear();
     }
 
-    // Provide a function for our functinal components to modify state.
+    // Provide a function for our functional components to modify state.
     modifyEndDate(value) {
         this.setState({ endDate: value });
+        this.state.map.current.entities.clear();
+    }
+
+    modifyUtilTypes(value) {
+        this.setState({ utilTypes: value });
         this.state.map.current.entities.clear();
     }
 
@@ -39,8 +46,8 @@ class Map extends Component {
      * @param {*} startDate - New start date
      * @param {*} endDate - New end date.
      */
-    updateMapUsage = async (startDate, endDate) => {
-        const responseJson = await remoteFunctions.getUsage(startDate, endDate);
+    updateMapUsage = async (startDate, endDate, utilTypes) => {
+        const responseJson = await remoteFunctions.getUsage(startDate, endDate, utilTypes[0]);
         let newUsageData = [];
         responseJson.forEach(building => newUsageData.push({
             buildingCode: building.buildingCode,
@@ -53,7 +60,13 @@ class Map extends Component {
     componentDidUpdate(prevProps, prevState) {
         // eslint-disable-next-line react/prop-types
         if (prevState.startDate !== this.state.startDate || prevState.endDate !== this.state.endDate) {
-            this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.map);
+            this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.utilTypes);
+        }
+        console.log(prevState);
+        console.log(this.state);
+        if (prevState.utilTypes !== this.state.utilTypes) {
+            console.log("The new util types were successfully passed to the map: " + this.state.utilTypes);
+            this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.utilTypes);
         }
     }
 
@@ -139,6 +152,8 @@ class Map extends Component {
                     setStartDate={this.boundStart}
                     endDate={this.state.endDate}
                     setEndDate={this.boundEnd}
+                    utilTypes={this.state.utilTypes}
+                    setUtilTypes={this.boundUtil}
                 />
 
                 <div id={this.props.id} ref={this.state.map} />

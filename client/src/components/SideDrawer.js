@@ -39,10 +39,10 @@ const filters = [
 ];
 
 // eslint-disable-next-line react/prop-types
-export default function SideDrawer({startDate, setStartDate, endDate, setEndDate}) {
+export default function SideDrawer({startDate, setStartDate, endDate, setEndDate, utilTypes, setUtilTypes}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [checked, setChecked] = React.useState([0]);
+    const [checked, setChecked] = React.useState(utilTypes);
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
@@ -53,6 +53,10 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
         } else {
             newChecked.splice(currentIndex, 1);
         }
+
+        // newChecked now holds utility types to be displayed
+        setUtilTypes(newChecked);
+        console.log(setUtilTypes);
 
         setChecked(newChecked);
     };
@@ -111,32 +115,28 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                         setStartDate={setStartDate}
                         endDate={endDate}
                         setEndDate={setEndDate}
-                    ></DateComponent>
+                    />
                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                         {filters.map((value, index) => {
                             const labelId = `checkbox-list-label-${index}`;
                             return (
                                 <ListItem
                                     key={index}
-                                    secondaryAction={
-                                        <ListItemIcon role={undefined} onClick={handleToggle(index)} dense>
-                                            <Checkbox
-                                                edge="end"
-                                                checked={checked.indexOf(index) !== -1}
-                                                tabIndex={-1}
-                                                disableRipple
-                                                inputProps={{ 'aria-labelledby': labelId }}
-                                            />
-                                        </ListItemIcon>
-                                    }
                                     disablePadding
                                 >
-                                    <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
-                                        <ListItemIcon sx={{ ml: '15px' }}>
+                                    <ListItemButton onClick={handleToggle(index)} dense>
+                                        <ListItemIcon>
                                             {value.icon}
+                                            <ListItemText id={labelId} primary={`${value.label}`} sx={{ pl:"5px" }}/>
                                         </ListItemIcon>
-                                        <ListItemText id={labelId} primary={`${value.label}`}/>
                                     </ListItemButton>
+                                    <Checkbox
+                                        onClick={handleToggle(index)}
+                                        checked={checked.indexOf(index) !== -1}
+                                        tabIndex={-1}
+                                        disableRipple
+                                        inputProps={{ 'aria-labelledby': labelId }}
+                                    />
                                 </ListItem>
                             );
                         })}
