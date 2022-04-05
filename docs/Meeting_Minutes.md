@@ -1,3 +1,18 @@
+## 4/5/22 4:30 PM Sprint Wrap Up
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Discussed what we needed to get done before the Sprint finished
+   - Talked about how best to implement utility filtering on the front end.
+   - Tried out Taylor's start up script for both the server and client.
+   - Talked about action items for next Sprint
+      - Testing and validation
+      - Bug fixing and polishing
+      - Small amount of feature addition
+   - Talked about adding Senior Design Project Logo to our application
+   - Gave team updated environment files since we recently authenticated our back end rest API.
+</p>
+
 ## 3/29/22 9:00 AM Morning Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
