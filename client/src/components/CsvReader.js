@@ -28,10 +28,10 @@ function CsvReader() {
     console.log(response);
 
     if(response.status == 200){
-      //return success
+      alert("The file has been uploaded successfully");
 
     }else{
-      //csvfailed to upload
+      alert("Failed to upload the file");
     }
   };
 
