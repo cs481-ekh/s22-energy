@@ -1,10 +1,17 @@
-## Sprint2 Retrospect
+## Sprint3 Retrospect
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
    This sprint went well! We started it off with a working demo that we presented to our sponsor and
    then spent the rest of the sprint finalizing the backend and adding functionality to the map
    filters, admin login and csv upload. Spring break made it difficult to accomplish as much as I
    would have liked with "3 weeks" but overall we got much of what we needed done. Time to finish strong!
+</p>
+
+<p>
+   We got most of everything we set out to do done. I think as far as the sprint goes we did very well. 
+   We got great work out of everybody. Almost all our tasks are complete. Now we need to iron out 
+   the kinks with the project deadline coming up and get ready to polish our final product. 
+   Good work!
 </p>
 
 
