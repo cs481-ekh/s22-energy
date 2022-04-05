@@ -1,3 +1,13 @@
+## Sprint2 Retrospect
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   This sprint went well! We started it off with a working demo that we presented to our sponsor and
+   then spent the rest of the sprint finalizing the backend and adding functionality to the map
+   filters, admin login and csv upload. Spring break made it difficult to accomplish as much as I
+   would have liked with "3 weeks" but overall we got much of what we needed done. Time to finish strong!
+</p>
+
+
 ## 4/5/22 4:30 PM Sprint Wrap Up
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
