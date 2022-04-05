@@ -21,6 +21,13 @@
   Great work everybody!!
 </p>
 
+<p>
+   We accomplished all of our goals this sprint and were able to work together effectively and efficiently. We gave a
+   demo to Brian at the start of sprint 3 and we all pulled together to make sure our project was ready for a demo.
+   If I were to make any criticism, I would say most of the work was done at the start/end of the sprint rather than
+   in between, but otherwise excellent work!
+</p>
+
 
 ## 4/5/22 4:30 PM Sprint Wrap Up
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
