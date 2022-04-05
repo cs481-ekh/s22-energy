@@ -22,12 +22,12 @@ export default function SignIn() {
         const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console
         console.log({
-            email: data.get('Username'),
+            email: data.get('email'),
             password: data.get('password'),
         });
 
 
-        const responseJson = await remoteFunctions.getUser(data.get('Username'), data.get('password'));
+        const responseJson = await remoteFunctions.getUser(data.get('email'), data.get('password'));
 
         if(responseJson == true) {
             let path = `/admin`;
@@ -62,9 +62,9 @@ export default function SignIn() {
                             margin="normal"
                             required
                             fullWidth
-                            id="Email Address"
+                            id="email"
                             label="Email Address"
-                            name="Email Address"
+                            name="email"
                             autoFocus
                         />
                         <TextField
