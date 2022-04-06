@@ -25,6 +25,10 @@ public class UserController {
     @Autowired
     UserRepo userRepo;
 
+    public boolean addUser(@RequestParam String email, @RequestParam String Password) {
+        
+    }
+
     /**
      * Gets all the buildings from the buildings database
      * @return list of usage that matched criteria.
@@ -59,12 +63,11 @@ public class UserController {
      * @throws NoSuchAlgorithmException
      */
     private String hashPassword(String password, String email) throws NoSuchAlgorithmException {
-        // hash the email to generate a unique salt for every user
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] salt = md.digest(email.getBytes(StandardCharsets.UTF_8));
+        // randomly generated salt
+        String salt = "PT0zs3AhIpB8CqCJCxcG";
 
         // hash the password with the appended salt
         PasswordEncoder pe = new BCryptPasswordEncoder();
-        return pe.encode(password + Arrays.toString(salt));
+        return pe.encode(password + salt);
     }
 }
