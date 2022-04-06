@@ -163,8 +163,7 @@ class Map extends Component {
                     utilTypes={this.state.utilTypes}
                     setUtilTypes={this.boundUtil}
                 />
-                <SDPSticker />
-                <div id={this.props.id} ref={this.state.map} />
+                <div id={this.props.id} ref={this.state.map}><SDPSticker /></div>
             </>
         );
     }

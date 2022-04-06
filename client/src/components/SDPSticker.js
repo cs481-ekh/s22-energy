@@ -17,7 +17,6 @@ function SDPSticker () {
 
     return (
             <div id="sdp">
-                <img src={SDPImage} alt="senior design project logo" onClick={toggleInfo}/>
                 <div id="sdp_info">
                     This website was created for a<br/>
                     Boise State University<br/>
@@ -31,6 +30,7 @@ function SDPSticker () {
                     For information about sponsoring a project go to<br/>
                     <a href="https://www.boisestate.edu/coen-cs/community/cs481-senior-design-project/">https://www.boisestate.edu/coen-cs/community/cs481-senior-design-project/</a>
                 </div>
+                <img src={SDPImage} alt="senior design project logo" onClick={toggleInfo}/>
             </div>
     );
 }
