@@ -1,3 +1,56 @@
+## Sprint3 Retrospect
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   This sprint went well! We started it off with a working demo that we presented to our sponsor and
+   then spent the rest of the sprint finalizing the backend and adding functionality to the map
+   filters, admin login and csv upload. Spring break made it difficult to accomplish as much as I
+   would have liked with "3 weeks" but overall we got much of what we needed done. Time to finish strong!
+</p>
+
+<p>
+   We got most of everything we set out to do done. I think as far as the sprint goes we did very well. 
+   We got great work out of everybody. Almost all our tasks are complete. Now we need to iron out 
+   the kinks with the project deadline coming up and get ready to polish our final product. 
+   Good work!
+</p>
+
+<p>
+  This sprint went very well for all of us. I was the one who design the sign up page and added some error
+  handlings for the texts fields for the signup/login pages. We accomplished almost all the goals for this sprint.
+  Time to wrap up our final product. 
+  Great work everybody!!
+</p>
+
+<p>
+   We accomplished all of our goals this sprint and were able to work together effectively and efficiently. We gave a
+   demo to Brian at the start of sprint 3 and we all pulled together to make sure our project was ready for a demo.
+   If I were to make any criticism, I would say most of the work was done at the start/end of the sprint rather than
+   in between, but otherwise excellent work!
+</p>
+
+<p>
+   This sprint seemed to have a mixture of task that everyone pulled together to complete.  Some group task and some individual task.  
+   Everyone did really well communicating and understanding/identifying requirements we need for this sprint.  I do feel like Spring 
+   Break set us back a little and took a little bit to get into our stride again.  Overall, I think we did a good job handling our task 
+   and the objective of this sprint.  Great work everyone.
+</p>
+
+
+## 4/5/22 4:30 PM Sprint Wrap Up
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Discussed what we needed to get done before the Sprint finished
+   - Talked about how best to implement utility filtering on the front end.
+   - Tried out Taylor's start up script for both the server and client.
+   - Talked about action items for next Sprint
+      - Testing and validation
+      - Bug fixing and polishing
+      - Small amount of feature addition
+   - Talked about adding Senior Design Project Logo to our application
+   - Gave team updated environment files since we recently authenticated our back end rest API.
+</p>
+
 ## 3/29/22 9:00 AM Morning Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>

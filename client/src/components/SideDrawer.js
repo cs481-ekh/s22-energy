@@ -9,8 +9,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 //import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { ChevronLeft, ChevronRight, ElectricalServices, PropaneTank, SolarPower, Factory } from '@mui/icons-material';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -32,13 +31,18 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 
-const filters = ['Electric', 'Gas', 'Solar', 'Steam'];
+const filters = [
+    { icon: <ElectricalServices sx={{ color: "#E87121" }} />, label: 'Electric' },
+    { icon: <PropaneTank sx={{ color: "#E87121" }} />, label: 'Gas' },
+    { icon: <SolarPower sx={{ color: "#E87121" }} />, label: 'Solar' },
+    { icon: <Factory sx={{ color: "#E87121" }} />, label: 'Steam' },
+];
 
 // eslint-disable-next-line react/prop-types
-export default function SideDrawer({startDate, setStartDate, endDate, setEndDate}) {
+export default function SideDrawer({startDate, setStartDate, endDate, setEndDate, utilTypes, setUtilTypes}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [checked, setChecked] = React.useState([0]);
+    const [checked, setChecked] = React.useState(utilTypes);
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
@@ -50,6 +54,7 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
             newChecked.splice(currentIndex, 1);
         }
 
+        setUtilTypes(newChecked);
         setChecked(newChecked);
     };
 
@@ -74,7 +79,7 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                     variant="contained"
                     sx={{ mr: 2, ...(open && { display: 'none' }), bgcolor: "white", }}
                 >
-                    <ChevronRightIcon sx={{color: '#E87121'}}/>
+                    <ChevronRight sx={{color: '#E87121'}}/>
                     <Typography color="#E87121">
                         Filter by utility type
                     </Typography>
@@ -98,45 +103,41 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
             >
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon sx={{color: '#E87121'}}/> : <ChevronRightIcon />}
+                        {theme.direction === 'ltr' ? <ChevronLeft sx={{color: '#E87121'}}/> : <ChevronRight />}
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <DateComponent
-                startDate={startDate}
-                setStartDate={setStartDate}
-                endDate={endDate}
-                setEndDate={setEndDate}
-                ></DateComponent>
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                    {filters.map((value, index) => {
-                        const labelId = `checkbox-list-label-${index}`;
-
-                        return (
-                            <ListItem
-                                key={index}
-                                secondaryAction={
-                                    <IconButton edge="end" aria-label="comments">
-                                    </IconButton>
-                                }
-                                disablePadding
-                            >
-                                <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
-                                    <ListItemIcon>
-                                        <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(index) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            inputProps={{ 'aria-labelledby': labelId }}
-                                        />
-                                    </ListItemIcon>
-                                    <ListItemText id={labelId} primary={`${value}`} />
-                                </ListItemButton>
-                            </ListItem>
-                        );
-                    })}
-                </List>
+                    <DateComponent
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                    />
+                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                        {filters.map((value, index) => {
+                            const labelId = `checkbox-list-label-${index}`;
+                            return (
+                                <ListItem
+                                    key={index}
+                                    disablePadding
+                                >
+                                    <ListItemButton onClick={handleToggle(index)} dense>
+                                        <ListItemIcon>
+                                            {value.icon}
+                                            <ListItemText id={labelId} primary={`${value.label}`} sx={{ pl:"5px" }}/>
+                                        </ListItemIcon>
+                                    </ListItemButton>
+                                    <Checkbox
+                                        onClick={handleToggle(index)}
+                                        checked={checked.indexOf(index) !== -1}
+                                        tabIndex={-1}
+                                        disableRipple
+                                        inputProps={{ 'aria-labelledby': labelId }}
+                                    />
+                                </ListItem>
+                            );
+                        })}
+                    </List>
                 <Divider />
             </Drawer>
         </Box>
