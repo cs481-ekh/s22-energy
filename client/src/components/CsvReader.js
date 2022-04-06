@@ -12,6 +12,7 @@ import {createTheme} from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import UploadIcon from '@mui/icons-material/Upload';
 import Typography from "@mui/material/Typography";
+import remoteFunctions from "../remote";
 const theme = createTheme();
 
 const utils = ['non', 'Gas', 'Electric', 'Steam', 'Geothermal', 'Solar'];
@@ -22,19 +23,16 @@ function CsvReader() {
   const [file, setFile] = useState("");
 
   const handleUpload = async () => {
-    let formData = new FormData();
 
-    formData.append("file", file);
-    formData.append("utilID", utility);
-
-    const requestOptions = {
-      method: 'POST',
-      mode: 'cors',
-      body: formData,
-    };
-    const response = await fetch("http://localhost:5000/uploadFile", requestOptions);
+    const response = await remoteFunctions.uploadFile(file, utility);
     console.log(response);
 
+    if(response.status == 200){
+      //return success
+
+    }else{
+      alert('Failed to upload');
+    }
   };
 
   const handleCSVRead = (data) => {

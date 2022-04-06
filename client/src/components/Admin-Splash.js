@@ -30,6 +30,12 @@ export default function Admin() {
     const [open, setOpen] = React.useState(false);
 
     let navigate = useNavigate();
+
+    const signUpOnClick = () => {
+        let path = `/SignUp`;
+        navigate(path);
+    };
+
     const electricOnClick = () => {
 
         setOpen(true);
@@ -100,7 +106,7 @@ export default function Admin() {
 
             >
             <Grid item xs>
-            <Card sx={{ width: 345, marginTop: 4, marginLeft: 5, marginRight: 5}} onClick={electricOnClick}>
+            <Card sx={{ width: 345, marginTop: 4, marginLeft: 5, marginRight: 5}} onClick={signUpOnClick}>
                 <CardActionArea>
                     <CardMedia
                         component="img"
