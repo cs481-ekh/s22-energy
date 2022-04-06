@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "../Map.css";
 import PropTypes from 'prop-types';
 import SideDrawer from "./SideDrawer";
+import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
 const _ = require("lodash");
@@ -162,8 +163,7 @@ class Map extends Component {
                     utilTypes={this.state.utilTypes}
                     setUtilTypes={this.boundUtil}
                 />
-
-                <div id={this.props.id} ref={this.state.map} />
+                <div id={this.props.id} ref={this.state.map}><SDPSticker /></div>
             </>
         );
     }
