@@ -14,12 +14,14 @@ class Map extends Component {
         this.state = {
             endDate: new Date(),
             startDate: prevMonth,
+            utilTypes: [0, 1, 2, 3],
             usageData: [],
             buildings: [],
             map: React.createRef()
         };
         this.boundStart = this.modifyStartDate.bind(this);
         this.boundEnd = this.modifyEndDate.bind(this);
+        this.boundUtil = this.modifyUtilTypes.bind(this);
     }
 
     // Create a function to modify start date state.
@@ -28,9 +30,15 @@ class Map extends Component {
         this.state.map.current.entities.clear();
     }
 
-    // Provide a function for our functinal components to modify state.
+    // Provide a function for our functional components to modify state.
     modifyEndDate(value) {
         this.setState({ endDate: value });
+        this.state.map.current.entities.clear();
+    }
+
+    // Create function to modify utility types
+    modifyUtilTypes(value) {
+        this.setState({ utilTypes: value });
         this.state.map.current.entities.clear();
     }
 
@@ -38,34 +46,46 @@ class Map extends Component {
      * Updates the map usage with new start/end date.
      * @param {*} startDate - New start date
      * @param {*} endDate - New end date.
+     * @param {*} utilTypes - New utility types
      */
-    updateMapUsage = async (startDate, endDate) => {
-        const responseJson = await remoteFunctions.getUsage(startDate, endDate);
+    updateMapUsage = async (startDate, endDate, utilTypes) => {
         let newUsageData = [];
-        responseJson.forEach(building => newUsageData.push({
-            buildingCode: building.buildingCode,
-            utilityUsage: building.utilityUsage
-        }));
-        this.setState({ usageData: newUsageData });
-        this.createDescriptions(newUsageData);
+        for (let i = 0; i < utilTypes.length; i++) {
+            const responseJson = await remoteFunctions.getUsage(startDate, endDate, utilTypes[i]);
+            responseJson.forEach(building => newUsageData.push({
+                buildingCode: building.buildingCode,
+                utilityUsage: building.utilityUsage
+            }));
+            this.setState({ usageData: newUsageData });
+            this.createDescriptions(utilTypes[i]);
+        }
     };
 
     componentDidUpdate(prevProps, prevState) {
         // eslint-disable-next-line react/prop-types
-        if (prevState.startDate !== this.state.startDate || prevState.endDate !== this.state.endDate) {
-            this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.map);
+        if (prevState.startDate !== this.state.startDate || prevState.endDate !== this.state.endDate || prevState.utilTypes !== this.state.utilTypes) {
+            this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.utilTypes);
         }
     }
 
     // Adds utility usage to building description
-    createDescriptions() {
+    createDescriptions(utility) {
         // Create a clone of our initial buildings state
         let buildingsCopy = _.cloneDeep(this.state.buildings);
         for (var i = 0; i < this.state.usageData.length; i++) {
             // Check if utility data exists for specific building code
             if (buildingsCopy.find(o => o.buildingCode === this.state.usageData[i].buildingCode)) {
                 var buildingMatch = buildingsCopy.find(o => o.buildingCode === this.state.usageData[i].buildingCode);
-                buildingMatch.description = "Gas usage: " + this.state.usageData[i].utilityUsage.toString();
+                if (utility === 0) {
+                    buildingMatch.description += "\nElectric usage: ";
+                } else if (utility === 1) {
+                    buildingMatch.description += "\nGas usage: ";
+                } else if (utility === 2) {
+                    buildingMatch.description += "\nSolar usage: ";
+                } else {
+                    buildingMatch.description += "\nSteam usage: ";
+                }
+                buildingMatch.description += this.state.usageData[i].utilityUsage.toString();
             }
         }
         this.createPins(buildingsCopy);
@@ -139,6 +159,8 @@ class Map extends Component {
                     setStartDate={this.boundStart}
                     endDate={this.state.endDate}
                     setEndDate={this.boundEnd}
+                    utilTypes={this.state.utilTypes}
+                    setUtilTypes={this.boundUtil}
                 />
 
                 <div id={this.props.id} ref={this.state.map} />
