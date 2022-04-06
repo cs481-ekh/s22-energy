@@ -10,9 +10,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from "react-router";
- 
+import remoteFunctions from '../remote';
+
+
+
 const theme = createTheme();
-export function SignIn() {
+export default function SignIn() {
     const initialValues = { email: "", password: ""};
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -22,24 +25,36 @@ export function SignIn() {
       setFormValues({ ...formValues, [name]: value });
     };
     let navigate = useNavigate();
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console
         console.log({
-            email: data.get('Username'),
+            email: data.get('email'),
             password: data.get('password'),
         });
+
+
+        const responseJson = await remoteFunctions.getUser(data.get('email'), data.get('password'));
+
+        if(responseJson == true) {
+            let path = `/admin`;
+            navigate(path);
+        }else{
+            alert("Incorrect username or password");
+        }
+
+
         setFormErrors(validate(formValues));
             setIsSubmit(true);
-     
+
     };
     useEffect(() => {
       console.log(formErrors);
       if (Object.keys(formErrors).length === 0 && isSubmit) {
         console.log(formValues);
       }
-     
+
     }, [formErrors]);
     const validate = (values) => {
       const errors = {};
@@ -47,7 +62,7 @@ export function SignIn() {
         setIsSubmit(true);
         let path = `/admin`;
         navigate(path);
-       
+
       }
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
       if (!values.email) {
@@ -67,7 +82,7 @@ export function SignIn() {
     const handleClickOpen = () => {
         setOpen(true);
       };
- 
+
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
@@ -91,6 +106,7 @@ export function SignIn() {
                         margin="normal"
                         required
                         fullWidth
+                        id="email"
                         type="text"
                         name="email"
                         label="Email Address"
@@ -102,6 +118,7 @@ export function SignIn() {
                         margin="normal"
                         required
                         fullWidth
+                        id="password"
                         label="Password"
                         type="password"
                         name="password"
@@ -126,6 +143,3 @@ export function SignIn() {
         </ThemeProvider>
     );
 }
-export default SignIn;
- 
-

@@ -1,3 +1,4 @@
+
 const serverPort = process.env.REACT_APP_SERVER_PORT || 5000;
 const userName = process.env.REACT_APP_API_USER;
 const password = process.env.REACT_APP_API_PASSWORD;
@@ -59,6 +60,55 @@ let remoteFunctions = {
       console.log(err);
     }
     return responseJson;
+  },
+  async getUser(email, password) {
+
+    let responseJson = {};
+    try {
+      const requestOptions = {
+        method: "GET",
+        // mode: "cors",
+        headers: {
+          Authorization: credentials
+        },
+      };
+      const response = await fetch(
+          `http://localhost:${serverPort}/login?email=${email}&password=${password}`,
+          requestOptions
+      );
+      responseJson = await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+    return responseJson;
+  },
+  async uploadFile(file, utility) {
+
+    let formData = new FormData();
+
+    formData.append("file", file);
+    formData.append("utilID", utility);
+
+    // let responseJson = {};
+    try {
+      const requestOptions = {
+        method: "POST",
+        mode: "cors",
+        body: formData,
+        headers: {
+          Authorization: credentials
+        },
+      };
+      const response = await fetch(
+          `http://localhost:${serverPort}/uploadFile`,
+          requestOptions
+      );
+      return response;
+      //responseJson = await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+    return 0;
   },
 };
 export default remoteFunctions;
