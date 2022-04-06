@@ -62,7 +62,6 @@ class Map extends Component {
     componentDidUpdate(prevProps, prevState) {
         // eslint-disable-next-line react/prop-types
         if (prevState.startDate.getTime() !== this.state.startDate.getTime() || prevState.endDate.getTime() !== this.state.endDate.getTime() || prevState.utilTypes !== this.state.utilTypes) {
-            console.log("RUNNING");
             this.state.map.current.entities.clear();
             this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.utilTypes);
         }
