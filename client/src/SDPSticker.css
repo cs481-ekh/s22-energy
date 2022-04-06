@@ -1,12 +1,12 @@
 #sdp {
     position: absolute;
-    margin-left: calc(100% - 110px);
-    margin-top: calc(100vh - 590px);
+    margin-left: calc(100% - 180px);
+    margin-top: calc(100vh - 630px);
     padding: 15px;
     z-index: 100;
 }
 #sdp img {
-    width: 80px;
+    width: 150px;
     cursor: pointer;
     display: block;
     border-radius: 10px;
@@ -16,7 +16,7 @@
     color: white;
     text-align: center;
     width: 300px;
-    margin-left:-220px;
+    margin-left:-150px;
     margin-bottom: 15px;
     padding: 15px;
     border-radius: 15px;
