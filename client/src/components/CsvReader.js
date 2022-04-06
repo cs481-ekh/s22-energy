@@ -31,7 +31,7 @@ function CsvReader() {
       //return success
 
     }else{
-      //csvfailed to upload
+      alert('Failed to upload');
     }
   };
 
