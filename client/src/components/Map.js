@@ -76,14 +76,19 @@ class Map extends Component {
             // Check if utility data exists for specific building code
             if (buildingsCopy.find(o => o.buildingCode === this.state.usageData[i].buildingCode)) {
                 var buildingMatch = buildingsCopy.find(o => o.buildingCode === this.state.usageData[i].buildingCode);
-                if (utility === 0) {
-                    buildingMatch.description += "\nElectric usage: ";
-                } else if (utility === 1) {
-                    buildingMatch.description += "\nGas usage: ";
-                } else if (utility === 2) {
-                    buildingMatch.description += "\nSolar usage: ";
-                } else {
-                    buildingMatch.description += "\nSteam usage: ";
+                switch(utility) {
+                    case 0:
+                        buildingMatch.description += "\nElectric usage: ";
+                        break;
+                    case 1:
+                        buildingMatch.description += "\nGas usage: ";
+                        break;
+                    case 2:
+                        buildingMatch.description += "\nSolar usage: ";
+                        break;
+                    case 3:
+                        buildingMatch.description += "\nSteam usage: ";
+                        break;
                 }
                 buildingMatch.description += this.state.usageData[i].utilityUsage.toString();
             }
@@ -94,6 +99,11 @@ class Map extends Component {
     // Adds buildings from buildingData to the map by creating a location, pin, infobox
     // and event handler for each building. Infobox displays each building's usage info
     createPins(buildings) {
+        const infoBoxTemplate = '<div id="infoboxText" style="background-color:White; border-style:solid; ' +
+            'border-width:medium; border-color:DarkOrange; min-height:100px; width: 240px;">' +
+            '<b id="infoboxTitle" style="position: absolute; top: 10px; left: 10px; width: 220px;">{title}</b>' +
+            '<a id="infoboxDescription" style="position: absolute; top: 30px; left: 10px; width: 220px;">{description}</a></div>';
+
         // Create empty array for building pins and info boxes
         var pinArray = [];
         var infoBoxArray = [];
@@ -115,8 +125,8 @@ class Map extends Component {
                         });
                     infoBox = new window.Microsoft.Maps.Infobox(location,
                         {
-                            title: building.buildingName,
-                            description: building.description,
+                            htmlContent: infoBoxTemplate.replace('{title}', building.buildingName).replace('{description}', building.description),
+                            showCloseButton: true,
                             visible: false
                         }
                     );
@@ -124,8 +134,8 @@ class Map extends Component {
                     pin = new window.Microsoft.Maps.Pushpin(location, { color: 'gray' });
                     infoBox = new window.Microsoft.Maps.Infobox(location,
                         {
-                            title: building.buildingName,
-                            description: "no data",
+                            htmlContent: infoBoxTemplate.replace('{title}', building.buildingName).replace('{description}', 'no data'),
+                            showCloseButton: true,
                             visible: false
                         }
                     );
