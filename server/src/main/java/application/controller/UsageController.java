@@ -2,7 +2,9 @@ package application.controller;
 
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
+import application.Database.EnergyDB.Models.Utility;
 import application.Database.EnergyDB.Repo.JPARepository.UsageRepo;
+import application.Database.EnergyDB.Repo.JPARepository.UtilityRepo;
 import application.Model.Response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +24,27 @@ import java.util.*;
 public class UsageController {
     @Autowired
     UsageRepo usageRepo;
+    @Autowired
+    UtilityRepo utilityRepo;
 
     /**
      * Gets the usages given the
      * @param startDate - The date in which you want to start looking for usages
      * @param endDate - The last date you want to start looking for usages
-     * @param utilityID - The utility id to filter usages by
+     * @param utilityIDs - The utility id to filter usages by
      * @return list of usage that matched criteria.
      */
     @GetMapping(value = "/usage")
-    public List<Usage> uploadFile(@RequestParam ("start")
+    public Map<Integer, List<Usage>> retrieveUsage(@RequestParam ("start")
                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<Date> startDate,
                                   @RequestParam ("end")
                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<Date> endDate,
-                                  @RequestParam ("utilID" )Optional<Integer> utilityID) {
-
-        List<Usage> usageResult = new ArrayList<>();
+                                  @RequestParam ("utilID" )Optional<List<Integer>> utilityIDs) {
 
         Timestamp start = null;
         Timestamp end = null;
+
+        Map<Integer, List<Usage>> usageBuckets = new HashMap<>();
 
         // Gets the current date -1 month for a default value
         Calendar calendar = Calendar.getInstance();
@@ -54,20 +58,29 @@ public class UsageController {
         Timestamp actualStart = Timestamp.from(startDate.orElse(defaultStart).toInstant());
         Timestamp actualEnd = Timestamp.from(endDate.orElse(defaultEnd).toInstant());
 
-        Optional<List<Usage>> usage;
+        Optional<List<Usage>> usageList;
+        List<Integer> utilityIDList;
 
         // Runs query on db
-        if (utilityID.isEmpty()) {
-            usage = usageRepo.getUsageDateRange(actualStart, actualEnd);
+        if (utilityIDs.isEmpty()) {
+            // Finds all utilities
+            List<Utility> utilities = utilityRepo.findAll();
+
+            // Gets a list of all utility ids
+            utilityIDList = utilities.stream().map(utility -> utility.utilityID).toList();
         } else {
-            Integer utilID = utilityID.get();
-            usage = usageRepo.getUsageDateRange(actualStart, actualEnd, utilID);
+            utilityIDList = utilityIDs.get();
         }
 
-        // Gets the result.
-        if (usage.isPresent()) {
-            usageResult = usage.get();
+        for(int utilID: utilityIDList){
+            // Gets usages for each id.
+            usageList = usageRepo.getUsageDateRange(actualStart, actualEnd, utilID);
+            // Gets the result.
+            if (usageList.isPresent()) {
+                List<Usage> usageResult = usageList.get();
+                usageBuckets.put(utilID, usageResult);
+            }
         }
-        return usageResult;
+        return usageBuckets;
     }
 }
