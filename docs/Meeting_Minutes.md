@@ -1,6 +1,7 @@
 ## 4/7/22 9:00 AM Morning Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
+   
    - Discussed what needed to get done before our meeting with Brian:
       - Upload all utility data and verify it's working with both our backend and frontend
       - Rework frontend utility filtering
