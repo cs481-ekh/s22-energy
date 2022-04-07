@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "../Map.css";
 import PropTypes from 'prop-types';
 import SideDrawer from "./SideDrawer";
+import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
 const _ = require("lodash");
@@ -27,19 +28,17 @@ class Map extends Component {
     // Create a function to modify start date state.
     modifyStartDate(value) {
         this.setState({ startDate: value });
-        this.state.map.current.entities.clear();
+        
     }
 
     // Provide a function for our functional components to modify state.
     modifyEndDate(value) {
         this.setState({ endDate: value });
-        this.state.map.current.entities.clear();
     }
 
     // Create function to modify utility types
     modifyUtilTypes(value) {
         this.setState({ utilTypes: value });
-        this.state.map.current.entities.clear();
     }
 
     /**
@@ -63,7 +62,8 @@ class Map extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         // eslint-disable-next-line react/prop-types
-        if (prevState.startDate !== this.state.startDate || prevState.endDate !== this.state.endDate || prevState.utilTypes !== this.state.utilTypes) {
+        if (prevState.startDate.getTime() !== this.state.startDate.getTime() || prevState.endDate.getTime() !== this.state.endDate.getTime() || prevState.utilTypes !== this.state.utilTypes) {
+            this.state.map.current.entities.clear();
             this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.utilTypes);
         }
     }
@@ -160,6 +160,7 @@ class Map extends Component {
         this.state.map.current = await bingMapsAPI.waitGenerateMap(window, document, process.env.REACT_APP_API_KEY, mapRef);
         const buildings = await remoteFunctions.getBuildings();
         this.setState({ buildings: buildings });
+        this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.utilTypes);
     }
     render() {
         return (
@@ -172,8 +173,7 @@ class Map extends Component {
                     utilTypes={this.state.utilTypes}
                     setUtilTypes={this.boundUtil}
                 />
-
-                <div id={this.props.id} ref={this.state.map} />
+                <div id={this.props.id} ref={this.state.map}><SDPSticker /></div>
             </>
         );
     }
