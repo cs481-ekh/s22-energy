@@ -6,6 +6,7 @@ import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import ErrorManagement.Error;
+import application.EnergyConverter;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -129,6 +130,7 @@ public class ElectricDemandParser extends CsvParser {
                     if (!data.equals("") && !data.equals("NULL")) {
                         Double utilityUsage = sheetValidator.validateDouble(lines, currentColumn, data, usage);
                         BigDecimal result = new BigDecimal(utilityUsage);
+                        result = EnergyConverter.kWhToKbtu(result);
                         usage.utilityUsage = result;
                     }
                     manager.applyErrors(lines, currentColumn, usage);
