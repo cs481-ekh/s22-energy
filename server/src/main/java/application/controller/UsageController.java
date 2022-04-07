@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @CrossOrigin("*")
@@ -67,7 +68,7 @@ public class UsageController {
             List<Utility> utilities = utilityRepo.findAll();
 
             // Gets a list of all utility ids
-            utilityIDList = utilities.stream().map(utility -> utility.utilityID).toList();
+            utilityIDList = (utilities.stream().map(utility -> utility.utilityID)).collect(Collectors.toList());
         } else {
             utilityIDList = utilityIDs.get();
         }
