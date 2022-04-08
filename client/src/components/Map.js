@@ -15,7 +15,7 @@ class Map extends Component {
         this.state = {
             endDate: new Date(),
             startDate: prevMonth,
-            utilTypes: [0, 1, 2, 3],
+            utilTypes: [1,2,3,4,5],
             usageData: [],
             buildings: [],
             map: React.createRef()
@@ -48,17 +48,39 @@ class Map extends Component {
      * @param {*} utilTypes - New utility types
      */
     updateMapUsage = async (startDate, endDate, utilTypes) => {
-        let newUsageData = [];
-        for (let i = 0; i < utilTypes.length; i++) {
-            const responseJson = await remoteFunctions.getUsage(startDate, endDate, utilTypes[i]);
-            responseJson.forEach(building => newUsageData.push({
-                buildingCode: building.buildingCode,
-                utilityUsage: building.utilityUsage
-            }));
-            this.setState({ usageData: newUsageData });
-            this.createDescriptions(utilTypes[i]);
+        let buildingsResponse = await remoteFunctions.getBuildings();
+        let buildings = {};
+
+        for(const buildingR of buildingsResponse){
+            buildings[buildingR.buildingCode] = buildingR;
+            buildingR.usages = {};
         }
-    };
+
+        const responseJson = await remoteFunctions.getUsage(startDate, endDate, utilTypes);
+        for (const key of Object.keys(responseJson)){
+            if(key in utilTypes){
+                for(const usages of responseJson[key]){
+                    const buildingCode = usages.building.buildingCode;
+            
+                        let building = buildings[buildingCode];
+                        if(building.usages[key]){
+                            building.usages[key].usage += usages.utilityUsage;
+                            building.usages[key].cost += usages.cost;
+                        }
+                        else{
+                           building.usages[key] = {usage: usages.utilityUsage, cost: usages.cost};
+                        }
+                    
+                        
+                    
+                }
+            }
+        }
+            
+            this.setState({ buildings: buildings });
+            this.createDescriptions(buildings);
+        };
+    
 
     componentDidUpdate(prevProps, prevState) {
         // eslint-disable-next-line react/prop-types
@@ -69,25 +91,39 @@ class Map extends Component {
     }
 
     // Adds utility usage to building description
-    createDescriptions(utility) {
+    createDescriptions() {
         // Create a clone of our initial buildings state
         let buildingsCopy = _.cloneDeep(this.state.buildings);
-        for (var i = 0; i < this.state.usageData.length; i++) {
-            // Check if utility data exists for specific building code
-            if (buildingsCopy.find(o => o.buildingCode === this.state.usageData[i].buildingCode)) {
-                var buildingMatch = buildingsCopy.find(o => o.buildingCode === this.state.usageData[i].buildingCode);
-                if (utility === 0) {
-                    buildingMatch.description += "\nElectric usage: ";
-                } else if (utility === 1) {
-                    buildingMatch.description += "\nGas usage: ";
-                } else if (utility === 2) {
-                    buildingMatch.description += "\nSolar usage: ";
-                } else {
-                    buildingMatch.description += "\nSteam usage: ";
+        console.log(buildingsCopy);
+        for(const bCode of Object.keys(this.state.buildings) ){
+            let building = buildingsCopy[bCode];
+            let usages = building.usages;
+            building.usageDesc = "";
+
+            for(const usageKey of Object.keys(usages)){
+                let usage = usages[usageKey];
+                switch(usageKey){
+                    case "1":
+                        building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
+                        break;
+                    case "2":
+                        building.usageDesc += `Electric: ${usage.usage} kBTU <br/>`;
+                        break;
+
+                    case "3":
+                        building.usageDesc += `Steam: ${usage.usage} kBTU <br/>`;
+                        break;
+                    case "4":
+                        building.usageDesc += `Geothermal: ${usage.usage} kBTU <br/>`;
+                        break;
+                    case "5":
+                        building.usageDesc += `Solar: ${usage.usage}\n kBTU <br/>`;
+                        break;
+
                 }
-                buildingMatch.description += this.state.usageData[i].utilityUsage.toString();
             }
         }
+        console.log(buildingsCopy);
         this.createPins(buildingsCopy);
     }
 
@@ -97,8 +133,8 @@ class Map extends Component {
         // Create empty array for building pins and info boxes
         var pinArray = [];
         var infoBoxArray = [];
-        for (let i = 0; i < buildings.length; i++) {
-            var building = buildings[i];
+        for (const key of Object.keys(buildings)) {
+            var building = buildings[key];
             let location;
             if (building.xCoord != null && building.yCoord != null) {
                 location = new window.Microsoft.Maps.Location(building.xCoord, building.yCoord);
@@ -108,7 +144,7 @@ class Map extends Component {
 
             if (location) {
                 // If there is utility data for the building add it to the info box and color the pin
-                if ('description' in building) {
+                if (Object.keys(building.usageDesc).length > 0) {
                     pin = new window.Microsoft.Maps.Pushpin(location,
                         {
                             color: 'blue',
@@ -116,7 +152,7 @@ class Map extends Component {
                     infoBox = new window.Microsoft.Maps.Infobox(location,
                         {
                             title: building.buildingName,
-                            description: building.description,
+                            description: building.usageDesc,
                             visible: false
                         }
                     );
