@@ -100,13 +100,14 @@ class Map extends Component {
     // and event handler for each building. Infobox displays each building's usage info
     createPins(buildings) {
         const infoBoxTemplate = '<div id="infoboxText" style="background-color:White; border-style:solid; ' +
-            'border-width:medium; border-color:DarkOrange; min-height:100px; width: 240px;">' +
+            'border-width:medium; border-color:DarkOrange; min-height:100px;  width: 240px;">' +
             '<b id="infoboxTitle" style="position: absolute; top: 10px; left: 10px; width: 220px;">{title}</b>' +
-            '<a id="infoboxDescription" style="position: absolute; top: 30px; left: 10px; width: 220px;">{description}</a></div>';
+            '<a id="infoboxDescription" style="position: absolute; top: 50px; left: 10px; width: 220px;">{description} kBTUs</a></div>';
 
         // Create empty array for building pins and info boxes
         var pinArray = [];
         var infoBoxArray = [];
+        var showing = [];
         for (let i = 0; i < buildings.length; i++) {
             var building = buildings[i];
             let location;
@@ -134,12 +135,13 @@ class Map extends Component {
                     pin = new window.Microsoft.Maps.Pushpin(location, { color: 'gray' });
                     infoBox = new window.Microsoft.Maps.Infobox(location,
                         {
-                            htmlContent: infoBoxTemplate.replace('{title}', building.buildingName).replace('{description}', 'no data'),
+                            htmlContent: infoBoxTemplate.replace('{title}', building.buildingName).replace('{description}', '0'),
                             showCloseButton: true,
                             visible: false
                         }
                     );
                 }
+                showing.push(false);
                 pinArray.push(pin);
                 infoBoxArray.push(infoBox);
             }
@@ -147,7 +149,13 @@ class Map extends Component {
         // Create event handler for each pin/infobox and add them to the map
         for (let i = 0; i < pinArray.length; i++) {
             window.Microsoft.Maps.Events.addHandler(pinArray[i], 'click', function () {
-                infoBoxArray[i].setOptions({ visible: true });
+                if(showing[i] == false) {
+                    infoBoxArray[i].setOptions({visible: true});
+                    showing[i] = true;
+                } else{
+                    infoBoxArray[i].setOptions({visible: false});
+                    showing[i] = false;
+                }
             });
             infoBoxArray[i].setMap(this.state.map.current);
             this.state.map.current.entities.push(pinArray[i]);
