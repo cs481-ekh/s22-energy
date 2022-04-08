@@ -187,11 +187,10 @@ public class SheetValidator<T> {
      * @param column - column of the cell that we are validating
      * @param format - The date format to parse the string
      * @param date - The string representation of the date
-     * @param item - Item to add to the error.
      * @param direction - The direction that the propagating error should be applied (row or column)
      * @return If parse was successful returns timestamp otherwise returns null.
      */
-    public Timestamp validateTimestamp(int row, int column, DateFormat format, String date, T item, SheetErrorData.Direction direction) {
+    public Timestamp validateTimestamp(int row, int column, DateFormat format, String date, SheetErrorData.Direction direction) {
         Timestamp stamp = null;
         try {
             Date time = format.parse(date);
@@ -200,7 +199,7 @@ public class SheetValidator<T> {
             ErrorType type = new NoBuildingCodeError(ErrorType.Severity.CRITICAL, date);
             Cell<String> errorCell = new Cell<>(row, column, format.toString());
             Error<T> timeError = new SheetError<T>(errorCell, type, true, direction);
-            manager.addError(timeError, item);
+            manager.addError(timeError);
         }
         return stamp;
     }

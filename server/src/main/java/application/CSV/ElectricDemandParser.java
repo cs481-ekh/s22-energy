@@ -6,6 +6,7 @@ import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.BuildingRepo;
 import ErrorManagement.Error;
+import application.EnergyConverter;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -104,16 +105,16 @@ public class ElectricDemandParser extends CsvParser {
 
         // Read row by row
         while ((rowData = reader.readNext()) != null) {
-            Usage usage = new Usage();
             int lines = (int) reader.getLinesRead();
 
             // Date/timestamp is always at index 0
             String date = rowData[DATE_COLUMN];
-            DateFormat format = new SimpleDateFormat("MM/dd/yy");
-            Timestamp stamp = sheetValidator.validateTimestamp(lines, DATE_COLUMN + 1, format, date, usage, SheetErrorData.Direction.ROW);
+            DateFormat format = new SimpleDateFormat("MM/dd/yy HH:mm");
+            Timestamp stamp = sheetValidator.validateTimestamp(lines, DATE_COLUMN + 1, format, date, SheetErrorData.Direction.ROW);
 
             // Read column by column starting after the date field
             for (int i = 1; i < rowData.length; i++) {
+                Usage usage = new Usage();
                 usage.timestamp = stamp;
                 Building building = headersMap.get(i);
                 String buildingCode = building.buildingCode;
@@ -129,6 +130,7 @@ public class ElectricDemandParser extends CsvParser {
                     if (!data.equals("") && !data.equals("NULL")) {
                         Double utilityUsage = sheetValidator.validateDouble(lines, currentColumn, data, usage);
                         BigDecimal result = new BigDecimal(utilityUsage);
+                        result = EnergyConverter.kWhToKbtu(result);
                         usage.utilityUsage = result;
                     }
                     manager.applyErrors(lines, currentColumn, usage);
