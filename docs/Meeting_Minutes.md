@@ -1,3 +1,20 @@
+## 4/8/22 10:00 AM Sponsor Update
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Gave Brian a demo of our projects new features (map filtering, admin login)
+   - Discussed what final features should be added:
+      - Fix filtering bugs
+      - Add dynamically created color coordinated pins ("reverse rainbow" color scheme)
+      - Implement toggle to change between absolute and per square foot energy usage
+      - Add security to login
+      - Add example images of what each data types CSV format should look like
+      - Add project to SDP server
+      - Create project handoff that clearly documents our project for next team
+   - Set up date for another check in and demo (4/25/22 at 12:30pm)
+   
+</p>
+
 ## 4/7/22 9:00 AM Morning Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
