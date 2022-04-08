@@ -61,6 +61,7 @@ public class SolarParser extends CsvParser {
         while ((row = reader.readNext()) != null) {
             var usage = new Usage();
             errorGroup.setUsage(usage);
+            usage.utilityID = utilityID;
             boolean successfulRow = true;
 
             // grab the date from the row, parse it, and add it to the usage object
@@ -95,7 +96,7 @@ public class SolarParser extends CsvParser {
                     successfulRow = false;
                 }
             }
-
+            usage.buildingCode = "298";
             // check for row success and store it appropriately
             if (successfulRow)
                 response.addSuccess(usage);

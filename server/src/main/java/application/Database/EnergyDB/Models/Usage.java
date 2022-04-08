@@ -37,9 +37,13 @@ public class Usage {
 	@Column(name = "cost", nullable = true)
 	public BigDecimal cost;
 
+	@Column(name = "premise_id", nullable = true)
+	public Long premiseID;
+
 	public Usage(){
 		utilityUsage = new BigDecimal(0);
 		cost = new BigDecimal(0);
 		buildingCode = "0";
+		premiseID = Long.valueOf(0);
 	}
 }

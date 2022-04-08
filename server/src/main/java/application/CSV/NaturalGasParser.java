@@ -118,6 +118,7 @@ public class NaturalGasParser extends CsvParser {
             long premiseId = -1;
             try {
                 premiseId = Long.parseLong(row[PREMISE]);
+                usage.premiseID = premiseId;
             } catch (Exception e) {
                 String errorMessage = "Failed to parse PremiseID on row " + reader.getLinesRead();
                 //logger.error(errorMessage);
