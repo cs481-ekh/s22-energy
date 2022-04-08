@@ -7,32 +7,6 @@ const credentials = `Basic ${Buffer.from(`${userName}:${password}`).toString('ba
 import  { Buffer } from 'buffer';
 let remoteFunctions = {
   /**
-   * Retrieves list of buildings from server.
-   * @returns list of buildings
-   */
-  async getBuildings() {
-    let responseJson = {};
-    try {
-      const requestOptions = {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          Authorization: credentials
-        },
-      };
-      const response = await fetch(
-        `http://localhost:${serverPort}/building`,
-        requestOptions
-      );
-      responseJson = await response.json();
-      return responseJson;
-    } catch (err) {
-      console.log(err);
-    }
-    return responseJson;
-  },
-
-  /**
    * Returns usage from the database
    * @param {*} startDate - Start date to retrieve usage
    * @param {*} endDate - End date to retrieve usage

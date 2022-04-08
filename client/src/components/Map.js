@@ -5,7 +5,7 @@ import SideDrawer from "./SideDrawer";
 import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
-const _ = require("lodash");
+//const _ = require("lodash");
 
 class Map extends Component {
     constructor(props) {
@@ -16,8 +16,7 @@ class Map extends Component {
             endDate: new Date(),
             startDate: prevMonth,
             utilTypes: [0, 1, 2, 3],
-            usageData: [],
-            buildings: [],
+            buildingData: {},
             map: React.createRef()
         };
         this.boundStart = this.modifyStartDate.bind(this);
@@ -28,7 +27,6 @@ class Map extends Component {
     // Create a function to modify start date state.
     modifyStartDate(value) {
         this.setState({ startDate: value });
-        
     }
 
     // Provide a function for our functional components to modify state.
@@ -47,89 +45,92 @@ class Map extends Component {
      * @param {*} endDate - New end date.
      * @param {*} utilTypes - New utility types
      */
-    updateMapUsage = async (startDate, endDate, utilTypes) => {
-        let newUsageData = [];
-        for (let i = 0; i < utilTypes.length; i++) {
-            const responseJson = await remoteFunctions.getUsage(startDate, endDate, utilTypes[i]);
-            responseJson.forEach(building => newUsageData.push({
-                buildingCode: building.buildingCode,
-                utilityUsage: building.utilityUsage
-            }));
-            this.setState({ usageData: newUsageData });
-            this.createDescriptions(utilTypes[i]);
+    updateMapUsage = async (startDate, endDate) => {
+        let newBuildingData = {};
+        for (let i = 0; i < this.state.utilTypes.length; i++) {
+            const responseJson = await remoteFunctions.getUsage(startDate, endDate, this.state.utilTypes[i]);
+            let newUsageData = responseJson[i];
+            for (let j = 0; j < newUsageData.length; j++) {
+                let code = newUsageData[j].buildingCode;
+                let usageInfo = newUsageData[j].utilityUsage;
+                if (!(code in newBuildingData)) {
+                    let buildingInfo = newUsageData[j].building;
+                    newBuildingData[code] = {};
+                    newBuildingData[code].building = buildingInfo;
+                    newBuildingData[code].usageData = {};
+                    newBuildingData[code].usageData[i] = usageInfo;
+                } else {
+                    newBuildingData[code].usageData[i] += usageInfo;
+                }
+            }
+            console.log(newBuildingData);
         }
+        this.setState({ buildingData: newBuildingData });
+        this.createPins();
     };
 
     componentDidUpdate(prevProps, prevState) {
         // eslint-disable-next-line react/prop-types
-        if (prevState.startDate.getTime() !== this.state.startDate.getTime() || prevState.endDate.getTime() !== this.state.endDate.getTime() || prevState.utilTypes !== this.state.utilTypes) {
+        if (prevState.startDate.getTime() !== this.state.startDate.getTime() || prevState.endDate.getTime() !== this.state.endDate.getTime()) {
             this.state.map.current.entities.clear();
             this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.utilTypes);
+        } else if (prevState.utilTypes !== this.state.utilTypes) {
+            this.state.map.current.entities.clear();
+            this.createPins();
         }
-    }
-
-    // Adds utility usage to building description
-    createDescriptions(utility) {
-        // Create a clone of our initial buildings state
-        let buildingsCopy = _.cloneDeep(this.state.buildings);
-        for (var i = 0; i < this.state.usageData.length; i++) {
-            // Check if utility data exists for specific building code
-            if (buildingsCopy.find(o => o.buildingCode === this.state.usageData[i].buildingCode)) {
-                var buildingMatch = buildingsCopy.find(o => o.buildingCode === this.state.usageData[i].buildingCode);
-                if (utility === 0) {
-                    buildingMatch.description += "\nElectric usage: ";
-                } else if (utility === 1) {
-                    buildingMatch.description += "\nGas usage: ";
-                } else if (utility === 2) {
-                    buildingMatch.description += "\nSolar usage: ";
-                } else {
-                    buildingMatch.description += "\nSteam usage: ";
-                }
-                buildingMatch.description += this.state.usageData[i].utilityUsage.toString();
-            }
-        }
-        this.createPins(buildingsCopy);
     }
 
     // Adds buildings from buildingData to the map by creating a location, pin, infobox
     // and event handler for each building. Infobox displays each building's usage info
-    createPins(buildings) {
+    createPins() {
         // Create empty array for building pins and info boxes
-        var pinArray = [];
-        var infoBoxArray = [];
-        for (let i = 0; i < buildings.length; i++) {
-            var building = buildings[i];
-            let location;
-            if (building.xCoord != null && building.yCoord != null) {
-                location = new window.Microsoft.Maps.Location(building.xCoord, building.yCoord);
-            }
-            var pin;
-            var infoBox;
+        let pinArray = [];
+        let infoBoxArray = [];
 
-            if (location) {
-                // If there is utility data for the building add it to the info box and color the pin
-                if ('description' in building) {
-                    pin = new window.Microsoft.Maps.Pushpin(location,
-                        {
-                            color: 'blue',
-                        });
-                    infoBox = new window.Microsoft.Maps.Infobox(location,
-                        {
-                            title: building.buildingName,
-                            description: building.description,
-                            visible: false
-                        }
-                    );
-                } else {
-                    pin = new window.Microsoft.Maps.Pushpin(location, { color: 'gray' });
-                    infoBox = new window.Microsoft.Maps.Infobox(location,
-                        {
-                            title: building.buildingName,
-                            description: "no data",
-                            visible: false
-                        }
-                    );
+        for (const [key, value] of Object.entries(this.state.buildingData)) {
+            console.log(key);
+            let location;
+            if (value.building.xCoord != null && value.building.yCoord != null) {
+                location = new window.Microsoft.Maps.Location(value.building.xCoord, value.building.yCoord);
+            }
+            let pin;
+            let infoBox;
+            let description = "";
+            let total = 0;
+            for (let i = 0; i < this.state.utilTypes.length; i++) {
+                let usageValue = 0;
+                if (value.usageData[i]) {
+                    usageValue = value.usageData[i];
+                    total += value.usageData[i];
                 }
+                switch (i) {
+                    case 0:
+                        description += "Electric: " + usageValue + " kbtu<br/>";
+                        break;
+                    case 1:
+                        description += "Gas: " + usageValue + " kbtu<br/>";
+                        break;
+                    case 2:
+                        description += "Solar: " + usageValue + " kbtu<br/>";
+                        break;
+                    case 3:
+                        description += "Steam: " + usageValue + " kbtu<br/>";
+                        break;
+                }
+            }
+            description += "Combined: " + total + " kbtu<br/>";
+            if (location && (total > 0)) {
+                pin = new window.Microsoft.Maps.Pushpin(location,
+                    {
+                        color: 'blue',
+                    });
+                infoBox = new window.Microsoft.Maps.Infobox(location,
+                    {
+                        title: value.building.buildingName,
+                        description: description,
+                        visible: false
+                    }
+                );
                 pinArray.push(pin);
                 infoBoxArray.push(infoBox);
             }
@@ -148,8 +149,6 @@ class Map extends Component {
     async componentDidMount() {
         const mapRef = document.getElementById(this.props.id);
         this.state.map.current = await bingMapsAPI.waitGenerateMap(window, document, process.env.REACT_APP_API_KEY, mapRef);
-        const buildings = await remoteFunctions.getBuildings();
-        this.setState({ buildings: buildings });
         this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.utilTypes);
     }
     render() {
