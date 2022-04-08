@@ -15,7 +15,7 @@ class Map extends Component {
         this.state = {
             endDate: new Date(),
             startDate: prevMonth,
-            utilTypes: [0, 1, 2, 3],
+            utilTypes: [],
             buildingData: {},
             map: React.createRef()
         };
@@ -45,11 +45,12 @@ class Map extends Component {
      * @param {*} endDate - New end date.
      * @param {*} utilTypes - New utility types
      */
-    updateMapUsage = async (startDate, endDate) => {
+    updateMapUsage = async (startDate, endDate, utilTypes) => {
         let newBuildingData = {};
-        for (let i = 0; i < this.state.utilTypes.length; i++) {
-            const responseJson = await remoteFunctions.getUsage(startDate, endDate, this.state.utilTypes[i]);
-            let newUsageData = responseJson[i];
+        for (let i = 0; i < utilTypes.length; i++) {
+            console.log("Finding Data");
+            const responseJson = await remoteFunctions.getUsage(startDate, endDate, utilTypes[i]);
+            let newUsageData = responseJson[utilTypes[i]];
             for (let j = 0; j < newUsageData.length; j++) {
                 let code = newUsageData[j].buildingCode;
                 let usageInfo = newUsageData[j].utilityUsage;
@@ -58,9 +59,9 @@ class Map extends Component {
                     newBuildingData[code] = {};
                     newBuildingData[code].building = buildingInfo;
                     newBuildingData[code].usageData = {};
-                    newBuildingData[code].usageData[i] = usageInfo;
+                    newBuildingData[code].usageData[utilTypes[i]] = usageInfo;
                 } else {
-                    newBuildingData[code].usageData[i] += usageInfo;
+                    newBuildingData[code].usageData[utilTypes[i]] += usageInfo;
                 }
             }
             console.log(newBuildingData);
@@ -71,12 +72,9 @@ class Map extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         // eslint-disable-next-line react/prop-types
-        if (prevState.startDate.getTime() !== this.state.startDate.getTime() || prevState.endDate.getTime() !== this.state.endDate.getTime()) {
+        if (prevState.startDate.getTime() !== this.state.startDate.getTime() || prevState.endDate.getTime() !== this.state.endDate.getTime() || prevState.utilTypes !== this.state.utilTypes) {
             this.state.map.current.entities.clear();
             this.updateMapUsage(this.state.startDate, this.state.endDate, this.state.utilTypes);
-        } else if (prevState.utilTypes !== this.state.utilTypes) {
-            this.state.map.current.entities.clear();
-            this.createPins();
         }
     }
 
@@ -99,11 +97,11 @@ class Map extends Component {
             let total = 0;
             for (let i = 0; i < this.state.utilTypes.length; i++) {
                 let usageValue = 0;
-                if (value.usageData[i]) {
-                    usageValue = value.usageData[i];
-                    total += value.usageData[i];
+                if (value.usageData[this.state.utilTypes[i]]) {
+                    usageValue = value.usageData[this.state.utilTypes[i]];
+                    total += value.usageData[this.state.utilTypes[i]];
                 }
-                switch (i) {
+                switch (this.state.utilTypes[i]) {
                     case 0:
                         description += "Electric: " + usageValue + " kbtu<br/>";
                         break;
@@ -118,7 +116,7 @@ class Map extends Component {
                         break;
                 }
             }
-            description += "Combined: " + total + " kbtu<br/>";
+            description += "Total: " + total + " kbtu<br/>";
             if (location && (total > 0)) {
                 pin = new window.Microsoft.Maps.Pushpin(location,
                     {
