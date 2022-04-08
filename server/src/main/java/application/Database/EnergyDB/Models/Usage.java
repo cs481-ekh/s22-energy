@@ -40,6 +40,10 @@ public class Usage {
 	@Column(name = "premise_id", nullable = true)
 	public Long premiseID;
 
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "building_code", insertable = false, updatable = false)
+	public Building building;
+
 	public Usage(){
 		utilityUsage = new BigDecimal(0);
 		cost = new BigDecimal(0);

@@ -1,3 +1,20 @@
+## 4/7/22 9:00 AM Morning Meeting
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Discussed what needed to get done before our meeting with Brian:
+      - Upload all utility data and verify it's working with both our backend and frontend
+      - Rework frontend utility filtering
+      - Upload should display when it's completed
+      - Create custom style for the building description cards
+      - Fix any bugs with our utility data parsers
+   - Tested adding natural gas and small electric data via our csv upload page:
+      - Natrual gas uploaded and displayed on map
+      - Small electric was incorrectly finding headers and needed to be changed
+      - Both did not upload completely
+   - Talked about adding SDP server
+</p>
+
 ## Sprint3 Retrospect
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
