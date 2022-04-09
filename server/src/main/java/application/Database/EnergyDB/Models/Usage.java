@@ -37,6 +37,9 @@ public class Usage {
 	@Column(name = "cost", nullable = true)
 	public BigDecimal cost;
 
+	@Column(name = "premise_id", nullable = true)
+	public Long premiseID;
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "building_code", insertable = false, updatable = false)
 	public Building building;
@@ -45,5 +48,6 @@ public class Usage {
 		utilityUsage = new BigDecimal(0);
 		cost = new BigDecimal(0);
 		buildingCode = "0";
+		premiseID = Long.valueOf(0);
 	}
 }

@@ -3,6 +3,7 @@ package application.CSV;
 import application.Database.EnergyDB.Models.Building;
 import application.Database.EnergyDB.Models.Usage;
 import application.Database.EnergyDB.Repo.JPARepository.PremiseRepo;
+import application.EnergyConverter;
 import application.Model.ErrorGroup;
 import application.Model.Response;
 import com.opencsv.exceptions.CsvValidationException;
@@ -93,14 +94,15 @@ public class SmallElectricParser extends CsvParser {
                     Integer dateColNum = headerMap.get("billperiodenddate");
                     endDate = getTimestamp(rowData[dateColNum], errorGroup, dateColNum);
                     usage.timestamp = endDate;
-                    Integer usageColNum = headerMap.get("kWhQty");
+                    Integer usageColNum = headerMap.get("kwhqty");
                     BigDecimal smallUsage = new BigDecimal(rowData[usageColNum]);
-                    BigDecimal usageKbtu = kWhToKbtu(smallUsage);
+                    BigDecimal usageKbtu = EnergyConverter.kWhToKbtu(smallUsage);
                     usage.utilityUsage = usageKbtu;
                     Integer billColNum = headerMap.get("billamount");
                     BigDecimal cost = new BigDecimal(rowData[billColNum]);
                     usage.cost = cost;
                     usage.utilityID = utilityID;
+                    usage.premiseID = premiseCode;
 
                     // add Aidan's Validation check for nulls or empty strings
                     response.addSuccess(usage);
