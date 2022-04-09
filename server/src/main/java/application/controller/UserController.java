@@ -27,8 +27,10 @@ public class UserController {
     UserRepo userRepo;
 
     /**
-     * Gets all the buildings from the buildings database
-     * @return list of usage that matched criteria.
+     * check whether a user/password pair exist in the database
+     * @param email
+     * @param password
+     * @return true if the pair exists, false if not
      */
     @GetMapping(value = "/login")
     public Boolean getUser(@RequestParam String email, @RequestParam String password){
@@ -37,7 +39,7 @@ public class UserController {
         Optional<User> user = Optional.of(new User());
         // Runs query on db
         user = userRepo.getUser(email, password);
-
+        
         User loginResult = new User();
 
         // Gets the result
