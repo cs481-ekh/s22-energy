@@ -81,66 +81,70 @@ class Map extends Component {
     // Adds buildings from buildingData to the map by creating a location, pin, infobox
     // and event handler for each building. Infobox displays each building's usage info
     createPins() {
-        // Create empty array for building pins and info boxes
-        let pinArray = [];
-        let infoBoxArray = [];
-
-        for (const [key, value] of Object.entries(this.state.buildingData)) {
-            console.log(key);
-            let location;
-            if (value.building.xCoord != null && value.building.yCoord != null) {
-                location = new window.Microsoft.Maps.Location(value.building.xCoord, value.building.yCoord);
-            }
-            let pin;
-            let infoBox;
-            let description = "";
-            let total = 0;
-            for (let i = 0; i < this.state.utilTypes.length; i++) {
-                let usageValue = 0;
-                if (value.usageData[this.state.utilTypes[i]]) {
-                    usageValue = value.usageData[this.state.utilTypes[i]];
-                    total += value.usageData[this.state.utilTypes[i]];
+        if (!this.state.buildingData.isEmpty) {
+            // Create empty array for building pins and info boxes
+            let pinArray = [];
+            let infoBoxArray = [];
+            console.log(Object.values(this.state.buildingData)[0].usageData);
+            let minUsage = Object.values(this.state.buildingData)[0].usageData;
+            let maxUsage = minUsage;
+            console.log("Min: " + minUsage + " Max: " + maxUsage);
+            for (const value in Object.values(this.state.buildingData)) {
+                //console.log(key);
+                let location;
+                let pin;
+                let infoBox;
+                let description = "";
+                let total = 0;
+                if (value.building.xCoord != null && value.building.yCoord != null) {
+                    location = new window.Microsoft.Maps.Location(value.building.xCoord, value.building.yCoord);
                 }
-                switch (this.state.utilTypes[i]) {
-                    case 0:
-                        description += "Electric: " + usageValue + " kbtu<br/>";
-                        break;
-                    case 1:
-                        description += "Gas: " + usageValue + " kbtu<br/>";
-                        break;
-                    case 2:
-                        description += "Solar: " + usageValue + " kbtu<br/>";
-                        break;
-                    case 3:
-                        description += "Steam: " + usageValue + " kbtu<br/>";
-                        break;
-                }
-            }
-            description += "Total: " + total + " kbtu<br/>";
-            if (location && (total > 0)) {
-                pin = new window.Microsoft.Maps.Pushpin(location,
-                    {
-                        color: 'blue',
-                    });
-                infoBox = new window.Microsoft.Maps.Infobox(location,
-                    {
-                        title: value.building.buildingName,
-                        description: description,
-                        visible: false
+                this.state.utilTypes.forEach((utility) => {
+                    let usageValue = 0;
+                    if (value.usageData[utility]) {
+                        usageValue = value.usageData[utility];
+                        total += value.usageData[utility];
                     }
-                );
-                pinArray.push(pin);
-                infoBoxArray.push(infoBox);
+                    switch (utility) {
+                        case 0:
+                            description += "Electric:" + usageValue + " kbtu<br/>";
+                            break;
+                        case 1:
+                            description += "Gas: " + usageValue + " kbtu<br/>";
+                            break;
+                        case 2:
+                            description += "Solar: " + usageValue + " kbtu<br/>";
+                            break;
+                        case 3:
+                            description += "Steam: " + usageValue + " kbtu<br/>";
+                            break;
+                    }
+                });
+                description += "Total: " + total + " kbtu<br/>";
+                if (location && (total > 0)) {
+                    pin = new window.Microsoft.Maps.Pushpin(location,
+                        {
+                            color: 'blue',
+                        });
+                    infoBox = new window.Microsoft.Maps.Infobox(location,
+                        {
+                            title: value.building.buildingName,
+                            description: description,
+                            visible: false
+                        }
+                    );
+                    pinArray.push(pin);
+                    infoBoxArray.push(infoBox);
+                }
             }
-        }
-        // Create event handler for each pin/infobox and add them to the map
-        for (let i = 0; i < pinArray.length; i++) {
-            window.Microsoft.Maps.Events.addHandler(pinArray[i], 'click', function () {
-                infoBoxArray[i].setOptions({ visible: true });
-            });
-            infoBoxArray[i].setMap(this.state.map.current);
-            this.state.map.current.entities.push(pinArray[i]);
-
+            // Create event handler for each pin/infobox and add them to the map
+            for (let i = 0; i < pinArray.length; i++) {
+                window.Microsoft.Maps.Events.addHandler(pinArray[i], 'click', function () {
+                    infoBoxArray[i].setOptions({ visible: true });
+                });
+                infoBoxArray[i].setMap(this.state.map.current);
+                this.state.map.current.entities.push(pinArray[i]);
+            }
         }
     }
 
