@@ -34,8 +34,8 @@ services:
       POSTGRES_PASSWORD: postgresondockerpassword
       POSTGRES_DB: postgresondockerdb
 
-  frontend_and_backend:
-    image: fe_and_be
+  frontend-and-backend-container:
+    image: frontend_and_backend
     restart: always
     ports:
       - 3000:3000
