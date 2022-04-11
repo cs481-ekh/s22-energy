@@ -82,7 +82,7 @@ public class FileController {
                     // Read data from the data source.
                     response = source.readData();
                 } catch (Exception ex) {
-                    logger.error("Error uploading" + fileDir + " " + ex.getMessage());
+                    logger.error("Error uploading " + fileDir + " " + ex.getMessage());
                 }
                 // Upload succesful usages.
                 for (Usage u : response.getSuccess()) {

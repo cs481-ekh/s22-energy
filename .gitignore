@@ -36,3 +36,4 @@ server/src/main/main.iml
 server/src/test/test.iml
 *logs/*
 uploads/*
+*/downloads/*
