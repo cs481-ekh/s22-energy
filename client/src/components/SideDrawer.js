@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -9,13 +10,14 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 //import MenuIcon from '@mui/icons-material/Menu';
-import { ChevronLeft, ChevronRight, ElectricalServices, PropaneTank, SolarPower, Factory } from '@mui/icons-material';
+import { ChevronLeft, ChevronRight, ElectricalServices, PropaneTank, SolarPower, Factory, LightMode, FilterAlt} from '@mui/icons-material';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import {Checkbox, ListItemButton} from "@mui/material";
+import {Checkbox, ListItemButton, Container} from "@mui/material";
 import Button from "@mui/material/Button";
 import DateComponent from "./DatePicker";
+import remoteFunctions from '../remote';
 
 const drawerWidth = 240;
 
@@ -31,31 +33,59 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 
-const filters = [
-    { icon: <ElectricalServices sx={{ color: "#E87121" }} />, label: 'Electric' },
-    { icon: <PropaneTank sx={{ color: "#E87121" }} />, label: 'Gas' },
-    { icon: <SolarPower sx={{ color: "#E87121" }} />, label: 'Solar' },
-    { icon: <Factory sx={{ color: "#E87121" }} />, label: 'Steam' },
-];
+let filters = {
+    "electric": { icon: <ElectricalServices sx={{ color: "#E87121" }} />, label: 'Electric'},
+    "natural_gas": { icon: <PropaneTank sx={{ color: "#E87121" }} />, label: 'Gas'},
+    "solar":{ icon: <SolarPower sx={{ color: "#E87121" }} />, label: 'Solar'},
+    "steam": { icon: <Factory sx={{ color: "#E87121" }} />, label: 'Steam'},
+    "geothermal": {icon: <LightMode sx={{color: "#E87121"}}/>, label: 'Geothermal'}
+};
 
 // eslint-disable-next-line react/prop-types
-export default function SideDrawer({startDate, setStartDate, endDate, setEndDate, utilTypes, setUtilTypes}) {
+export default function SideDrawer({startDate, setStartDate, endDate, setEndDate, setUtilTypes}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [checked, setChecked] = React.useState(utilTypes);
+    const [utilities, setUtilities] = React.useState([]);
+  
+    React.useEffect(async () => {
+        let utilityList = [];
+        let utilIDs = [];
+        let dbUtilities = await remoteFunctions.getUtlities();
+
+        for(const utility of dbUtilities){
+            let name = utility.utilityType;
+            let id = utility.utilityID;
+            utilIDs.push(id);
+            let pushItem = {};
+            if(filters[name]){
+                pushItem = filters[name];
+                filters[name].selected = true;
+                filters[name].id = id;
+                pushItem.id = id;
+            }
+            else{
+                pushItem = {icon: <FilterAlt sx={{ color: "#E87121" }} />, 
+                label: name, 
+                id: id, 
+                selected: true};
+            }
+            utilityList.push(pushItem);
+        }
+        setUtilities(utilityList);
+        setUtilTypes(utilIDs);
+    }, []);
 
     const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
+       let listCopy = [...utilities];
+       let item = listCopy.filter((item) => item.id === value.id);
+       if(item){
+           item[0].selected = !item[0].selected;
+       }
+       setUtilities(listCopy);
 
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        setUtilTypes(newChecked);
-        setChecked(newChecked);
+       let selectedUtilities = listCopy.filter((item) => item.selected);
+       let ids = selectedUtilities.map((item) => item.id);
+       setUtilTypes(ids);
     };
 
     const handleDrawerOpen = () => {
@@ -107,29 +137,34 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
-                    <DateComponent
+                  <Container>
+                    
+                  <DateComponent
+                        sx={{ width: '100%', bgcolor: 'background.paper' }}
                         startDate={startDate}
                         setStartDate={setStartDate}
                         endDate={endDate}
                         setEndDate={setEndDate}
                     />
                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                        {filters.map((value, index) => {
-                            const labelId = `checkbox-list-label-${index}`;
+                        {utilities.map((value) => {
+                            const labelId = `checkbox-list-label-${value.id}`;
                             return (
                                 <ListItem
-                                    key={index}
-                                    disablePadding
+                                    key={value.id}
+                                    disablePadding = {true}
                                 >
-                                    <ListItemButton onClick={handleToggle(index)} dense>
+                                    <ListItemButton onClick={handleToggle(value)} dense
+                                    sx={{pl:0}}>
                                         <ListItemIcon>
                                             {value.icon}
-                                            <ListItemText id={labelId} primary={`${value.label}`} sx={{ pl:"5px" }}/>
+                                            <ListItemText id={labelId} primary={`${value.label}`} sx={{ pl:"10px" }}/>
                                         </ListItemIcon>
                                     </ListItemButton>
                                     <Checkbox
-                                        onClick={handleToggle(index)}
-                                        checked={checked.indexOf(index) !== -1}
+                                        sx={{pl: 0, pr:0}}
+                                        onClick={handleToggle(value)}
+                                        checked={value.selected === true}
                                         tabIndex={-1}
                                         disableRipple
                                         inputProps={{ 'aria-labelledby': labelId }}
@@ -138,6 +173,7 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                             );
                         })}
                     </List>
+                    </Container>
                 <Divider />
             </Drawer>
         </Box>
