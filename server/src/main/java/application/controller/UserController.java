@@ -33,18 +33,16 @@ public class UserController {
      * @return true if the pair exists, false if not
      */
     @GetMapping(value = "/login")
-    public Boolean getUser(@RequestParam String email, @RequestParam String password){
-        Boolean response = null;
-
-        Optional<User> user = Optional.of(new User());
-        // Runs query on db
-        user = userRepo.getUser(email, password);
+    public boolean getUser(@RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException {
+        // try to get the user from the database, if they exist
+        Optional<User> user = userRepo.getUser(email, hashPassword(password));
         
-        User loginResult = new User();
+        // User loginResult = new User();
 
         // Gets the result
+        boolean response;
         if (user.isPresent()) {
-            loginResult = user.get();
+            // loginResult = user.get();
             response = true;
         } else {
             response = false;
@@ -53,15 +51,29 @@ public class UserController {
         return response;
     }
 
+    @GetMapping(value = "/signup")
+    public boolean addAdmin(@RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException {
+        // add the new admin user to the database
+        System.out.println("Adding new admin user: " + email);
+        userRepo.save(new User(email, hashPassword(password), true));
+
+        // confirm the user was added, and return the response
+        boolean result = getUser(email, hashPassword(password));
+        if (result)
+            System.out.println("Successfully added new admin user: " + email);
+        else
+            System.out.println("Failed to add new admin user: " + email);
+        return result;
+    }
+
 
     // hash the password
-    private String hashPassword(String password, String email) throws NoSuchAlgorithmException {
-        // hash the email to generate a unique salt for every user
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] salt = md.digest(email.getBytes(StandardCharsets.UTF_8));
+    private String hashPassword(String password) throws NoSuchAlgorithmException {
+        // randomly generated salt
+        String salt = "PT0zs3AhIpB8CqCJCxcG";
 
         // hash the password with the appended salt
         PasswordEncoder pe = new BCryptPasswordEncoder();
-        return pe.encode(password + salt.toString());
+        return pe.encode(password + salt);
     }
 }
