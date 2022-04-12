@@ -115,6 +115,11 @@ class Map extends Component {
     }
   }
 
+  // Helper method to determine pin colors
+  between(x, min, max) {
+    return x >= min && x <= max;
+  }
+
   // Adds utility usage to building description
   createDescriptions() {
     // Create a clone of our initial buildings state
@@ -123,10 +128,34 @@ class Map extends Component {
       let building = buildingsCopy[bCode];
       let usages = building.usages;
       building.usageDesc = "";
+      building.color = "gray";
+      let min = this.state.minUsage;
+      let max = this.state.maxUsage;
+      let range = max - min;
+      let lowUsage = (range * .25);
+      let mediumUsage = (range * .5);
+      let highUsage = (range * .75);
       
-      // Determines description based off id.
+      // Determines description and color based off id.
       for (const usageKey of Object.keys(usages)) {
         let usage = usages[usageKey];
+
+        // Determine color
+        if (this.between(usage.usage, min, lowUsage)) {
+          console.log("True!");
+          building.color = "blue";
+        } else if (this.between(usage.usage, lowUsage, mediumUsage)) {
+          console.log("True!");
+          building.color = "purple";
+        } else if (this.between(usage.usage, mediumUsage, highUsage)) {
+          console.log("True!");
+          building.color = "yellow";
+        } else if (this.between(usage.usage, highUsage, max)) {
+          console.log("True!");
+          building.color = "red";
+        }
+
+        // Determine description
         switch (usageKey) {
           case "1":
             building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
@@ -171,7 +200,7 @@ class Map extends Component {
         // If there is utility data for the building add it to the info box and color the pin
         if (Object.keys(building.usageDesc).length > 0) {
           pin = new window.Microsoft.Maps.Pushpin(location, {
-            color: "blue",
+            color: building.color,
           });
           infoBox = new window.Microsoft.Maps.Infobox(location, {
             title: building.buildingName,
