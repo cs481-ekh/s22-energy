@@ -18,6 +18,8 @@ class Map extends Component {
       utilTypes: [],
       usageData: [],
       buildings: [],
+      minUsage: 0,
+      maxUsage: 0,
       map: React.createRef(),
     };
     this.boundStart = this.modifyStartDate.bind(this);
@@ -80,6 +82,13 @@ class Map extends Component {
                 cost: usages.cost,
               };
             }
+          }
+          // Update min and max
+          if (usages.utilityUsage > this.state.maxUsage) {
+            this.setState( {maxUsage: usages.utilityUsage});
+          }
+          if (usages.utilityUsage < this.state.minUsage || this.state.minUsage === 0) {
+            this.setState( {minUsage: usages.utilityUsage});
           }
         }
       }
