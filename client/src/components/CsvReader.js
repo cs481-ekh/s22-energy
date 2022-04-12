@@ -13,9 +13,10 @@ import Avatar from "@mui/material/Avatar";
 import UploadIcon from '@mui/icons-material/Upload';
 import Typography from "@mui/material/Typography";
 import remoteFunctions from "../remote";
+import {withAuthenticationRequired} from "@auth0/auth0-react";
 const theme = createTheme();
 
-const utils = ['non', 'Gas', 'Electric', 'Steam', 'Geothermal', 'Solar'];
+const utils = ['non', 'Gas', 'Electric', 'Steam', 'Geothermal', 'Solar', 'Geothermal'];
 
 function CsvReader() {
   const { readString } = usePapaParse();
@@ -100,4 +101,7 @@ function CsvReader() {
   );
 }
 
-export default CsvReader;
+export default withAuthenticationRequired(CsvReader, {
+
+});
+

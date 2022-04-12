@@ -11,11 +11,12 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from "react-router";
 import remoteFunctions from '../remote';
+import {withAuthenticationRequired} from "@auth0/auth0-react";
 
 
 
 const theme = createTheme();
-export default function SignIn() {
+function SignIn() {
     const initialValues = { email: "", password: ""};
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -134,3 +135,6 @@ export default function SignIn() {
         </ThemeProvider>
     );
 }
+export default withAuthenticationRequired(SignIn, {
+
+});
