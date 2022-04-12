@@ -36,19 +36,9 @@ public class UserController {
     public boolean getUser(@RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException {
         // try to get the user from the database, if they exist
         Optional<User> user = userRepo.getUser(email, hashPassword(password));
-        
-        // User loginResult = new User();
 
-        // Gets the result
-        boolean response;
-        if (user.isPresent()) {
-            // loginResult = user.get();
-            response = true;
-        } else {
-            response = false;
-        }
-
-        return response;
+        // return the result
+        return user.isPresent();
     }
 
     @GetMapping(value = "/signup")
