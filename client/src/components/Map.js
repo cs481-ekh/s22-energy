@@ -153,23 +153,20 @@ class Map extends Component {
         let min = this.state.usageBounds[usageKey].min;
         let max = this.state.usageBounds[usageKey].max;
         let range = max - min;
-        let lowUsage1 = (range * .08);
-        let lowUsage2 = (range * .16);
-        let lowUsage3 = (range * .25);
+        let lowerUsage = (range * .15);
+        let lowUsage = (range * .25);
         let mediumUsage = (range * .5);
         let highUsage = (range * .75);
 
         // Determine color
-        if (this.between(usage.usage, min, lowUsage1)) {
-          building.color = "#8ecae6";
-        } else if (this.between(usage.usage, lowUsage1, lowUsage2)) {
-          building.color = "#219ebc";
-        } else if (this.between(usage.usage, lowUsage2, lowUsage3)) {
-          building.color = "#023047";
-        } else if (this.between(usage.usage, lowUsage3, mediumUsage)) {
-          building.color = "#ffb703";
+        if (this.between(usage.usage, min, lowerUsage)) {
+          building.color = "#0486D8";
+        } else if (this.between(usage.usage, lowerUsage, lowUsage)) {
+          building.color = "#83B347";
+        } else if (this.between(usage.usage, lowUsage, mediumUsage)) {
+          building.color = "#ffbd28";
         } else if (this.between(usage.usage, mediumUsage, highUsage)) {
-          building.color = "#fb8500";
+          building.color = "#E87121";
         } else if (this.between(usage.usage, highUsage, max)) {
           building.color = "#d62828";
         }
