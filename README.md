@@ -6,7 +6,7 @@
 In order to run this application you must have this software installed:
 </p>
 
-- JDK 17+ (Make sure your jDK is greater than 17 or the project wont run)
+- JDK 17+ (Make sure your JDK is greater than 17 or the project wont run)
 - Node Package Manager/NodeJS 12+ (Install latest NodeJS for ease of use)
 
 <p>
