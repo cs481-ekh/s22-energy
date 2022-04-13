@@ -5,6 +5,8 @@ import SideDrawer from "./SideDrawer";
 import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
+import AlertFade from './AlertFade';
+import { Box } from '@mui/material';
 const _ = require("lodash");
 
 class Map extends Component {
@@ -18,11 +20,14 @@ class Map extends Component {
       utilTypes: [],
       usageData: [],
       buildings: [],
+      showAlert: false,
       map: React.createRef(),
+      slideContainer: React.createRef()
     };
     this.boundStart = this.modifyStartDate.bind(this);
     this.boundEnd = this.modifyEndDate.bind(this);
     this.boundUtil = this.modifyUtilTypes.bind(this);
+    this.boundAlert = this.modifyAlert.bind(this);
   }
 
   // Create a function to modify start date state.
@@ -33,6 +38,10 @@ class Map extends Component {
   // Provide a function for our functional components to modify state.
   modifyEndDate(value) {
     this.setState({ endDate: value });
+  }
+
+  modifyAlert(visible){
+    this.setState({showAlert: visible});
   }
 
   // Create function to modify utility types
@@ -170,16 +179,16 @@ class Map extends Component {
             description: building.usageDesc,
             visible: false,
           });
-        } else {
-          pin = new window.Microsoft.Maps.Pushpin(location, { color: "gray" });
-          infoBox = new window.Microsoft.Maps.Infobox(location, {
-            title: building.buildingName,
-            description: "no data",
-            visible: false,
-          });
-        }
-        pinArray.push(pin);
-        infoBoxArray.push(infoBox);
+          pinArray.push(pin);
+          infoBoxArray.push(infoBox);
+        } 
+      
+      }
+      if(pinArray.length === 0){
+        this.modifyAlert(true);
+      }
+      else{
+        this.modifyAlert(false);
       }
     }
     // Create event handler for each pin/infobox and add them to the map
@@ -212,8 +221,22 @@ class Map extends Component {
     );
   }
   render() {
+    const hideAlert = this.state.showAlert ? "" : "none";
     return (
       <>
+        <Box ref={this.state.slideContainer}>
+          <AlertFade 
+            open={this.state.showAlert}
+            setOpen={this.boundAlert}
+            containerRef={this.state.slideContainer}
+            sx={{position:"relative", display:hideAlert, zIndex: 1}}
+            severity={"warning"}
+            message={"Selected filters returned no results. Change date range or utility filters."}
+            >
+          
+          </AlertFade>
+        </Box>
+
         <SideDrawer
           startDate={this.state.startDate}
           setStartDate={this.boundStart}
