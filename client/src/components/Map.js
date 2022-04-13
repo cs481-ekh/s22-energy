@@ -46,7 +46,7 @@ class Map extends Component {
    * @param {*} endDate - New end date.
    * @param {*} utilTypes - New utility types
    */
-  updateMapUsage = async (startDate, endDate, utilTypes) => {
+  updateMapUsage = async (startDate, endDate) => {
     let buildingsResponse = await remoteFunctions.getBuildings();
     let buildings = {};
 
@@ -60,12 +60,10 @@ class Map extends Component {
     const responseJson = await remoteFunctions.getUsage(
       startDate,
       endDate,
-      utilTypes
     );
     
     // Goes through every key in the date range
     for (const key of Object.keys(responseJson)) {
-      if (key in utilTypes) {
         for (const usages of responseJson[key]) {
           const buildingCode = usages.building.buildingCode;
 
@@ -82,7 +80,6 @@ class Map extends Component {
             }
           }
         }
-      }
     }
     
     // Sets state.
@@ -94,15 +91,17 @@ class Map extends Component {
     // eslint-disable-next-line react/prop-types
     if (
       prevState.startDate.getTime() !== this.state.startDate.getTime() ||
-      prevState.endDate.getTime() !== this.state.endDate.getTime() ||
-      prevState.utilTypes !== this.state.utilTypes
+      prevState.endDate.getTime() !== this.state.endDate.getTime()
     ) {
       this.state.map.current.entities.clear();
       this.updateMapUsage(
         this.state.startDate,
         this.state.endDate,
-        this.state.utilTypes
       );
+    }
+    else if(prevState.utilTypes !== this.state.utilTypes){
+      this.state.map.current.entities.clear();
+      this.createDescriptions();
     }
   }
 
@@ -114,26 +113,28 @@ class Map extends Component {
       let building = buildingsCopy[bCode];
       let usages = building.usages;
       building.usageDesc = "";
-      
+
       // Determines description based off id.
-      for (const usageKey of Object.keys(usages)) {
-        let usage = usages[usageKey];
-        switch (usageKey) {
-          case "1":
-            building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
-            break;
-          case "2":
-            building.usageDesc += `Electric: ${usage.usage} kBTU <br/>`;
-            break;
-          case "3":
-            building.usageDesc += `Steam: ${usage.usage} kBTU <br/>`;
-            break;
-          case "4":
-            building.usageDesc += `Geothermal: ${usage.usage} kBTU <br/>`;
-            break;
-          case "5":
-            building.usageDesc += `Solar: ${usage.usage}\n kBTU <br/>`;
-            break;
+      for (const filteredUsage of this.state.utilTypes) {
+        if (usages[filteredUsage]) {
+          let usage = usages[filteredUsage];
+          switch (filteredUsage) {
+            case 1:
+              building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
+              break;
+            case 2:
+              building.usageDesc += `Electric: ${usage.usage} kBTU <br/>`;
+              break;
+            case 3:
+              building.usageDesc += `Steam: ${usage.usage} kBTU <br/>`;
+              break;
+            case 4:
+              building.usageDesc += `Geothermal: ${usage.usage} kBTU <br/>`;
+              break;
+            case 5:
+              building.usageDesc += `Solar: ${usage.usage}\n kBTU <br/>`;
+              break;
+          }
         }
       }
     }
@@ -208,7 +209,6 @@ class Map extends Component {
     this.updateMapUsage(
       this.state.startDate,
       this.state.endDate,
-      this.state.utilTypes
     );
   }
   render() {
