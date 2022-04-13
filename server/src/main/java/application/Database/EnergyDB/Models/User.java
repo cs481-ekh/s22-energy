@@ -10,6 +10,8 @@ import javax.persistence.*;
 @Entity
 @Table(schema = "public", name = "users")
 public class User {
+    protected User() {}
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", unique = true, insertable = false)
@@ -24,4 +26,9 @@ public class User {
     @Column(name = "admin", nullable = false)
     public Boolean admin;
 
+    public User(String email, String password, boolean admin) {
+        this.email = email;
+        this.password = password;
+        this.admin = admin;
+    }
 }

@@ -1,3 +1,22 @@
+## 4/12/22 9:00 AM Moring Meeting
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Aidan discussed running our project in a VM and documenting our 
+      deployment instructions in the README
+   - Victor updated us on hosting our project on the SDP server
+   - Going to get in contact with professor to clarify if docker images need to 
+      be running on SDP
+   - Jack updated us on user login changes and using a third party API "Auth0"
+   - Final additions to project:
+      - Color coded pins
+      - Switch for absolute vs. per square foot usage
+      - Example csv format images
+      - Add loading wheel to csv upload
+      - Filtering shouldn't pull from backend every time
+   
+</p>
+
 ## 4/8/22 10:00 AM Sponsor Update
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
