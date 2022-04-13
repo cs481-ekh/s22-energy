@@ -3,12 +3,15 @@ import "../Map.css";
 import PropTypes from 'prop-types';
 import SideDrawer from "./SideDrawer";
 import SDPSticker from "./SDPSticker";
-import remoteFunctions from '../remote';
+import remoteFunctions from '../modules/remote';
 import bingMapsAPI from '../modules/bingMapAPI';
 import AlertFade from './AlertFade';
 import { Box } from '@mui/material';
 const _ = require("lodash");
 
+/**
+ * Bing maps component
+ */
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -78,6 +81,8 @@ class Map extends Component {
 
           let building = buildings[buildingCode];
           if (building) {
+
+            // Calculate sum of usages for a building
             if (building.usages[key]) {
               building.usages[key].usage += usages.utilityUsage;
               building.usages[key].cost += usages.cost;
@@ -96,6 +101,13 @@ class Map extends Component {
     this.createDescriptions(buildings);
   };
 
+  /**
+   * Runs after a state change in the component
+   * Compares current/previous state and determines if we need to 
+   * load new data from server or update map.
+   * @param {*} prevProps - Previous property state
+   * @param {*} prevState - Previous state
+   */
   componentDidUpdate(prevProps, prevState) {
     // eslint-disable-next-line react/prop-types
     if (
@@ -182,8 +194,10 @@ class Map extends Component {
           pinArray.push(pin);
           infoBoxArray.push(infoBox);
         } 
-      
       }
+
+      // If there are pins added to the map then we have data
+      // Otherwise we should notify the user that no data was loaded.
       if(pinArray.length === 0){
         this.modifyAlert(true);
       }
@@ -205,8 +219,13 @@ class Map extends Component {
     }
   }
 
+  /**
+   * Runs after component mounts
+   */
   async componentDidMount() {
     const mapRef = document.getElementById(this.props.id);
+
+    
     this.state.map.current = await bingMapsAPI.waitGenerateMap(
       window,
       document,
@@ -220,7 +239,10 @@ class Map extends Component {
       this.state.endDate,
     );
   }
+
+
   render() {
+    // Determines if alert should be taken out of the flow of the page
     const hideAlert = this.state.showAlert ? "" : "none";
     return (
       <>
@@ -233,7 +255,6 @@ class Map extends Component {
             severity={"warning"}
             message={"Selected filters returned no results. Change date range or utility filters."}
             >
-          
           </AlertFade>
         </Box>
 
