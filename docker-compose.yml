@@ -32,7 +32,7 @@ services:
     environment:
       POSTGRES_USER: postgresondockeruser
       POSTGRES_PASSWORD: postgresondockerpassword
-      POSTGRES_DB: postgresondockerdb
+      POSTGRES_DB: energyDB
 
   frontend-and-backend-container:
     image: frontend_and_backend
