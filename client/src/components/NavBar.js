@@ -16,18 +16,23 @@ import bar from "../imgs/bar.jpeg";
 import "../App.css";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {useNavigate} from "react-router";
+import {useAuth0} from "@auth0/auth0-react";
 
 
-const pages = ['Map', 'Analytics'];
-const settings = ['Admin Login'];
+const pages = ['Map'];
 
 function NavBar(){
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const {isAuthenticated, loginWithRedirect, logout} = useAuth0();
 
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
+        if(isAuthenticated){
+            const test = 1;
+            console.log(test);
+        }
     };
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -42,9 +47,14 @@ function NavBar(){
     let navigate = useNavigate();
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
-        let path = `/login`;
-        navigate(path);
     };
+
+    function handleAdmin() {
+        setAnchorElUser(null);
+        let path = `/admin`;
+        navigate(path);
+    }
+
 
     return (
         <div>
@@ -87,6 +97,7 @@ function NavBar(){
                                         <Typography textAlign="center">{page}</Typography>
                                     </MenuItem>
                                 ))}
+
                             </Menu>
                         </Box>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -100,6 +111,7 @@ function NavBar(){
                                     {page}
                                 </Button>
                             ))}
+
 
                         </Box>
 
@@ -127,12 +139,23 @@ function NavBar(){
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
+                                {!isAuthenticated && (
+                                    <MenuItem onClick={() => loginWithRedirect()}>
+                                        <Typography textAlign="center">Admin Login</Typography>
                                     </MenuItem>
-                                ))}
+                                )}
+
+                                {isAuthenticated && (
+                                    <MenuItem onClick={handleAdmin}>
+                                        <Typography textAlign="center">Admin Page</Typography>
+                                    </MenuItem>
+                                )}
+
+                                {isAuthenticated && (
+                                <MenuItem onClick={() => logout()}>
+                                    <Typography textAlign="center">Sign Out</Typography>
+                                </MenuItem>
+                                )}
                             </Menu>
                         </Box>
                     </Toolbar>

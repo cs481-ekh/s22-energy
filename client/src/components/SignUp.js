@@ -14,6 +14,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
+import {withAuthenticationRequired} from "@auth0/auth0-react";
 
 const theme = createTheme();
 function SignUp() {
@@ -158,4 +159,6 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default withAuthenticationRequired(SignUp, {
+
+});

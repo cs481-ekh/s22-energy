@@ -48,7 +48,7 @@ class Map extends Component {
    * @param {*} endDate - New end date.
    * @param {*} utilTypes - New utility types
    */
-  updateMapUsage = async (startDate, endDate, utilTypes) => {
+  updateMapUsage = async (startDate, endDate) => {
     let buildingsResponse = await remoteFunctions.getBuildings();
     let buildings = {};
 
@@ -62,12 +62,11 @@ class Map extends Component {
     const responseJson = await remoteFunctions.getUsage(
       startDate,
       endDate,
-      utilTypes
     );
 
     // Set initial min and max for utilities
     this.setState({usageBounds: {}});
-    utilTypes.forEach((utility) => {
+    this.state.utilTypes.forEach((utility) => {
       let usageInfo = {
         min: 0,
         max: 0,
@@ -79,7 +78,6 @@ class Map extends Component {
 
     // Goes through every key in the date range
     for (const key of Object.keys(responseJson)) {
-      if (key in utilTypes) {
         for (const usages of responseJson[key]) {
           const buildingCode = usages.building.buildingCode;
 
@@ -107,7 +105,6 @@ class Map extends Component {
             this.setState( {usageBounds: newUsageBounds});
           }
         }
-      }
     }
     
     // Sets state.
@@ -119,15 +116,17 @@ class Map extends Component {
     // eslint-disable-next-line react/prop-types
     if (
       prevState.startDate.getTime() !== this.state.startDate.getTime() ||
-      prevState.endDate.getTime() !== this.state.endDate.getTime() ||
-      prevState.utilTypes !== this.state.utilTypes
+      prevState.endDate.getTime() !== this.state.endDate.getTime()
     ) {
       this.state.map.current.entities.clear();
       this.updateMapUsage(
         this.state.startDate,
         this.state.endDate,
-        this.state.utilTypes
       );
+    }
+    else if(prevState.utilTypes !== this.state.utilTypes){
+      this.state.map.current.entities.clear();
+      this.createDescriptions();
     }
   }
 
@@ -147,46 +146,48 @@ class Map extends Component {
       building.color = "gray";
       
       // Determines description and color based off id.
-      for (const usageKey of Object.keys(usages)) {
-        let usage = usages[usageKey];
-        let min = this.state.usageBounds[usageKey].min;
-        let max = this.state.usageBounds[usageKey].max;
-        let range = max - min;
-        let lowerUsage = (range * .15);
-        let lowUsage = (range * .25);
-        let mediumUsage = (range * .5);
-        let highUsage = (range * .75);
+      for (const filteredUsage of this.state.utilTypes) {
+        if (usages[filteredUsage]) {
+          let usage = usages[filteredUsage];
+          let min = this.state.usageBounds[filteredUsage].min;
+          let max = this.state.usageBounds[filteredUsage].max;
+          let range = max - min;
+          let lowerUsage = (range * .15);
+          let lowUsage = (range * .25);
+          let mediumUsage = (range * .5);
+          let highUsage = (range * .75);
 
-        // Determine color
-        if (this.between(usage.usage, min, lowerUsage)) {
-          building.color = "#0486D8";
-        } else if (this.between(usage.usage, lowerUsage, lowUsage)) {
-          building.color = "#83B347";
-        } else if (this.between(usage.usage, lowUsage, mediumUsage)) {
-          building.color = "#ffbd28";
-        } else if (this.between(usage.usage, mediumUsage, highUsage)) {
-          building.color = "#E87121";
-        } else if (this.between(usage.usage, highUsage, max)) {
-          building.color = "#d62828";
-        }
+          // Determine color
+          if (this.between(usage.usage, min, lowerUsage)) {
+            building.color = "#0486D8";
+          } else if (this.between(usage.usage, lowerUsage, lowUsage)) {
+            building.color = "#83B347";
+          } else if (this.between(usage.usage, lowUsage, mediumUsage)) {
+            building.color = "#ffbd28";
+          } else if (this.between(usage.usage, mediumUsage, highUsage)) {
+            building.color = "#E87121";
+          } else if (this.between(usage.usage, highUsage, max)) {
+            building.color = "#d62828";
+          }
 
-        // Determine description
-        switch (usageKey) {
-          case "1":
-            building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
-            break;
-          case "2":
-            building.usageDesc += `Electric: ${usage.usage} kBTU <br/>`;
-            break;
-          case "3":
-            building.usageDesc += `Steam: ${usage.usage} kBTU <br/>`;
-            break;
-          case "4":
-            building.usageDesc += `Geothermal: ${usage.usage} kBTU <br/>`;
-            break;
-          case "5":
-            building.usageDesc += `Solar: ${usage.usage}\n kBTU <br/>`;
-            break;
+          // Determines description based off id.
+          switch (filteredUsage) {
+            case 1:
+              building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
+              break;
+            case 2:
+              building.usageDesc += `Electric: ${usage.usage} kBTU <br/>`;
+              break;
+            case 3:
+              building.usageDesc += `Steam: ${usage.usage} kBTU <br/>`;
+              break;
+            case 4:
+              building.usageDesc += `Geothermal: ${usage.usage} kBTU <br/>`;
+              break;
+            case 5:
+              building.usageDesc += `Solar: ${usage.usage}\n kBTU <br/>`;
+              break;
+          }
         }
       }
     }
@@ -254,7 +255,6 @@ class Map extends Component {
     this.updateMapUsage(
       this.state.startDate,
       this.state.endDate,
-      this.state.utilTypes
     );
   }
   render() {
