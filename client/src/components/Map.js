@@ -76,7 +76,6 @@ class Map extends Component {
       newUsageBounds[utility] = usageInfo;
       this.setState({usageBounds: newUsageBounds});
     });
-    console.log(this.state.usageBounds);
 
     // Goes through every key in the date range
     for (const key of Object.keys(responseJson)) {
