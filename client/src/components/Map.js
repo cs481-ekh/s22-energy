@@ -5,7 +5,6 @@ import SideDrawer from "./SideDrawer";
 import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
-//import {utility} from "./Admin-Splash";
 const _ = require("lodash");
 
 class Map extends Component {
@@ -221,6 +220,13 @@ class Map extends Component {
           infoBox = new window.Microsoft.Maps.Infobox(location, {
             title: building.buildingName,
             description: building.usageDesc,
+            visible: false,
+          });
+        } else {
+          pin = new window.Microsoft.Maps.Pushpin(location, { color: "gray" });
+          infoBox = new window.Microsoft.Maps.Infobox(location, {
+            title: building.buildingName,
+            description: "no data",
             visible: false,
           });
         }
