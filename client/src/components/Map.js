@@ -5,6 +5,7 @@ import SideDrawer from "./SideDrawer";
 import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
+//import {utility} from "./Admin-Splash";
 const _ = require("lodash");
 
 class Map extends Component {
@@ -18,8 +19,7 @@ class Map extends Component {
       utilTypes: [],
       usageData: [],
       buildings: [],
-      minUsage: 0,
-      maxUsage: 0,
+      usageBounds: {},
       map: React.createRef(),
     };
     this.boundStart = this.modifyStartDate.bind(this);
@@ -52,7 +52,7 @@ class Map extends Component {
     let buildingsResponse = await remoteFunctions.getBuildings();
     let buildings = {};
 
-    // Make building boint to buildingCode -> building
+    // Make building point to buildingCode -> building
     for (const buildingR of buildingsResponse) {
       buildings[buildingR.buildingCode] = buildingR;
       buildingR.usages = {};
@@ -64,7 +64,20 @@ class Map extends Component {
       endDate,
       utilTypes
     );
-    
+
+    // Set initial min and max for utilities
+    this.setState({usageBounds: {}});
+    utilTypes.forEach((utility) => {
+      let usageInfo = {
+        min: 0,
+        max: 0,
+      };
+      let newUsageBounds = this.state.usageBounds;
+      newUsageBounds[utility] = usageInfo;
+      this.setState({usageBounds: newUsageBounds});
+    });
+    console.log(this.state.usageBounds);
+
     // Goes through every key in the date range
     for (const key of Object.keys(responseJson)) {
       if (key in utilTypes) {
@@ -84,11 +97,15 @@ class Map extends Component {
             }
           }
           // Update min and max
-          if (usages.utilityUsage > this.state.maxUsage) {
-            this.setState( {maxUsage: usages.utilityUsage});
+          if (usages.utilityUsage > this.state.usageBounds[key].max) {
+            let newUsageBounds = this.state.usageBounds;
+            newUsageBounds[key].max = usages.utilityUsage;
+            this.setState( {usageBounds: newUsageBounds});
           }
-          if (usages.utilityUsage < this.state.minUsage || this.state.minUsage === 0) {
-            this.setState( {minUsage: usages.utilityUsage});
+          if (usages.utilityUsage < this.state.usageBounds[key].min || this.state.usageBounds[key].min === 0) {
+            let newUsageBounds = this.state.usageBounds;
+            newUsageBounds[key].min = usages.utilityUsage;
+            this.setState( {usageBounds: newUsageBounds});
           }
         }
       }
@@ -129,30 +146,32 @@ class Map extends Component {
       let usages = building.usages;
       building.usageDesc = "";
       building.color = "gray";
-      let min = this.state.minUsage;
-      let max = this.state.maxUsage;
-      let range = max - min;
-      let lowUsage = (range * .25);
-      let mediumUsage = (range * .5);
-      let highUsage = (range * .75);
       
       // Determines description and color based off id.
       for (const usageKey of Object.keys(usages)) {
         let usage = usages[usageKey];
+        let min = this.state.usageBounds[usageKey].min;
+        let max = this.state.usageBounds[usageKey].max;
+        let range = max - min;
+        let lowUsage1 = (range * .08);
+        let lowUsage2 = (range * .16);
+        let lowUsage3 = (range * .25);
+        let mediumUsage = (range * .5);
+        let highUsage = (range * .75);
 
         // Determine color
-        if (this.between(usage.usage, min, lowUsage)) {
-          console.log("True!");
-          building.color = "blue";
-        } else if (this.between(usage.usage, lowUsage, mediumUsage)) {
-          console.log("True!");
-          building.color = "purple";
+        if (this.between(usage.usage, min, lowUsage1)) {
+          building.color = "#8ecae6";
+        } else if (this.between(usage.usage, lowUsage1, lowUsage2)) {
+          building.color = "#219ebc";
+        } else if (this.between(usage.usage, lowUsage2, lowUsage3)) {
+          building.color = "#023047";
+        } else if (this.between(usage.usage, lowUsage3, mediumUsage)) {
+          building.color = "#ffb703";
         } else if (this.between(usage.usage, mediumUsage, highUsage)) {
-          console.log("True!");
-          building.color = "yellow";
+          building.color = "#fb8500";
         } else if (this.between(usage.usage, highUsage, max)) {
-          console.log("True!");
-          building.color = "red";
+          building.color = "#d62828";
         }
 
         // Determine description
@@ -205,13 +224,6 @@ class Map extends Component {
           infoBox = new window.Microsoft.Maps.Infobox(location, {
             title: building.buildingName,
             description: building.usageDesc,
-            visible: false,
-          });
-        } else {
-          pin = new window.Microsoft.Maps.Pushpin(location, { color: "gray" });
-          infoBox = new window.Microsoft.Maps.Infobox(location, {
-            title: building.buildingName,
-            description: "no data",
             visible: false,
           });
         }
