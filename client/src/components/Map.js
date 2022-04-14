@@ -15,6 +15,7 @@ class Map extends Component {
     this.state = {
       endDate: new Date(),
       startDate: prevMonth,
+      ready: false,
       utilTypes: [],
       usageData: [],
       buildings: [],
@@ -57,51 +58,46 @@ class Map extends Component {
     }
 
     // Get usages in date range.
-    const responseJson = await remoteFunctions.getUsage(
-      startDate,
-      endDate,
-    );
-    
+    const responseJson = await remoteFunctions.getUsage(startDate, endDate);
+
     // Goes through every key in the date range
     for (const key of Object.keys(responseJson)) {
-        for (const usages of responseJson[key]) {
-          const buildingCode = usages.building.buildingCode;
+      for (const usages of responseJson[key]) {
+        const buildingCode = usages.building.buildingCode;
 
-          let building = buildings[buildingCode];
-          if (building) {
-            if (building.usages[key]) {
-              building.usages[key].usage += usages.utilityUsage;
-              building.usages[key].cost += usages.cost;
-            } else {
-              building.usages[key] = {
-                usage: usages.utilityUsage,
-                cost: usages.cost,
-              };
-            }
+        let building = buildings[buildingCode];
+        if (building) {
+          if (building.usages[key]) {
+            building.usages[key].usage += usages.utilityUsage;
+            building.usages[key].cost += usages.cost;
+          } else {
+            building.usages[key] = {
+              usage: usages.utilityUsage,
+              cost: usages.cost,
+            };
           }
         }
+      }
     }
-    
+
     // Sets state.
     this.setState({ buildings: buildings });
     this.createDescriptions(buildings);
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // eslint-disable-next-line react/prop-types
-    if (
-      prevState.startDate.getTime() !== this.state.startDate.getTime() ||
-      prevState.endDate.getTime() !== this.state.endDate.getTime()
-    ) {
-      this.state.map.current.entities.clear();
-      this.updateMapUsage(
-        this.state.startDate,
-        this.state.endDate,
-      );
-    }
-    else if(prevState.utilTypes !== this.state.utilTypes){
-      this.state.map.current.entities.clear();
-      this.createDescriptions();
+    // This method can be called before mounting so we need to make sure app is ready
+    if (this.state.ready) {
+      if (
+        prevState.startDate.getTime() !== this.state.startDate.getTime() ||
+        prevState.endDate.getTime() !== this.state.endDate.getTime()
+      ) {
+        this.state.map.current.entities.clear();
+        this.updateMapUsage(this.state.startDate, this.state.endDate);
+      } else if (prevState.utilTypes !== this.state.utilTypes) {
+        this.state.map.current.entities.clear();
+        this.createDescriptions();
+      }
     }
   }
 
@@ -206,10 +202,8 @@ class Map extends Component {
     );
     const buildings = await remoteFunctions.getBuildings();
     this.setState({ buildings: buildings });
-    this.updateMapUsage(
-      this.state.startDate,
-      this.state.endDate,
-    );
+    this.updateMapUsage(this.state.startDate, this.state.endDate);
+    this.setState({ready: true});
   }
   render() {
     return (
