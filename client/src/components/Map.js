@@ -6,6 +6,7 @@ import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
 const _ = require("lodash");
+const outliers = require("outliers");
 
 class Map extends Component {
   constructor(props) {
@@ -64,8 +65,10 @@ class Map extends Component {
     );
 
     // Set initial min and max for utilities
+    let usageData = {};
     this.setState({usageBounds: {}});
     this.state.utilTypes.forEach((utility) => {
+      usageData[utility] = [];
       let usageInfo = {
         min: 0,
         max: 0,
@@ -77,35 +80,31 @@ class Map extends Component {
 
     // Goes through every key in the date range
     for (const key of Object.keys(responseJson)) {
-        for (const usages of responseJson[key]) {
-          const buildingCode = usages.building.buildingCode;
+      for (const usages of responseJson[key]) {
+        const buildingCode = usages.building.buildingCode;
 
-          let building = buildings[buildingCode];
-          if (building) {
-            if (building.usages[key]) {
-              building.usages[key].usage += usages.utilityUsage;
-              building.usages[key].cost += usages.cost;
-            } else {
-              building.usages[key] = {
-                usage: usages.utilityUsage,
-                cost: usages.cost,
-              };
-            }
+        let building = buildings[buildingCode];
+        if (building) {
+          if (building.usages[key]) {
+            building.usages[key].usage += usages.utilityUsage;
+            building.usages[key].cost += usages.cost;
+          } else {
+            building.usages[key] = {
+              usage: usages.utilityUsage,
+              cost: usages.cost,
+            };
           }
-          // Update min and max
-          if (usages.utilityUsage > this.state.usageBounds[key].max) {
-            let newUsageBounds = this.state.usageBounds;
-            newUsageBounds[key].max = usages.utilityUsage;
-            this.setState( {usageBounds: newUsageBounds});
-          }
-          if (usages.utilityUsage < this.state.usageBounds[key].min || this.state.usageBounds[key].min === 0) {
-            let newUsageBounds = this.state.usageBounds;
-            newUsageBounds[key].min = usages.utilityUsage;
-            this.setState( {usageBounds: newUsageBounds});
-          }
+          usageData[key].push(usages.utilityUsage);
         }
+      }
+      usageData[key] = usageData[key].filter(outliers());
+      usageData[key] = usageData[key].sort(function(a, b){return a-b;});
+      let newUsageBounds = this.state.usageBounds;
+      newUsageBounds[key].max = usageData[key][usageData[key].length - 1];
+      newUsageBounds[key].min = usageData[key][0];
+      this.setState({usageBounds: newUsageBounds});
     }
-    
+
     // Sets state.
     this.setState({ buildings: buildings });
     this.createDescriptions(buildings);
@@ -138,6 +137,7 @@ class Map extends Component {
   createDescriptions() {
     // Create a clone of our initial buildings state
     let buildingsCopy = _.cloneDeep(this.state.buildings);
+    //this.removeOutliers(buildingsCopy);
     for (const bCode of Object.keys(this.state.buildings)) {
       let building = buildingsCopy[bCode];
       let usages = building.usages;
@@ -157,7 +157,7 @@ class Map extends Component {
           let highUsage = (range * .75);
 
           // Determine color
-          if (this.between(usage.usage, min, lowerUsage)) {
+          if (usage.usage <= lowerUsage) {
             building.color = "#0486D8";
           } else if (this.between(usage.usage, lowerUsage, lowUsage)) {
             building.color = "#83B347";
@@ -165,8 +165,10 @@ class Map extends Component {
             building.color = "#ffbd28";
           } else if (this.between(usage.usage, mediumUsage, highUsage)) {
             building.color = "#E87121";
-          } else if (this.between(usage.usage, highUsage, max)) {
+          } else if (usage.usage >= highUsage && usage.usage < max) {
             building.color = "#d62828";
+          } else if (usage.usage >= max) {
+            building.color = "#8B0000";
           }
 
           // Determines description based off id.

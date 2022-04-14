@@ -204,6 +204,12 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                               <ListItemIcon>
                                   <SquareRounded sx={{ color: "#d62828" }} />
                               </ListItemIcon>
+                              <ListItemText secondary="Higher"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#8B0000" }} />
+                              </ListItemIcon>
                               <ListItemText secondary="Highest"/>
                           </ListItem>
                       </List>
