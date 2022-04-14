@@ -1,3 +1,16 @@
+## 4/14/22 9:00 AM Moring Meeting
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Discussed how to get docker up and running on each of our machines
+   - Aidan found a bug where componentDidUpdate is called before componentDidMount
+   - Jack plans to clean up user login with khaled and find any bugs
+   - Keegan needs to add logic for removing outliers and toggle for EUI
+   - Victor and Taylor will work on fixing any problems related to adding our project the SDP
+   - Discussed how we will hand off our env files to next years team
+   
+</p>
+
 ## 4/12/22 9:00 AM Moring Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
