@@ -4,6 +4,15 @@
     Install Docker on your local system
 [Docker install](https://docs.docker.com/get-docker/)
 
+<p>The docker-compose will require a .env file in the root directory with the following lines:</p>
+
+```
+POSTGRES_USER= (put desired username here)
+POSTGRES_PASSWORD= (put desired password here)
+POSTGRES_DB=energyDB
+```
+<p>After the .env file has been created, run these commands from the root directory to start the containerized application:</p>
+
 ```bash
 $ docker build -t frontend_and_backend .
 $ docker-compose -f docker-compose.yml up
