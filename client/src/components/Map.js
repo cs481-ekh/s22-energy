@@ -222,16 +222,9 @@ class Map extends Component {
             description: building.usageDesc,
             visible: false,
           });
-        } else {
-          pin = new window.Microsoft.Maps.Pushpin(location, { color: "gray" });
-          infoBox = new window.Microsoft.Maps.Infobox(location, {
-            title: building.buildingName,
-            description: "no data",
-            visible: false,
-          });
+          pinArray.push(pin);
+          infoBoxArray.push(infoBox);
         }
-        pinArray.push(pin);
-        infoBoxArray.push(infoBox);
       }
     }
     // Create event handler for each pin/infobox and add them to the map
