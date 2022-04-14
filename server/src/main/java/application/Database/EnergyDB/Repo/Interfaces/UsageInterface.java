@@ -56,9 +56,9 @@ public interface UsageInterface {
      */
     @Modifying
     @Transactional
-    @Query(value = "Insert Into usage(building_code, utility_id, time_stamp, usage, cost) "
-        + "Values(:#{#u.buildingCode}, :#{#u.utilityID}, :#{#u.timestamp}, :#{#u.utilityUsage}, :#{#u.cost}) "
-        + "On Conflict On Constraint duplicate_usage Do Update Set usage = EXCLUDED.usage, cost = EXCLUDED.cost",
+    @Query(value = "Insert Into usage(building_code, utility_id, time_stamp, usage, cost, premise_id) " +
+        "Values(:#{#u.buildingCode}, :#{#u.utilityID}, :#{#u.timestamp}, :#{#u.utilityUsage}, :#{#u.cost}, :#{#u.premiseID}) " +
+        "On Conflict On Constraint duplicate_usage Do Update Set usage = EXCLUDED.usage, cost = EXCLUDED.cost",
         nativeQuery = true)
     void upsertUsage(@Param("u") Usage usage);
 }

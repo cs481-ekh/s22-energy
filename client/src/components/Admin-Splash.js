@@ -22,18 +22,31 @@ import Box from "@mui/material/Box";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import {withAuthenticationRequired} from "@auth0/auth0-react";
+import {Auth0Lock} from "auth0-lock";
 
 
 
 export var utility = {};
-export default function Admin() {
+function Admin() {
+    const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+    const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
     const [open, setOpen] = React.useState(false);
 
     let navigate = useNavigate();
 
+    var options = {
+        allowSignUp: true,
+        allowLogin: false,
+        prefill: false,
+        allowAutocomplete: false,
+        allowPasswordAutocomplete: false
+    };
+
+    var lock = new Auth0Lock(clientId, domain , options);
+
     const signUpOnClick = () => {
-        let path = `/SignUp`;
-        navigate(path);
+        lock.show();
     };
 
     const electricOnClick = () => {
@@ -78,7 +91,7 @@ export default function Admin() {
     const geoOnClick = () => {
         let path = `/CsvReader`;
         navigate(path);
-        utility = '3';
+        utility = '4';
     };
 
     return (
@@ -228,3 +241,7 @@ export default function Admin() {
     );
 
 }
+
+export default withAuthenticationRequired(Admin, {
+
+});

@@ -34,16 +34,16 @@ class EnergyConverterTest {
 
     @Test
     public void test4_kwhToKbtu() {
-        var kWh = BigDecimal.valueOf(1);
+        var kWh = BigDecimal.valueOf(10);
         var kbtu = EnergyConverter.kWhToKbtu(kWh);
-        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(3.41214163312794)),0);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(34.121)),0);
     }
 
     @Test
     public void test5_kwhToKbtu() {
         var kWh = BigDecimal.valueOf(1);
         var kbtu = EnergyConverter.kWhToKbtu(kWh);
-        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(3.41214163312794)), 0);
+        a.assertEquals(kbtu.compareTo(BigDecimal.valueOf(3.412)), 0);
     }
 
     @Test

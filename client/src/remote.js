@@ -51,8 +51,17 @@ let remoteFunctions = {
           Authorization: credentials
         },
       };
+      let requestURL = new URL("usage", `http://localhost:${serverPort}`);
+      requestURL.searchParams.append("start", startDate);
+      requestURL.searchParams.append("end", endDate);
+      
+      if (utility) {
+        for (const utilID of utility) {
+          requestURL.searchParams.append("utilID", utilID);
+        }
+      }
       const response = await fetch(
-        `http://localhost:${serverPort}/usage?start=${startDate}&end=${endDate}&utilID=${utility}`,
+        requestURL,
         requestOptions
       );
       responseJson = await response.json();
@@ -110,5 +119,27 @@ let remoteFunctions = {
     }
     return 0;
   },
+  async getUtlities(){
+    const requestOptions = {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        Authorization: credentials
+      },
+    };
+    
+    try{
+      const response = await fetch(
+        `http://localhost:${serverPort}/utilities`,
+        requestOptions
+      );
+      return await response.json();
+    }
+    catch(err){
+      console.log(err);
+    }
+    
+    
+  }
 };
 export default remoteFunctions;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,77 +11,69 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from "react-router";
 import remoteFunctions from '../remote';
+import {withAuthenticationRequired} from "@auth0/auth0-react";
 
 
 
 const theme = createTheme();
-export default function SignIn() {
+function SignIn() {
     const initialValues = { email: "", password: ""};
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
-    const [isSubmit, setIsSubmit] = useState(false);
+    const [open,  setOpen] = React.useState(false);
+
+
     const handleChange = (e) => {
       const { name, value } = e.target;
       setFormValues({ ...formValues, [name]: value });
     };
+
+
     let navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        setFormErrors(validate(formValues));
 
-
-        const responseJson = await remoteFunctions.getUser(data.get('email'), data.get('password'));
-
-        if(responseJson == true) {
-            let path = `/admin`;
-            navigate(path);
-        }else{
-            alert("Incorrect username or password");
+        if(validate(formValues) == true) {
+            const responseJson = await remoteFunctions.getUser(data.get('email'), data.get('password'));
+            console.log(responseJson);
+            if (responseJson == true) {
+                let path = `/admin`;
+                navigate(path);
+            } else {
+                alert("Incorrect username or password");
+            }
         }
 
-
-        setFormErrors(validate(formValues));
-            setIsSubmit(true);
-
     };
-    useEffect(() => {
-      console.log(formErrors);
-      if (Object.keys(formErrors).length === 0 && isSubmit) {
-        console.log(formValues);
-      }
 
-    }, [formErrors]);
     const validate = (values) => {
       const errors = {};
-      if (!values.email && !values.password) {
-        setIsSubmit(true);
-        let path = `/admin`;
-        navigate(path);
-
-      }
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
       if (!values.email) {
-        errors.email = "Email is required!";
-        setIsSubmit(false);
+          errors.email = "Email is required";
+          if (!values.password) {
+              errors.password = "Password is required";
+          }
       } else if (!regex.test(values.email)) {
-        errors.email = "This is not a valid email format!";
-        setIsSubmit(false);
+          errors.email = "This is not a valid email format";
+          if (!values.password) {
+              errors.password = "Password is required";
+          }
+      } else{
+          return true;
       }
-      if (!values.password) {
-        errors.password = "Password is required";
-        setIsSubmit(false);
-      }
-      return errors;
+
+      setFormErrors(errors);
+      return false;
     };
-    const [ setOpen] = React.useState(false);
+
+
     const handleClickOpen = () => {
         setOpen(true);
-      };
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -127,7 +119,7 @@ export default function SignIn() {
                         value={formValues.password}
                         onChange={handleChange}
                         />
-                        <span> {formErrors.password}</span>
+                        <span open={open}> {formErrors.password}</span>
                         <Button
                             type="submit"
                             fullWidth
@@ -143,3 +135,6 @@ export default function SignIn() {
         </ThemeProvider>
     );
 }
+export default withAuthenticationRequired(SignIn, {
+
+});

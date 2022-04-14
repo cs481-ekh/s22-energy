@@ -27,33 +27,38 @@ public class UserController {
     UserRepo userRepo;
 
     /**
-     * Gets all the buildings from the buildings database
-     * @return list of usage that matched criteria.
+     * check whether a user/password pair exist in the database
+     * @param email
+     * @param password
+     * @return true if the pair exists, false if not
      */
     @GetMapping(value = "/login")
-    public Boolean getUser(@RequestParam String email, @RequestParam String password){
-        Boolean response = null;
+    public boolean getUser(@RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException {
+        // try to get the user from the database, if they exist
+        Optional<User> user = userRepo.getUser(email, hashPassword(password));
 
-        Optional<User> user = Optional.of(new User());
-        // Runs query on db
-        user = userRepo.getUser(email, password);
+        // return the result
+        return user.isPresent();
+    }
 
-        User loginResult = new User();
+    @GetMapping(value = "/signup")
+    public boolean addAdmin(@RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException {
+        // add the new admin user to the database
+        System.out.println("Adding new admin user: " + email);
+        userRepo.save(new User(email, hashPassword(password), true));
 
-        // Gets the result
-        if (user.isPresent()) {
-            loginResult = user.get();
-            response = true;
-        } else {
-            response = false;
-        }
-
-        return response;
+        // confirm the user was added, and return the response
+        boolean result = getUser(email, hashPassword(password));
+        if (result)
+            System.out.println("Successfully added new admin user: " + email);
+        else
+            System.out.println("Failed to add new admin user: " + email);
+        return result;
     }
 
 
     // hash the password
-    private String hashPassword(String password, String email) throws NoSuchAlgorithmException {
+    private String hashPassword(String password) throws NoSuchAlgorithmException {
         // randomly generated salt
         String salt = "PT0zs3AhIpB8CqCJCxcG";
 

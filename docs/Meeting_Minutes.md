@@ -1,3 +1,56 @@
+## 4/12/22 9:00 AM Moring Meeting
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Aidan discussed running our project in a VM and documenting our 
+      deployment instructions in the README
+   - Victor updated us on hosting our project on the SDP server
+   - Going to get in contact with professor to clarify if docker images need to 
+      be running on SDP
+   - Jack updated us on user login changes and using a third party API "Auth0"
+   - Final additions to project:
+      - Color coded pins
+      - Switch for absolute vs. per square foot usage
+      - Example csv format images
+      - Add loading wheel to csv upload
+      - Filtering shouldn't pull from backend every time
+   
+</p>
+
+## 4/8/22 10:00 AM Sponsor Update
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Gave Brian a demo of our projects new features (map filtering, admin login)
+   - Discussed what final features should be added:
+      - Fix filtering bugs
+      - Add dynamically created color coordinated pins ("reverse rainbow" color scheme)
+      - Implement toggle to change between absolute and per square foot energy usage
+      - Add security to login
+      - Add example images of what each data types CSV format should look like
+      - Add project to SDP server
+      - Create project handoff that clearly documents our project for next team
+   - Set up date for another check in and demo (4/25/22 at 12:30pm)
+   
+</p>
+
+## 4/7/22 9:00 AM Morning Meeting
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Discussed what needed to get done before our meeting with Brian:
+      - Upload all utility data and verify it's working with both our backend and frontend
+      - Rework frontend utility filtering
+      - Upload should display when it's completed
+      - Create custom style for the building description cards
+      - Fix any bugs with our utility data parsers
+   - Tested adding natural gas and small electric data via our csv upload page:
+      - Natrual gas uploaded and displayed on map
+      - Small electric was incorrectly finding headers and needed to be changed
+      - Both did not upload completely
+   - Talked about adding SDP server
+</p>
+
 ## Sprint3 Retrospect
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
