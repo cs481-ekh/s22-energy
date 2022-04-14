@@ -18,11 +18,13 @@ class Map extends Component {
       utilTypes: [],
       usageData: [],
       buildings: [],
+      eui: false,
       map: React.createRef(),
     };
     this.boundStart = this.modifyStartDate.bind(this);
     this.boundEnd = this.modifyEndDate.bind(this);
     this.boundUtil = this.modifyUtilTypes.bind(this);
+    this.boundEui = this.modifyEui.bind(this);
   }
 
   // Create a function to modify start date state.
@@ -38,6 +40,11 @@ class Map extends Component {
   // Create function to modify utility types
   modifyUtilTypes(value) {
     this.setState({ utilTypes: value });
+  }
+
+  // Create function to modify EUI toggle state
+  modifyEui(value) {
+    this.setState({ eui: value });
   }
 
   /**
@@ -103,6 +110,10 @@ class Map extends Component {
       this.state.map.current.entities.clear();
       this.createDescriptions();
     }
+    else if(prevState.eui !== this.state.eui) {
+      this.state.map.current.entities.clear();
+      this.createDescriptions();
+    }
   }
 
   // Adds utility usage to building description
@@ -118,22 +129,50 @@ class Map extends Component {
       for (const filteredUsage of this.state.utilTypes) {
         if (usages[filteredUsage]) {
           let usage = usages[filteredUsage];
-          switch (filteredUsage) {
-            case 1:
-              building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
-              break;
-            case 2:
-              building.usageDesc += `Electric: ${usage.usage} kBTU <br/>`;
-              break;
-            case 3:
-              building.usageDesc += `Steam: ${usage.usage} kBTU <br/>`;
-              break;
-            case 4:
-              building.usageDesc += `Geothermal: ${usage.usage} kBTU <br/>`;
-              break;
-            case 5:
-              building.usageDesc += `Solar: ${usage.usage}\n kBTU <br/>`;
-              break;
+          if (this.state.eui) {
+            let euiUsage = 0;
+            if (building.squareFt > 0) {
+              euiUsage = ((usage.usage) / building.squareFt);
+              euiUsage = euiUsage.toFixed(2);
+              switch (filteredUsage) {
+                case 1:
+                  building.usageDesc += `Natural Gas: ${euiUsage} EUI <br/>`;
+                  break;
+                case 2:
+                  building.usageDesc += `Electric: ${euiUsage} EUI <br/>`;
+                  break;
+                case 3:
+                  building.usageDesc += `Steam: ${euiUsage} EUI <br/>`;
+                  break;
+                case 4:
+                  building.usageDesc += `Geothermal: ${euiUsage} EUI <br/>`;
+                  break;
+                case 5:
+                  building.usageDesc += `Solar: ${euiUsage}\n EUI <br/>`;
+                  break;
+              }
+            } else {
+              building.usageDesc += 'No square foot data for building <br/>';
+            }
+          } else {
+            let formattedUsage = usage.usage.toFixed(2);
+            switch (filteredUsage) {
+              case 1:
+                building.usageDesc += `Natural Gas: ${formattedUsage} kBTU <br/>`;
+                break;
+              case 2:
+                building.usageDesc += `Electric: ${formattedUsage} kBTU <br/>`;
+                break;
+              case 3:
+                building.usageDesc += `Steam: ${formattedUsage} kBTU <br/>`;
+                break;
+              case 4:
+                building.usageDesc += `Geothermal: ${formattedUsage} kBTU <br/>`;
+                break;
+              case 5:
+                building.usageDesc += `Solar: ${formattedUsage}\n kBTU <br/>`;
+                break;
+            }
           }
         }
       }
@@ -220,6 +259,7 @@ class Map extends Component {
           endDate={this.state.endDate}
           setEndDate={this.boundEnd}
           setUtilTypes={this.boundUtil}
+          setEuiValue={this.boundEui}
         />
         <div id={this.props.id} ref={this.state.map}>
           <SDPSticker />

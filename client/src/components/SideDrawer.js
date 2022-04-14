@@ -32,10 +32,11 @@ let filters = {
 };
 
 // eslint-disable-next-line react/prop-types
-export default function SideDrawer({startDate, setStartDate, endDate, setEndDate, setUtilTypes}) {
+export default function SideDrawer({startDate, setStartDate, endDate, setEndDate, setUtilTypes, setEuiValue}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [utilities, setUtilities] = React.useState([]);
+    const [eui, setEui] = React.useState(false);
   
     React.useEffect(async () => {
         let utilityList = [];
@@ -64,6 +65,16 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
         setUtilities(utilityList);
         setUtilTypes(utilIDs);
     }, []);
+
+    const handleToggleEui = () => () => {
+        if (eui) {
+            setEui(false);
+            setEuiValue(false);
+        } else {
+            setEui(true);
+            setEuiValue(true);
+        }
+    };
 
     const handleToggle = (value) => () => {
        let listCopy = [...utilities];
@@ -163,7 +174,7 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                             })}
                             <ListItemIcon>
                                 <p>EUI:</p>
-                                <Switch color="primary" sx={{ ml: "115px", mt: "8px" }}/>
+                                <Switch color="primary" sx={{ ml: "115px", mt: "8px" }} onClick={handleToggleEui()} eui={{eui}}/>
                             </ListItemIcon>
                         </List>
                     </Container>
