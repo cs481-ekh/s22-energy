@@ -106,11 +106,7 @@ class Map extends Component {
         this.state.endDate,
       );
     }
-    else if(prevState.utilTypes !== this.state.utilTypes){
-      this.state.map.current.entities.clear();
-      this.createDescriptions();
-    }
-    else if(prevState.eui !== this.state.eui) {
+    else if(prevState.utilTypes !== this.state.utilTypes || prevState.eui !== this.state.eui){
       this.state.map.current.entities.clear();
       this.createDescriptions();
     }
@@ -129,48 +125,31 @@ class Map extends Component {
       for (const filteredUsage of this.state.utilTypes) {
         if (usages[filteredUsage]) {
           let usage = usages[filteredUsage];
+          let formattedUsage = usage.usage;
+          let unit = 'kBTU';
           if (this.state.eui) {
-            let euiUsage = 0;
-            if (building.squareFt > 0) {
-              euiUsage = ((usage.usage) / building.squareFt);
-              euiUsage = euiUsage.toFixed(2);
-              switch (filteredUsage) {
-                case 1:
-                  building.usageDesc += `Natural Gas: ${euiUsage} EUI <br/>`;
-                  break;
-                case 2:
-                  building.usageDesc += `Electric: ${euiUsage} EUI <br/>`;
-                  break;
-                case 3:
-                  building.usageDesc += `Steam: ${euiUsage} EUI <br/>`;
-                  break;
-                case 4:
-                  building.usageDesc += `Geothermal: ${euiUsage} EUI <br/>`;
-                  break;
-                case 5:
-                  building.usageDesc += `Solar: ${euiUsage}\n EUI <br/>`;
-                  break;
-              }
-            } else {
-              building.usageDesc += 'No square foot data for building <br/>';
-            }
+            unit = 'EUI';
+            formattedUsage = ((formattedUsage) / building.squareFt);
+          }
+          if (this.state.eui && building.squareFt < 1) {
+            building.usageDesc = 'No square foot data for building <br/>';
           } else {
-            let formattedUsage = usage.usage.toFixed(2);
+            formattedUsage = formattedUsage.toFixed(2);
             switch (filteredUsage) {
               case 1:
-                building.usageDesc += `Natural Gas: ${formattedUsage} kBTU <br/>`;
+                building.usageDesc += `Natural Gas: ${formattedUsage} ${unit} <br/>`;
                 break;
               case 2:
-                building.usageDesc += `Electric: ${formattedUsage} kBTU <br/>`;
+                building.usageDesc += `Electric: ${formattedUsage} ${unit} <br/>`;
                 break;
               case 3:
-                building.usageDesc += `Steam: ${formattedUsage} kBTU <br/>`;
+                building.usageDesc += `Steam: ${formattedUsage} ${unit} <br/>`;
                 break;
               case 4:
-                building.usageDesc += `Geothermal: ${formattedUsage} kBTU <br/>`;
+                building.usageDesc += `Geothermal: ${formattedUsage} ${unit} <br/>`;
                 break;
               case 5:
-                building.usageDesc += `Solar: ${formattedUsage}\n kBTU <br/>`;
+                building.usageDesc += `Solar: ${formattedUsage} ${unit} <br/>`;
                 break;
             }
           }
