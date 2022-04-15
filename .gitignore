@@ -40,3 +40,6 @@ server/src/test/test.iml
 *logs/*
 uploads/*
 */downloads/*
+
+# ignore the database stuff
+postgres-data

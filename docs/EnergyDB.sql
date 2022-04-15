@@ -149,42 +149,6 @@ ALTER SEQUENCE public.usage_utility_id_seq OWNED BY public.usage.utility_id;
 
 
 --
--- TOC entry 210 (class 1259 OID 14551537)
--- Name: users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.users (
-    id integer NOT NULL,
-    email text NOT NULL,
-    password text NOT NULL,
-    admin boolean
-);
-
-
---
--- TOC entry 209 (class 1259 OID 14551535)
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.users_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- TOC entry 4052 (class 0 OID 0)
--- Dependencies: 209
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
-
---
 -- TOC entry 202 (class 1259 OID 14524333)
 -- Name: utilities; Type: TABLE; Schema: public; Owner: -
 --
@@ -240,14 +204,6 @@ ALTER TABLE ONLY public.usage ALTER COLUMN id SET DEFAULT nextval('public.usage_
 --
 
 ALTER TABLE ONLY public.usage ALTER COLUMN utility_id SET DEFAULT nextval('public.usage_utility_id_seq'::regclass);
-
-
---
--- TOC entry 3874 (class 2604 OID 14551540)
--- Name: users id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
@@ -1806,15 +1762,6 @@ SELECT pg_catalog.setval('public.usage_utility_id_seq', 1, false);
 
 
 --
--- TOC entry 4057 (class 0 OID 0)
--- Dependencies: 209
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.users_id_seq', 3, true);
-
-
---
 -- TOC entry 4058 (class 0 OID 0)
 -- Dependencies: 201
 -- Name: utilities_utility_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
@@ -1875,24 +1822,6 @@ ALTER TABLE ONLY public.usage
 
 ALTER TABLE ONLY public.premise
     ADD CONSTRAINT pk_86 PRIMARY KEY (premise_id);
-
-
---
--- TOC entry 3893 (class 2606 OID 14551547)
--- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_email_key UNIQUE (email);
-
-
---
--- TOC entry 3895 (class 2606 OID 14551545)
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --
