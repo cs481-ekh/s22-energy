@@ -5,8 +5,8 @@ import SideDrawer from "./SideDrawer";
 import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
+import {quantileRankSorted} from 'simple-statistics';
 const _ = require("lodash");
-const outliers = require("outliers");
 
 class Map extends Component {
   constructor(props) {
@@ -97,12 +97,8 @@ class Map extends Component {
           usageData[key].push(usages.utilityUsage);
         }
       }
-      usageData[key] = usageData[key].filter(outliers());
       usageData[key] = usageData[key].sort(function(a, b){return a-b;});
-      let newUsageBounds = this.state.usageBounds;
-      newUsageBounds[key].max = usageData[key][usageData[key].length - 1];
-      newUsageBounds[key].min = usageData[key][0];
-      this.setState({usageBounds: newUsageBounds});
+      this.setState({usageData: usageData});
     }
 
     // Sets state.
@@ -148,26 +144,20 @@ class Map extends Component {
       for (const filteredUsage of this.state.utilTypes) {
         if (usages[filteredUsage]) {
           let usage = usages[filteredUsage];
-          let min = this.state.usageBounds[filteredUsage].min;
-          let max = this.state.usageBounds[filteredUsage].max;
-          let range = max - min;
-          let lowerUsage = (range * .15);
-          let lowUsage = (range * .25);
-          let mediumUsage = (range * .5);
-          let highUsage = (range * .75);
-
+          let usageRank = quantileRankSorted(this.state.usageData[filteredUsage], usage.usage);
+          
           // Determine color
-          if (usage.usage <= lowerUsage) {
+          if (usageRank <= 0.2) {
             building.color = "#0486D8";
-          } else if (this.between(usage.usage, lowerUsage, lowUsage)) {
+          } else if (this.between(usageRank, 0.2, 0.4)) {
             building.color = "#83B347";
-          } else if (this.between(usage.usage, lowUsage, mediumUsage)) {
+          } else if (this.between(usageRank, 0.4, 0.6)) {
             building.color = "#ffbd28";
-          } else if (this.between(usage.usage, mediumUsage, highUsage)) {
+          } else if (this.between(usageRank, 0.6, 0.8)) {
             building.color = "#E87121";
-          } else if (usage.usage >= highUsage && usage.usage < max) {
+          } else if (this.between(usageRank, 0.8, 0.9)) {
             building.color = "#d62828";
-          } else if (usage.usage >= max) {
+          } else if (this.between(usageRank, 0.9, 1)) {
             building.color = "#8B0000";
           }
 
