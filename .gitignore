@@ -42,4 +42,4 @@ uploads/*
 */downloads/*
 
 # ignore the database stuff
-postgres-data
+postgres-data/
