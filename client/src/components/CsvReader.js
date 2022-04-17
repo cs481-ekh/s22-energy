@@ -14,6 +14,9 @@ import UploadIcon from '@mui/icons-material/Upload';
 import Typography from "@mui/material/Typography";
 import remoteFunctions from "../remote";
 import {withAuthenticationRequired} from "@auth0/auth0-react";
+import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from '@mui/material/Backdrop';
+
 const theme = createTheme();
 
 const utils = ['non', 'Gas', 'Electric', 'Steam', 'Geothermal', 'Solar', 'Geothermal'];
@@ -22,14 +25,18 @@ function CsvReader() {
   const { readString } = usePapaParse();
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState("");
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleUpload = async () => {
-
-    const response = await remoteFunctions.uploadFile(file, utility);
+    setLoading(true);
+    const response = await (remoteFunctions.uploadFile(file, utility)).then( 
+      setLoading(false),setPost(response)
+    );
     console.log(response);
 
     if(response.status == 200){
-      //return success
+      setPost(response);
 
     }else{
       alert('Failed to upload');
@@ -51,6 +58,9 @@ function CsvReader() {
       },
     });
   };
+  const handleClose = () => {
+    setPost(false);
+};
   return (
 
       <ThemeProvider theme={theme}>
@@ -94,6 +104,13 @@ function CsvReader() {
                 </Button>
               </Stack>
             </div>
+            <Backdrop
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={post}
+              onClick={handleClose}
+            >
+        <CircularProgress open={loading} color="inherit" />
+          </Backdrop>
           </Box>
         </Container>
       </ThemeProvider>
