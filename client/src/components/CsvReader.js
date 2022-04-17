@@ -16,6 +16,10 @@ import remoteFunctions from "../remote";
 import {withAuthenticationRequired} from "@auth0/auth0-react";
 import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from '@mui/material/Backdrop';
+import Alert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
 
 const theme = createTheme();
 
@@ -25,22 +29,24 @@ function CsvReader() {
   const { readString } = usePapaParse();
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState("");
-  const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isSuccess, setSuccess] = useState(false);
+  const [isFail, setFail] = useState(false);
 
   const handleUpload = async () => {
     setLoading(true);
-    const response = await (remoteFunctions.uploadFile(file, utility)).then( 
-      setLoading(false),setPost(response)
+    await (remoteFunctions.uploadFile(file, utility)).then( result => {
+          setLoading(false),
+          console.log(result);
+            if(result.status == 200){
+                setSuccess(true);
+            } else {
+                setFail(true);
+            }
+
+        }
     );
-    console.log(response);
 
-    if(response.status == 200){
-      setPost(response);
-
-    }else{
-      alert('Failed to upload');
-    }
   };
 
   const handleCSVRead = (data) => {
@@ -59,7 +65,7 @@ function CsvReader() {
     });
   };
   const handleClose = () => {
-    setPost(false);
+    setLoading(false);
 };
   return (
 
@@ -106,12 +112,55 @@ function CsvReader() {
             </div>
             <Backdrop
               sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={post}
+              open={loading}
               onClick={handleClose}
             >
         <CircularProgress open={loading} color="inherit" />
           </Backdrop>
           </Box>
+
+          <Box sx={{ width: '100%' }}>
+            <Collapse in={isSuccess}>
+              <Alert
+                  action={
+                    <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setSuccess(false);
+                        }}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+                  sx={{ mb: 2 }}
+              >
+                Successful Upload!
+              </Alert>
+            </Collapse>
+          </Box>
+            <Box sx={{ width: '100%' }}>
+                <Collapse in={isFail}>
+                    <Alert severity="error"
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setFail(false);
+                                }}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        sx={{ mb: 2 }}
+                    >
+                        Failed to Upload!
+                    </Alert>
+                </Collapse>
+            </Box>
         </Container>
       </ThemeProvider>
 
