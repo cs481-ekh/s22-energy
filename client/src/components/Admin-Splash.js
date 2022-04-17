@@ -16,7 +16,11 @@ import solar from "../imgs/Solar.jpg";
 import admin from "../imgs/admin.jpg";
 import steam from "../imgs/Steam.jpg";
 import geo from "../imgs/Geothermal.jpg";
-
+import SmallElectric from "../imgs/SmallElectric.jpg";
+import GeoThermal from "../imgs/GeoTherm.jpg";
+import NaturalGas from "../imgs/NaturalGas.jpg";
+import SolarCSV from "../imgs/SolarCSV.jpg";
+import ElecCSV from "../imgs/ElectricDemandCSV.jpg";
 import {useNavigate} from "react-router";
 import Box from "@mui/material/Box";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -24,14 +28,24 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import {withAuthenticationRequired} from "@auth0/auth0-react";
 import {Auth0Lock} from "auth0-lock";
-
-
-
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 export var utility = {};
 function Admin() {
     const domain = process.env.REACT_APP_AUTH0_DOMAIN;
     const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
     const [open, setOpen] = React.useState(false);
+    const [isSolar, setSolar] = React.useState(false);
+    // const [isSteam, setSteam] = React.useState(false);
+    const [isSmallElectric, setSmallElectric] = React.useState(false);
+    const [isElecDemand, setElecDemand] = React.useState(false);
+    const [isGas, setGas] = React.useState(false);
+    const [isGeo, setGeo] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const openAnchor = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
 
     let navigate = useNavigate();
 
@@ -47,6 +61,26 @@ function Admin() {
 
     const signUpOnClick = () => {
         lock.show();
+    };
+    // Checks the CSV format for the Solar 
+    const GeoThermalFormatOnClick = () => {
+        setGeo(true);
+    };
+    // Checks the CSV format for the Gas 
+    const GasFormatOnClick = () => {
+        setGas(true);
+    };
+    // Checks the CSV format for the Solar 
+     const SolarFormatOnClick = () => {
+        setSolar(true);
+    };
+    // Checks the CSV format for the Small Electric  
+    const SmallElecFormatOnClick = () => {
+        setSmallElectric(true);
+    };
+    // Checks the CSV format for the Electric Demand  
+    const ElecDemandFormatOnClick = () => {
+        setElecDemand(true);
     };
 
     const electricOnClick = () => {
@@ -68,6 +102,12 @@ function Admin() {
 
     const handleClose = () => {
         setOpen(false);
+        setAnchorEl(null);
+        setGeo(false);
+        setGas(false);
+        setSolar(false);
+        setSmallElectric(false);
+        setElecDemand(false);
     };
 
     const gasOnClick = () => {
@@ -93,7 +133,6 @@ function Admin() {
         navigate(path);
         utility = '4';
     };
-
     return (
 
         <Box
@@ -237,11 +276,126 @@ function Admin() {
                 </Card>
             </Grid>
         </Grid>
-        </Box>
+        <div>
+      <Button
+        id="demo-positioned-button"
+        aria-controls={openAnchor ? 'demo-positioned-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={openAnchor ? 'true' : undefined}
+       onClick={handleClick}
+       type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2 , backgroundColor: '#E87121'}}
+      >
+        check csv format
+      </Button>
+      <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        anchorEl={anchorEl}
+        open={openAnchor}
+       onClose={handleClose}
+        anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <MenuItem onClick={GeoThermalFormatOnClick}>Geothermal Format</MenuItem>
+        <Dialog 
+               maxWidth = 'lg'
+                open={isGeo}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                 <img src={GeoThermal}/>
+                <DialogTitle id="alert-dialog-title" align = "center">
+                    {"Please make sure the CSV file is in this format"}
+                </DialogTitle>
+                <DialogActions sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+               
+                    <Button onClick={handleClose}>Close</Button>
+                </DialogActions>
+        </Dialog>
+        <MenuItem onClick={GasFormatOnClick}>Gas Format</MenuItem>
+        <Dialog 
+               maxWidth = 'lg'
+                open={isGas}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                 <img src={NaturalGas} />
+                <DialogTitle id="alert-dialog-title" align = "center">
+                    {"Please make sure the CSV file is in this format"}
+                </DialogTitle>
+                <DialogActions sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+               
+                    <Button onClick={handleClose}>Close</Button>
+                </DialogActions>
+        </Dialog>
+        <MenuItem onClick={SolarFormatOnClick}>Solar Format</MenuItem>
+        <Dialog 
+               maxWidth = 'lg'
+                open={isSolar}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                 <img src={SolarCSV}/>
+                <DialogTitle id="alert-dialog-title" align = "center">
+                    {"Please make sure the CSV file is in this format"}
+                </DialogTitle>
+                <DialogActions sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+               
+                    <Button onClick={handleClose}>Close</Button>
+                </DialogActions>
+        </Dialog>
+        <MenuItem onClick={GeoThermalFormatOnClick}>Steam Format</MenuItem>
+        <MenuItem onClick={SmallElecFormatOnClick}>SmallElec Format</MenuItem>
+        <Dialog 
+               maxWidth = 'lg'
+                open={isSmallElectric}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                 <img src={SmallElectric} />
+                <DialogTitle id="alert-dialog-title" align = "center">
+                    {"Please make sure the CSV file is in this format"}
+                </DialogTitle>
+                <DialogActions sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+               
+                    <Button onClick={handleClose}>Close</Button>
+                </DialogActions>
+        </Dialog>
+        <MenuItem onClick={ElecDemandFormatOnClick}>Electric Demand Format</MenuItem>
+        <Dialog 
+               maxWidth = 'lg'
+                open={isElecDemand}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                 <img src={ElecCSV}/>
+                <DialogTitle id="alert-dialog-title" align = "center">
+                    {"Please make sure the CSV file is in this format"}
+                </DialogTitle>
+                <DialogActions sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+               
+                    <Button onClick={handleClose}>Close</Button>
+                </DialogActions>
+        </Dialog>
+      </Menu>
+    </div>
+</Box>  
     );
-
 }
-
 export default withAuthenticationRequired(Admin, {
 
 });
