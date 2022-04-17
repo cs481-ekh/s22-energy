@@ -288,7 +288,7 @@ function Admin() {
         variant="contained"
         sx={{ mt: 3, mb: 2 , backgroundColor: '#E87121'}}
       >
-        check csv format
+        check csv formats
       </Button>
       <Menu
         id="demo-positioned-menu"
@@ -356,7 +356,6 @@ function Admin() {
                     <Button onClick={handleClose}>Close</Button>
                 </DialogActions>
         </Dialog>
-        <MenuItem onClick={GeoThermalFormatOnClick}>Steam Format</MenuItem>
         <MenuItem onClick={SmallElecFormatOnClick}>SmallElec Format</MenuItem>
         <Dialog 
                maxWidth = 'lg'
