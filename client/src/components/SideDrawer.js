@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { ChevronLeft, ChevronRight, ElectricalServices, PropaneTank,
-        SolarPower, Factory, LightMode, FilterAlt} from '@mui/icons-material';
+        SolarPower, Factory, LightMode, FilterAlt, SquareRounded} from '@mui/icons-material';
 import {Checkbox, ListItemButton, Container, Button, ListItem,
         IconButton, Divider, Typography, List, Toolbar, Box,
         ListItemIcon, ListItemText, CssBaseline, Drawer, Switch} from "@mui/material";
@@ -139,45 +139,88 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                 </DrawerHeader>
                 <Divider />
                   <Container>
-                      <DateComponent
-                            sx={{ width: '100%', bgcolor: 'background.paper' }}
-                            startDate={startDate}
-                            setStartDate={setStartDate}
-                            endDate={endDate}
-                            setEndDate={setEndDate}
-                        />
-                        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {utilities.map((value) => {
-                                const labelId = `checkbox-list-label-${value.id}`;
-                                return (
-                                    <ListItem
-                                        key={value.id}
-                                        disablePadding = {true}
-                                    >
-                                        <ListItemButton onClick={handleToggle(value)} dense
-                                        sx={{pl:0}}>
-                                            <ListItemIcon>
-                                                {value.icon}
-                                                <ListItemText id={labelId} primary={`${value.label}`} sx={{ pl:"10px" }}/>
-                                            </ListItemIcon>
-                                        </ListItemButton>
-                                        <Checkbox
-                                            sx={{pl: 0, pr:0}}
-                                            onClick={handleToggle(value)}
-                                            checked={value.selected === true}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            inputProps={{ 'aria-labelledby': labelId }}
-                                        />
-                                    </ListItem>
-                                );
-                            })}
-                            <ListItemIcon>
-                                <p>EUI:</p>
-                                <Switch color="primary" sx={{ ml: "115px", mt: "8px" }} onClick={handleToggleEui()} eui={{eui}}/>
-                            </ListItemIcon>
-                        </List>
-                    </Container>
+                  <DateComponent
+                        sx={{ width: '100%', bgcolor: 'background.paper' }}
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                    />
+                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                        {utilities.map((value) => {
+                            const labelId = `checkbox-list-label-${value.id}`;
+                            return (
+                                <ListItem
+                                    key={value.id}
+                                    disablePadding = {true}
+                                >
+                                    <ListItemButton onClick={handleToggle(value)} dense
+                                    sx={{pl:0}}>
+                                        <ListItemIcon>
+                                            {value.icon}
+                                            <ListItemText id={labelId} primary={`${value.label}`} sx={{ pl:"10px" }}/>
+                                        </ListItemIcon>
+                                    </ListItemButton>
+                                    <Checkbox
+                                        sx={{pl: 0, pr:0}}
+                                        onClick={handleToggle(value)}
+                                        checked={value.selected === true}
+                                        tabIndex={-1}
+                                        disableRipple
+                                        inputProps={{ 'aria-labelledby': labelId }}
+                                    />
+                                </ListItem>
+                            );
+                        })}
+
+                        <ListItemIcon>
+                            <p>EUI:</p>
+                            <Switch color="primary" sx={{ ml: "115px", mt: "8px" }} onClick={handleToggleEui()} eui={{eui}}/>
+                        </ListItemIcon>
+                    </List>
+                <Divider />
+                      <br/>
+                      <List sx={{ width: '100%', bgcolor: 'background.paper' }} dense disablePadding = {true}>
+                          <ListItemText sx={{ pl: '3px' }} secondary="Energy Usage Key:"/>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                <SquareRounded sx={{ color: "#0486D8" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Lowest"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#83B347" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Low"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#ffbd28" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Average"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#E87121" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="High"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#d62828" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Higher"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#8B0000" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Highest"/>
+                          </ListItem>
+                      </List>
+                  </Container>
+                <br/>
                 <Divider />
             </Drawer>
         </Box>
