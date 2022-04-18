@@ -5,6 +5,7 @@ import SideDrawer from "./SideDrawer";
 import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
+import {quantileRankSorted} from 'simple-statistics';
 const _ = require("lodash");
 
 class Map extends Component {
@@ -19,6 +20,7 @@ class Map extends Component {
       utilTypes: [],
       usageData: [],
       buildings: [],
+      usageBounds: {},
       map: React.createRef(),
     };
     this.boundStart = this.modifyStartDate.bind(this);
@@ -51,14 +53,31 @@ class Map extends Component {
     let buildingsResponse = await remoteFunctions.getBuildings();
     let buildings = {};
 
-    // Make building boint to buildingCode -> building
+    // Make building point to buildingCode -> building
     for (const buildingR of buildingsResponse) {
       buildings[buildingR.buildingCode] = buildingR;
       buildingR.usages = {};
     }
 
     // Get usages in date range.
-    const responseJson = await remoteFunctions.getUsage(startDate, endDate);
+    const responseJson = await remoteFunctions.getUsage(
+      startDate,
+      endDate,
+    );
+
+    // Set initial min and max for utilities
+    let usageData = {};
+    this.setState({usageBounds: {}});
+    this.state.utilTypes.forEach((utility) => {
+      usageData[utility] = [];
+      let usageInfo = {
+        min: 0,
+        max: 0,
+      };
+      let newUsageBounds = this.state.usageBounds;
+      newUsageBounds[utility] = usageInfo;
+      this.setState({usageBounds: newUsageBounds});
+    });
 
     // Goes through every key in the date range
     for (const key of Object.keys(responseJson)) {
@@ -76,6 +95,7 @@ class Map extends Component {
               cost: usages.cost,
             };
           }
+          usageData[key].push(usages.utilityUsage);
         }
       }
     }
@@ -101,19 +121,44 @@ class Map extends Component {
     }
   }
 
+  // Helper method to determine pin colors
+  between(x, min, max) {
+    return x >= min && x <= max;
+  }
+
   // Adds utility usage to building description
   createDescriptions() {
     // Create a clone of our initial buildings state
     let buildingsCopy = _.cloneDeep(this.state.buildings);
+    //this.removeOutliers(buildingsCopy);
     for (const bCode of Object.keys(this.state.buildings)) {
       let building = buildingsCopy[bCode];
       let usages = building.usages;
       building.usageDesc = "";
-
-      // Determines description based off id.
+      building.color = "gray";
+      
+      // Determines description and color based off id.
       for (const filteredUsage of this.state.utilTypes) {
         if (usages[filteredUsage]) {
           let usage = usages[filteredUsage];
+          let usageRank = quantileRankSorted(this.state.usageData[filteredUsage], usage.usage);
+          
+          // Determine color
+          if (usageRank <= 0.2) {
+            building.color = "#0486D8";
+          } else if (this.between(usageRank, 0.2, 0.4)) {
+            building.color = "#83B347";
+          } else if (this.between(usageRank, 0.4, 0.6)) {
+            building.color = "#ffbd28";
+          } else if (this.between(usageRank, 0.6, 0.8)) {
+            building.color = "#E87121";
+          } else if (this.between(usageRank, 0.8, 0.9)) {
+            building.color = "#d62828";
+          } else if (this.between(usageRank, 0.9, 1)) {
+            building.color = "#8B0000";
+          }
+
+          // Determines description based off id.
           switch (filteredUsage) {
             case 1:
               building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
@@ -159,23 +204,16 @@ class Map extends Component {
         // If there is utility data for the building add it to the info box and color the pin
         if (Object.keys(building.usageDesc).length > 0) {
           pin = new window.Microsoft.Maps.Pushpin(location, {
-            color: "blue",
+            color: building.color,
           });
           infoBox = new window.Microsoft.Maps.Infobox(location, {
             title: building.buildingName,
             description: building.usageDesc,
             visible: false,
           });
-        } else {
-          pin = new window.Microsoft.Maps.Pushpin(location, { color: "gray" });
-          infoBox = new window.Microsoft.Maps.Infobox(location, {
-            title: building.buildingName,
-            description: "no data",
-            visible: false,
-          });
+          pinArray.push(pin);
+          infoBoxArray.push(infoBox);
         }
-        pinArray.push(pin);
-        infoBoxArray.push(infoBox);
       }
     }
     // Create event handler for each pin/infobox and add them to the map
