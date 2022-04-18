@@ -9,8 +9,7 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-//import MenuIcon from '@mui/icons-material/Menu';
-import { ChevronLeft, ChevronRight, ElectricalServices, PropaneTank, SolarPower, Factory, LightMode, FilterAlt} from '@mui/icons-material';
+import { ChevronLeft, ChevronRight, ElectricalServices, PropaneTank, SolarPower, Factory, LightMode, FilterAlt, SquareRounded} from '@mui/icons-material';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -173,7 +172,49 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                             );
                         })}
                     </List>
-                    </Container>
+                <Divider />
+                      <br/>
+                      <List sx={{ width: '100%', bgcolor: 'background.paper' }} dense disablePadding = {true}>
+                          <ListItemText sx={{ pl: '3px' }} secondary="Energy Usage Key:"/>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                <SquareRounded sx={{ color: "#0486D8" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Lowest"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#83B347" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Low"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#ffbd28" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Average"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#E87121" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="High"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#d62828" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Higher"/>
+                          </ListItem>
+                          <ListItem disablePadding = {true}>
+                              <ListItemIcon>
+                                  <SquareRounded sx={{ color: "#8B0000" }} />
+                              </ListItemIcon>
+                              <ListItemText secondary="Highest"/>
+                          </ListItem>
+                      </List>
+                  </Container>
+                <br/>
                 <Divider />
             </Drawer>
         </Box>
