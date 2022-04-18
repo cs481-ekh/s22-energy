@@ -20,12 +20,14 @@ class Map extends Component {
       utilTypes: [],
       usageData: [],
       buildings: [],
+      eui: false,
       usageBounds: {},
       map: React.createRef(),
     };
     this.boundStart = this.modifyStartDate.bind(this);
     this.boundEnd = this.modifyEndDate.bind(this);
     this.boundUtil = this.modifyUtilTypes.bind(this);
+    this.boundEui = this.modifyEui.bind(this);
   }
 
   // Create a function to modify start date state.
@@ -41,6 +43,11 @@ class Map extends Component {
   // Create function to modify utility types
   modifyUtilTypes(value) {
     this.setState({ utilTypes: value });
+  }
+
+  // Create function to modify EUI toggle state
+  modifyEui(value) {
+    this.setState({ eui: value });
   }
 
   /**
@@ -60,14 +67,11 @@ class Map extends Component {
     }
 
     // Get usages in date range.
-    const responseJson = await remoteFunctions.getUsage(
-      startDate,
-      endDate,
-    );
+    const responseJson = await remoteFunctions.getUsage(startDate, endDate);
 
     // Set initial min and max for utilities
     let usageData = {};
-    this.setState({usageBounds: {}});
+    this.setState({ usageBounds: {} });
     this.state.utilTypes.forEach((utility) => {
       usageData[utility] = [];
       let usageInfo = {
@@ -76,7 +80,7 @@ class Map extends Component {
       };
       let newUsageBounds = this.state.usageBounds;
       newUsageBounds[utility] = usageInfo;
-      this.setState({usageBounds: newUsageBounds});
+      this.setState({ usageBounds: newUsageBounds });
     });
 
     // Goes through every key in the date range
@@ -98,6 +102,10 @@ class Map extends Component {
           usageData[key].push(usages.utilityUsage);
         }
       }
+      usageData[key] = usageData[key].sort(function (a, b) {
+        return a - b;
+      });
+      this.setState({ usageData: usageData });
     }
 
     // Sets state.
@@ -114,7 +122,10 @@ class Map extends Component {
       ) {
         this.state.map.current.entities.clear();
         this.updateMapUsage(this.state.startDate, this.state.endDate);
-      } else if (prevState.utilTypes !== this.state.utilTypes) {
+      } else if (
+        prevState.utilTypes !== this.state.utilTypes ||
+        prevState.eui !== this.state.eui
+      ) {
         this.state.map.current.entities.clear();
         this.createDescriptions();
       }
@@ -136,45 +147,58 @@ class Map extends Component {
       let usages = building.usages;
       building.usageDesc = "";
       building.color = "gray";
-      
+
       // Determines description and color based off id.
       for (const filteredUsage of this.state.utilTypes) {
         if (usages[filteredUsage]) {
           let usage = usages[filteredUsage];
-          let usageRank = quantileRankSorted(this.state.usageData[filteredUsage], usage.usage);
-          
-          // Determine color
-          if (usageRank <= 0.2) {
-            building.color = "#0486D8";
-          } else if (this.between(usageRank, 0.2, 0.4)) {
-            building.color = "#83B347";
-          } else if (this.between(usageRank, 0.4, 0.6)) {
-            building.color = "#ffbd28";
-          } else if (this.between(usageRank, 0.6, 0.8)) {
-            building.color = "#E87121";
-          } else if (this.between(usageRank, 0.8, 0.9)) {
-            building.color = "#d62828";
-          } else if (this.between(usageRank, 0.9, 1)) {
-            building.color = "#8B0000";
+          let formattedUsage = usage.usage;
+          let unit = "kBTU";
+          if (this.state.eui) {
+            unit = "EUI";
+            formattedUsage = formattedUsage / building.squareFt;
           }
+          if (this.state.eui && building.squareFt < 1) {
+            building.usageDesc = "No square foot data for building <br/>";
+          } else {
+            formattedUsage = formattedUsage.toFixed(2);
+            let usageRank = quantileRankSorted(
+              this.state.usageData[filteredUsage],
+              usage.usage
+            );
 
-          // Determines description based off id.
-          switch (filteredUsage) {
-            case 1:
-              building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
-              break;
-            case 2:
-              building.usageDesc += `Electric: ${usage.usage} kBTU <br/>`;
-              break;
-            case 3:
-              building.usageDesc += `Steam: ${usage.usage} kBTU <br/>`;
-              break;
-            case 4:
-              building.usageDesc += `Geothermal: ${usage.usage} kBTU <br/>`;
-              break;
-            case 5:
-              building.usageDesc += `Solar: ${usage.usage}\n kBTU <br/>`;
-              break;
+            // Determine color
+            if (usageRank <= 0.2) {
+              building.color = "#0486D8";
+            } else if (this.between(usageRank, 0.2, 0.4)) {
+              building.color = "#83B347";
+            } else if (this.between(usageRank, 0.4, 0.6)) {
+              building.color = "#ffbd28";
+            } else if (this.between(usageRank, 0.6, 0.8)) {
+              building.color = "#E87121";
+            } else if (this.between(usageRank, 0.8, 0.9)) {
+              building.color = "#d62828";
+            } else if (this.between(usageRank, 0.9, 1)) {
+              building.color = "#8B0000";
+            }
+
+            switch (filteredUsage) {
+              case 1:
+                building.usageDesc += `Natural Gas: ${formattedUsage} ${unit} <br/>`;
+                break;
+              case 2:
+                building.usageDesc += `Electric: ${formattedUsage} ${unit} <br/>`;
+                break;
+              case 3:
+                building.usageDesc += `Steam: ${formattedUsage} ${unit} <br/>`;
+                break;
+              case 4:
+                building.usageDesc += `Geothermal: ${formattedUsage} ${unit} <br/>`;
+                break;
+              case 5:
+                building.usageDesc += `Solar: ${formattedUsage} ${unit} <br/>`;
+                break;
+            }
           }
         }
       }
@@ -252,6 +276,7 @@ class Map extends Component {
           endDate={this.state.endDate}
           setEndDate={this.boundEnd}
           setUtilTypes={this.boundUtil}
+          setEuiValue={this.boundEui}
         />
         <div id={this.props.id} ref={this.state.map}>
           <SDPSticker />
