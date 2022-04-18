@@ -1,20 +1,11 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import { ChevronLeft, ChevronRight, ElectricalServices, PropaneTank, SolarPower, Factory, LightMode, FilterAlt, SquareRounded} from '@mui/icons-material';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import {Checkbox, ListItemButton, Container} from "@mui/material";
-import Button from "@mui/material/Button";
+import { ChevronLeft, ChevronRight, ElectricalServices, PropaneTank,
+        SolarPower, Factory, LightMode, FilterAlt, SquareRounded} from '@mui/icons-material';
+import {Checkbox, ListItemButton, Container, Button, ListItem,
+        IconButton, Divider, Typography, List, Toolbar, Box,
+        ListItemIcon, ListItemText, CssBaseline, Drawer, Switch} from "@mui/material";
 import DateComponent from "./DatePicker";
 import remoteFunctions from '../remote';
 
@@ -41,10 +32,11 @@ let filters = {
 };
 
 // eslint-disable-next-line react/prop-types
-export default function SideDrawer({startDate, setStartDate, endDate, setEndDate, setUtilTypes}) {
+export default function SideDrawer({startDate, setStartDate, endDate, setEndDate, setUtilTypes, setEuiValue}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [utilities, setUtilities] = React.useState([]);
+    const [eui, setEui] = React.useState(false);
   
     React.useEffect(async () => {
         let utilityList = [];
@@ -73,6 +65,16 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
         setUtilities(utilityList);
         setUtilTypes(utilIDs);
     }, []);
+
+    const handleToggleEui = () => () => {
+        if (eui) {
+            setEui(false);
+            setEuiValue(false);
+        } else {
+            setEui(true);
+            setEuiValue(true);
+        }
+    };
 
     const handleToggle = (value) => () => {
        let listCopy = [...utilities];
@@ -137,7 +139,6 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                 </DrawerHeader>
                 <Divider />
                   <Container>
-                    
                   <DateComponent
                         sx={{ width: '100%', bgcolor: 'background.paper' }}
                         startDate={startDate}
@@ -171,6 +172,11 @@ export default function SideDrawer({startDate, setStartDate, endDate, setEndDate
                                 </ListItem>
                             );
                         })}
+
+                        <ListItemIcon>
+                            <p>EUI:</p>
+                            <Switch color="primary" sx={{ ml: "115px", mt: "8px" }} onClick={handleToggleEui()} eui={{eui}}/>
+                        </ListItemIcon>
                     </List>
                 <Divider />
                       <br/>
