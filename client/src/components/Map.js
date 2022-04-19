@@ -5,12 +5,9 @@ import SideDrawer from "./SideDrawer";
 import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../modules/remote';
 import bingMapsAPI from '../modules/bingMapAPI';
-<<<<<<< HEAD
 import AlertFade from './AlertFade';
 import { Box } from '@mui/material';
-=======
 import {quantileRankSorted} from 'simple-statistics';
->>>>>>> abf9de9b18d3f795e4944f699b5984e2ce76cc2a
 const _ = require("lodash");
 
 /**
@@ -28,23 +25,17 @@ class Map extends Component {
       utilTypes: [],
       usageData: [],
       buildings: [],
-<<<<<<< HEAD
       showAlert: false,
-=======
       eui: false,
       usageBounds: {},
->>>>>>> abf9de9b18d3f795e4944f699b5984e2ce76cc2a
       map: React.createRef(),
       slideContainer: React.createRef()
     };
     this.boundStart = this.modifyStartDate.bind(this);
     this.boundEnd = this.modifyEndDate.bind(this);
     this.boundUtil = this.modifyUtilTypes.bind(this);
-<<<<<<< HEAD
     this.boundAlert = this.modifyAlert.bind(this);
-=======
     this.boundEui = this.modifyEui.bind(this);
->>>>>>> abf9de9b18d3f795e4944f699b5984e2ce76cc2a
   }
 
   // Create a function to modify start date state.
@@ -128,9 +119,10 @@ class Map extends Component {
           }
           usageData[key].push(usages.utilityUsage);
         }
-      }
+      
       usageData[key] = usageData[key].sort(function(a, b){return a-b;});
       this.setState({usageData: usageData});
+    }
     
     // Sets state.
     this.setState({ buildings: buildings });
@@ -261,7 +253,6 @@ class Map extends Component {
           });
           pinArray.push(pin);
           infoBoxArray.push(infoBox);
-<<<<<<< HEAD
         } 
       }
 
@@ -272,9 +263,6 @@ class Map extends Component {
       }
       else{
         this.modifyAlert(false);
-=======
-        }
->>>>>>> abf9de9b18d3f795e4944f699b5984e2ce76cc2a
       }
     }
     // Create event handler for each pin/infobox and add them to the map
