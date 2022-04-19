@@ -101,7 +101,8 @@ function Admin() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                marginTop: 2,
+                backgroundColor: '#f0f0f0',
+                height: '100vh'
             }}
         >
             <Avatar sx={{ m: 1, bgcolor: '#E87121' }}>
