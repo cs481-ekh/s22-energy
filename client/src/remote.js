@@ -54,9 +54,11 @@ let remoteFunctions = {
       let requestURL = new URL("usage", `http://localhost:${serverPort}`);
       requestURL.searchParams.append("start", startDate);
       requestURL.searchParams.append("end", endDate);
-
-      for(const utilID of utility){
-        requestURL.searchParams.append("utilID", utilID);
+      
+      if (utility) {
+        for (const utilID of utility) {
+          requestURL.searchParams.append("utilID", utilID);
+        }
       }
       const response = await fetch(
         requestURL,

@@ -5,6 +5,7 @@ import SideDrawer from "./SideDrawer";
 import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../remote';
 import bingMapsAPI from '../modules/bingMapAPI';
+import {quantileRankSorted} from 'simple-statistics';
 const _ = require("lodash");
 
 class Map extends Component {
@@ -15,14 +16,18 @@ class Map extends Component {
     this.state = {
       endDate: new Date(),
       startDate: prevMonth,
+      ready: false,
       utilTypes: [],
       usageData: [],
       buildings: [],
+      eui: false,
+      usageBounds: {},
       map: React.createRef(),
     };
     this.boundStart = this.modifyStartDate.bind(this);
     this.boundEnd = this.modifyEndDate.bind(this);
     this.boundUtil = this.modifyUtilTypes.bind(this);
+    this.boundEui = this.modifyEui.bind(this);
   }
 
   // Create a function to modify start date state.
@@ -40,17 +45,22 @@ class Map extends Component {
     this.setState({ utilTypes: value });
   }
 
+  // Create function to modify EUI toggle state
+  modifyEui(value) {
+    this.setState({ eui: value });
+  }
+
   /**
    * Updates the map usage with new start/end date.
    * @param {*} startDate - New start date
    * @param {*} endDate - New end date.
    * @param {*} utilTypes - New utility types
    */
-  updateMapUsage = async (startDate, endDate, utilTypes) => {
+  updateMapUsage = async (startDate, endDate) => {
     let buildingsResponse = await remoteFunctions.getBuildings();
     let buildings = {};
 
-    // Make building boint to buildingCode -> building
+    // Make building point to buildingCode -> building
     for (const buildingR of buildingsResponse) {
       buildings[buildingR.buildingCode] = buildingR;
       buildingR.usages = {};
@@ -60,80 +70,130 @@ class Map extends Component {
     const responseJson = await remoteFunctions.getUsage(
       startDate,
       endDate,
-      utilTypes
     );
-    
+
+    // Set initial min and max for utilities
+    let usageData = {};
+    this.setState({usageBounds: {}});
+    this.state.utilTypes.forEach((utility) => {
+      usageData[utility] = [];
+      let usageInfo = {
+        min: 0,
+        max: 0,
+      };
+      let newUsageBounds = this.state.usageBounds;
+      newUsageBounds[utility] = usageInfo;
+      this.setState({usageBounds: newUsageBounds});
+    });
+
     // Goes through every key in the date range
     for (const key of Object.keys(responseJson)) {
-      if (key in utilTypes) {
-        for (const usages of responseJson[key]) {
-          const buildingCode = usages.building.buildingCode;
+      for (const usages of responseJson[key]) {
+        const buildingCode = usages.building.buildingCode;
 
-          let building = buildings[buildingCode];
-          if (building) {
-            if (building.usages[key]) {
-              building.usages[key].usage += usages.utilityUsage;
-              building.usages[key].cost += usages.cost;
-            } else {
-              building.usages[key] = {
-                usage: usages.utilityUsage,
-                cost: usages.cost,
-              };
-            }
+        let building = buildings[buildingCode];
+        if (building) {
+          if (building.usages[key]) {
+            building.usages[key].usage += usages.utilityUsage;
+            building.usages[key].cost += usages.cost;
+          } else {
+            building.usages[key] = {
+              usage: usages.utilityUsage,
+              cost: usages.cost,
+            };
           }
+          usageData[key].push(usages.utilityUsage);
         }
       }
+      usageData[key] = usageData[key].sort(function(a, b){return a-b;});
+      this.setState({usageData: usageData});
     }
-    
+
     // Sets state.
     this.setState({ buildings: buildings });
     this.createDescriptions(buildings);
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // eslint-disable-next-line react/prop-types
-    if (
-      prevState.startDate.getTime() !== this.state.startDate.getTime() ||
-      prevState.endDate.getTime() !== this.state.endDate.getTime() ||
-      prevState.utilTypes !== this.state.utilTypes
-    ) {
-      this.state.map.current.entities.clear();
-      this.updateMapUsage(
-        this.state.startDate,
-        this.state.endDate,
-        this.state.utilTypes
-      );
+    // This method can be called before mounting so we need to make sure app is ready
+    if (this.state.ready) {
+      if (
+        prevState.startDate.getTime() !== this.state.startDate.getTime() ||
+        prevState.endDate.getTime() !== this.state.endDate.getTime()
+      ) {
+        this.state.map.current.entities.clear();
+        this.updateMapUsage(this.state.startDate, this.state.endDate);
+      } else if (prevState.utilTypes !== this.state.utilTypes || prevState.eui !== this.state.eui) {
+        this.state.map.current.entities.clear();
+        this.createDescriptions();
+      }
     }
+  }
+
+  // Helper method to determine pin colors
+  between(x, min, max) {
+    return x >= min && x <= max;
   }
 
   // Adds utility usage to building description
   createDescriptions() {
     // Create a clone of our initial buildings state
     let buildingsCopy = _.cloneDeep(this.state.buildings);
+    //this.removeOutliers(buildingsCopy);
     for (const bCode of Object.keys(this.state.buildings)) {
       let building = buildingsCopy[bCode];
       let usages = building.usages;
       building.usageDesc = "";
-      
-      // Determines description based off id.
-      for (const usageKey of Object.keys(usages)) {
-        let usage = usages[usageKey];
-        switch (usageKey) {
-          case "1":
-            building.usageDesc += `Natural Gas: ${usage.usage} kBTU <br/>`;
-            break;
-          case "2":
-            building.usageDesc += `Electric: ${usage.usage} kBTU <br/>`;
-            break;
-          case "3":
-            building.usageDesc += `Steam: ${usage.usage} kBTU <br/>`;
-            break;
-          case "4":
-            building.usageDesc += `Geothermal: ${usage.usage} kBTU <br/>`;
-            break;
-          case "5":
-            building.usageDesc += `Solar: ${usage.usage}\n kBTU <br/>`;
-            break;
+      building.color = "gray";
+      // Determines description and color based off id.
+      for (const filteredUsage of this.state.utilTypes) {
+        if (usages[filteredUsage]) {
+          let usage = usages[filteredUsage];
+          let formattedUsage = usage.usage;
+          let unit = 'kBTU';
+          if (this.state.eui) {
+            unit = 'EUI';
+            formattedUsage = ((formattedUsage) / building.squareFt);
+          }
+          if (this.state.eui && building.squareFt < 1) {
+            building.usageDesc = 'No square foot data for building <br/>';
+          } else {
+            formattedUsage = formattedUsage.toFixed(2);
+            let usageRank = quantileRankSorted(this.state.usageData[filteredUsage], usage.usage);
+
+            // Determine color
+            if (usageRank <= 0.2) {
+              building.color = "#0486D8";
+            } else if (this.between(usageRank, 0.2, 0.4)) {
+              building.color = "#83B347";
+            } else if (this.between(usageRank, 0.4, 0.6)) {
+              building.color = "#ffbd28";
+            } else if (this.between(usageRank, 0.6, 0.8)) {
+              building.color = "#E87121";
+            } else if (this.between(usageRank, 0.8, 0.9)) {
+              building.color = "#d62828";
+            } else if (this.between(usageRank, 0.9, 1)) {
+              building.color = "#8B0000";
+            }
+
+            switch (filteredUsage) {
+              case 1:
+                building.usageDesc += `Natural Gas: ${formattedUsage} ${unit} <br/>`;
+                break;
+              case 2:
+                building.usageDesc += `Electric: ${formattedUsage} ${unit} <br/>`;
+                break;
+              case 3:
+                building.usageDesc += `Steam: ${formattedUsage} ${unit} <br/>`;
+                break;
+              case 4:
+                building.usageDesc += `Geothermal: ${formattedUsage} ${unit} <br/>`;
+                break;
+              case 5:
+                building.usageDesc += `Solar: ${formattedUsage} ${unit} <br/>`;
+                break;
+            }
+          }
         }
       }
     }
@@ -162,23 +222,16 @@ class Map extends Component {
         // If there is utility data for the building add it to the info box and color the pin
         if (Object.keys(building.usageDesc).length > 0) {
           pin = new window.Microsoft.Maps.Pushpin(location, {
-            color: "blue",
+            color: building.color,
           });
           infoBox = new window.Microsoft.Maps.Infobox(location, {
             title: building.buildingName,
             description: building.usageDesc,
             visible: false,
           });
-        } else {
-          pin = new window.Microsoft.Maps.Pushpin(location, { color: "gray" });
-          infoBox = new window.Microsoft.Maps.Infobox(location, {
-            title: building.buildingName,
-            description: "no data",
-            visible: false,
-          });
+          pinArray.push(pin);
+          infoBoxArray.push(infoBox);
         }
-        pinArray.push(pin);
-        infoBoxArray.push(infoBox);
       }
     }
     // Create event handler for each pin/infobox and add them to the map
@@ -205,11 +258,8 @@ class Map extends Component {
     );
     const buildings = await remoteFunctions.getBuildings();
     this.setState({ buildings: buildings });
-    this.updateMapUsage(
-      this.state.startDate,
-      this.state.endDate,
-      this.state.utilTypes
-    );
+    this.updateMapUsage(this.state.startDate, this.state.endDate);
+    this.setState({ready: true});
   }
   render() {
     return (
@@ -220,6 +270,7 @@ class Map extends Component {
           endDate={this.state.endDate}
           setEndDate={this.boundEnd}
           setUtilTypes={this.boundUtil}
+          setEuiValue={this.boundEui}
         />
         <div id={this.props.id} ref={this.state.map}>
           <SDPSticker />
