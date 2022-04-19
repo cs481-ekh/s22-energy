@@ -2,6 +2,19 @@
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
    
+   - Discussed the last pieces of the project we need to finish before our presentation:
+      - Brian needs to sign off our project
+      - Final pushes to main and fix merge conflicts
+      - Get everybody set up with docker
+      - Victor is experiencing a bug running the project in docker
+      - Possibly add custom info boxes?
+   
+</p>
+
+## 4/14/22 9:00 AM Moring Meeting
+#### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
    - Discussed how to get docker up and running on each of our machines
    - Aidan found a bug where componentDidUpdate is called before componentDidMount
    - Jack plans to clean up user login with khaled and find any bugs
