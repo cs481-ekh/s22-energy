@@ -1,6 +1,7 @@
 package ErrorManagement.CSV;
 
 import ErrorManagement.ErrorData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Defines the internal error data for a sheet error.
@@ -34,10 +35,12 @@ public class SheetErrorData implements ErrorData {
         this.propagate = false;
     }
 
+
     /**
      * Returns itself
      * @return sheet error data
      */
+    @JsonIgnore
     public SheetErrorData getData() {
         return this;
     }
