@@ -12,7 +12,7 @@ import {createTheme} from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import UploadIcon from '@mui/icons-material/Upload';
 import Typography from "@mui/material/Typography";
-import remoteFunctions from "../remote";
+import remoteFunctions from "../modules/remote";
 import {withAuthenticationRequired} from "@auth0/auth0-react";
 const theme = createTheme();
 

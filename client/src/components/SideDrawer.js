@@ -7,7 +7,7 @@ import {Checkbox, ListItemButton, Container, Button, ListItem,
         IconButton, Divider, Typography, List, Toolbar, Box,
         ListItemIcon, ListItemText, CssBaseline, Drawer, Switch} from "@mui/material";
 import DateComponent from "./DatePicker";
-import remoteFunctions from '../remote';
+import remoteFunctions from '../modules/remote';
 
 const drawerWidth = 240;
 
