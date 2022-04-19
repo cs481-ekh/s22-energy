@@ -1,8 +1,6 @@
 package application.controller;
 
-import application.Database.EnergyDB.Models.User;
 import application.Database.EnergyDB.Models.Utility;
-import application.Database.EnergyDB.Repo.JPARepository.UserRepo;
 import application.Database.EnergyDB.Repo.JPARepository.UtilityRepo;
 import application.Datasource;
 import application.Model.Response;
