@@ -67,11 +67,14 @@ class Map extends Component {
     }
 
     // Get usages in date range.
-    const responseJson = await remoteFunctions.getUsage(startDate, endDate);
+    const responseJson = await remoteFunctions.getUsage(
+      startDate,
+      endDate,
+    );
 
     // Set initial min and max for utilities
     let usageData = {};
-    this.setState({ usageBounds: {} });
+    this.setState({usageBounds: {}});
     this.state.utilTypes.forEach((utility) => {
       usageData[utility] = [];
       let usageInfo = {
@@ -80,7 +83,7 @@ class Map extends Component {
       };
       let newUsageBounds = this.state.usageBounds;
       newUsageBounds[utility] = usageInfo;
-      this.setState({ usageBounds: newUsageBounds });
+      this.setState({usageBounds: newUsageBounds});
     });
 
     // Goes through every key in the date range
@@ -102,10 +105,8 @@ class Map extends Component {
           usageData[key].push(usages.utilityUsage);
         }
       }
-      usageData[key] = usageData[key].sort(function (a, b) {
-        return a - b;
-      });
-      this.setState({ usageData: usageData });
+      usageData[key] = usageData[key].sort(function(a, b){return a-b;});
+      this.setState({usageData: usageData});
     }
 
     // Sets state.
@@ -122,10 +123,7 @@ class Map extends Component {
       ) {
         this.state.map.current.entities.clear();
         this.updateMapUsage(this.state.startDate, this.state.endDate);
-      } else if (
-        prevState.utilTypes !== this.state.utilTypes ||
-        prevState.eui !== this.state.eui
-      ) {
+      } else if (prevState.utilTypes !== this.state.utilTypes || prevState.eui !== this.state.eui) {
         this.state.map.current.entities.clear();
         this.createDescriptions();
       }
@@ -147,25 +145,21 @@ class Map extends Component {
       let usages = building.usages;
       building.usageDesc = "";
       building.color = "gray";
-
       // Determines description and color based off id.
       for (const filteredUsage of this.state.utilTypes) {
         if (usages[filteredUsage]) {
           let usage = usages[filteredUsage];
           let formattedUsage = usage.usage;
-          let unit = "kBTU";
+          let unit = 'kBTU';
           if (this.state.eui) {
-            unit = "EUI";
-            formattedUsage = formattedUsage / building.squareFt;
+            unit = 'EUI';
+            formattedUsage = ((formattedUsage) / building.squareFt);
           }
           if (this.state.eui && building.squareFt < 1) {
-            building.usageDesc = "No square foot data for building <br/>";
+            building.usageDesc = 'No square foot data for building <br/>';
           } else {
             formattedUsage = formattedUsage.toFixed(2);
-            let usageRank = quantileRankSorted(
-              this.state.usageData[filteredUsage],
-              usage.usage
-            );
+            let usageRank = quantileRankSorted(this.state.usageData[filteredUsage], usage.usage);
 
             // Determine color
             if (usageRank <= 0.2) {
