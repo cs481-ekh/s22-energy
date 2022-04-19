@@ -16,6 +16,7 @@ class Map extends Component {
     this.state = {
       endDate: new Date(),
       startDate: prevMonth,
+      ready: false,
       utilTypes: [],
       usageData: [],
       buildings: [],
@@ -114,20 +115,18 @@ class Map extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // eslint-disable-next-line react/prop-types
-    if (
-      prevState.startDate.getTime() !== this.state.startDate.getTime() ||
-      prevState.endDate.getTime() !== this.state.endDate.getTime()
-    ) {
-      this.state.map.current.entities.clear();
-      this.updateMapUsage(
-        this.state.startDate,
-        this.state.endDate,
-      );
-    }
-    else if(prevState.utilTypes !== this.state.utilTypes || prevState.eui !== this.state.eui){
-      this.state.map.current.entities.clear();
-      this.createDescriptions();
+    // This method can be called before mounting so we need to make sure app is ready
+    if (this.state.ready) {
+      if (
+        prevState.startDate.getTime() !== this.state.startDate.getTime() ||
+        prevState.endDate.getTime() !== this.state.endDate.getTime()
+      ) {
+        this.state.map.current.entities.clear();
+        this.updateMapUsage(this.state.startDate, this.state.endDate);
+      } else if (prevState.utilTypes !== this.state.utilTypes || prevState.eui !== this.state.eui) {
+        this.state.map.current.entities.clear();
+        this.createDescriptions();
+      }
     }
   }
 
@@ -146,7 +145,6 @@ class Map extends Component {
       let usages = building.usages;
       building.usageDesc = "";
       building.color = "gray";
-      
       // Determines description and color based off id.
       for (const filteredUsage of this.state.utilTypes) {
         if (usages[filteredUsage]) {
@@ -260,10 +258,8 @@ class Map extends Component {
     );
     const buildings = await remoteFunctions.getBuildings();
     this.setState({ buildings: buildings });
-    this.updateMapUsage(
-      this.state.startDate,
-      this.state.endDate,
-    );
+    this.updateMapUsage(this.state.startDate, this.state.endDate);
+    this.setState({ready: true});
   }
   render() {
     return (
