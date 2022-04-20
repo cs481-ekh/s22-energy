@@ -40,6 +40,7 @@
 .image{
     color:#E87121;
     padding-right: 5px;
+    padding-left:2px;
 }
 .descText{
     display: "inline-block";
