@@ -358,7 +358,7 @@ function Admin() {
         </Dialog>
         <MenuItem onClick={SmallElecFormatOnClick}>SmallElec Format</MenuItem>
         <Dialog 
-               maxWidth = 'lg'
+               maxWidth = 'xl'
                 open={isSmallElectric}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
@@ -386,8 +386,8 @@ function Admin() {
                     {"Please make sure the CSV file is in this format"}
                 </DialogTitle>
                 <DialogActions sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-               
-                    <Button onClick={handleClose}>Close</Button>
+                <Button target="_blank" href="https://docs.google.com/spreadsheets/d/1VG_bmh3MxwgACW3vYF0BfPOV0pSus69W/edit#gid=530399141">See the whole file</Button>
+                <Button onClick={handleClose}>Close</Button>
                 </DialogActions>
         </Dialog>
       </Menu>
