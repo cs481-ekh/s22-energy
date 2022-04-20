@@ -10,18 +10,22 @@ import application.Database.EnergyDB.Repo.JPARepository.UsageRepo;
 import application.Datasource;
 
 import application.Model.Response;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -40,19 +44,21 @@ public class FileController {
 
     /**
      * Uploads a csv file to the database using one of the specific parsers.
-     * @param file - File sent by front end to parse.
+     *
+     * @param file   - File sent by front end to parse.
      * @param utilID - The utility id to parse
      * @return A response objects
      * @throws IOException
      */
-    @PostMapping(value ="/uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Add another parameter for Utility ID
-    public Response<Usage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
+    @PostMapping(value = "/uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    // Add another parameter for Utility ID
+    public ResponseEntity<Response> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
         // Get the directory where the file was stored.
         String fileDir = fileStorageService.storeFile(file);
         Response<Usage> response = new Response<>();
+        ResponseEntity<Response> controllerResponse = null;
 
         try {
-            //int utilityID = Integer.parseInt(utilID);
             // Initialize data source
             Datasource source = null;
             switch (utilID) {
@@ -78,30 +84,37 @@ public class FileController {
 
             // Makes sure one of the cases was hit.
             if (source != null) {
-                try {
-                    // Read data from the data source.
-                    response = source.readData();
-                } catch (Exception ex) {
-                    logger.error("Error uploading " + fileDir + " " + ex.getMessage());
+                // Read data from the data source.
+                response = source.readData();
+
+                List<Usage> successList = response.getSuccess();
+
+                // Make sure the file was actually parsed
+                if (successList.isEmpty()) {
+                    throw new FileUploadException("No successes were found for file " + fileDir);
                 }
                 // Upload succesful usages.
-                for (Usage u : response.getSuccess()) {
+                for (Usage u : successList) {
                     usageRepo.upsertUsage(u);
                 }
             } else {
-                logger.error("Failed to initialize data source for utility id " + utilID);
+                throw new FileUploadException("Failed to initialize data source for utility id " + utilID);
             }
+        } catch (Exception ex) {
+            logger.error("Exception occurred during parsing file " + fileDir + " " + ex.getMessage());
+            controllerResponse = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        catch(Exception ex){
-            logger.error("Exception occurred during parsing " + ex.getMessage());
+        finally {
+            controllerResponse = controllerResponse == null ? ResponseEntity.ok(response) : controllerResponse;
+            return controllerResponse;
         }
-        return response;
     }
 
     /**
      * Gives ability to download file
+     *
      * @param fileName - File name to download
-     * @param request - The request to download the item.
+     * @param request  - The request to download the item.
      * @return - The requested resource.
      */
     @GetMapping("/downloadFile/{fileName:.+}")
@@ -123,7 +136,7 @@ public class FileController {
         }
 
         // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
 

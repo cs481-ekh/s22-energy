@@ -196,13 +196,13 @@ class Map extends Component {
                 building.usageDesc += `<div class="descText"><span class="mdi mdi-flash image"></span>Electric: ${formattedUsage} ${unit} <br/></div>`;
                 break;
               case 3:
-                building.usageDesc += `<div class ="descText"><span class ="mdi mdi-waves-arrow-up image></span>Steam: ${formattedUsage} ${unit} <br/></div>`;
+                building.usageDesc += `<div class ="descText"><span class ="mdi mdi-waves-arrow-up image"></span>Steam: ${formattedUsage} ${unit} <br/></div>`;
                 break;
               case 4:
-                building.usageDesc += `<div class ="descText"><span class ="mdi mdi-white-balance-sunny image></span>Geothermal: ${formattedUsage} ${unit} <br/></div>`;
+                building.usageDesc += `<div class ="descText"><span class ="mdi mdi-white-balance-sunny image"></span>Geothermal: ${formattedUsage} ${unit} <br/></div>`;
                 break;
               case 5:
-                building.usageDesc += `<div class ="descText"><span class ="mdi solar-power-variant image></span>Solar: ${formattedUsage} ${unit}`;
+                building.usageDesc += `<div class ="descText"><span class ="mdi mdi-solar-panel image"></span>Solar: ${formattedUsage} ${unit} <br/></div>`;
                 break;
             }
           }
