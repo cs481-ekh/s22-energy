@@ -27,7 +27,6 @@ class Map extends Component {
       buildings: [],
       showAlert: false,
       eui: false,
-      usageBounds: {},
       map: React.createRef(),
       slideContainer: React.createRef()
     };
@@ -83,21 +82,10 @@ class Map extends Component {
       startDate,
       endDate,
     );
-
+    
     // Set initial min and max for utilities
     let usageData = {};
-    this.setState({usageBounds: {}});
-    this.state.utilTypes.forEach((utility) => {
-      usageData[utility] = [];
-      let usageInfo = {
-        min: 0,
-        max: 0,
-      };
-      let newUsageBounds = this.state.usageBounds;
-      newUsageBounds[utility] = usageInfo;
-      this.setState({usageBounds: newUsageBounds});
-    });
-
+    
     // Goes through every key in the date range
     for (const key of Object.keys(responseJson)) {
         for (const usages of responseJson[key]) {
@@ -117,14 +105,15 @@ class Map extends Component {
               };
             }
           }
-          usageData[key].push(usages.utilityUsage);
         }
-      
-      usageData[key] = usageData[key].sort(function(a, b){return a-b;});
-      this.setState({usageData: usageData});
+      usageData[key] = [];
+      responseJson[key].map(responseVal => usageData[key].push(responseVal.utilityUsage));
+      usageData[key] = usageData[key].sort((a,b) => {return a-b;});
+    
     }
     
     // Sets state.
+    this.setState({usageData: usageData});
     this.setState({ buildings: buildings });
     this.createDescriptions(buildings);
   };
@@ -161,7 +150,6 @@ class Map extends Component {
   createDescriptions() {
     // Create a clone of our initial buildings state
     let buildingsCopy = _.cloneDeep(this.state.buildings);
-    //this.removeOutliers(buildingsCopy);
     for (const bCode of Object.keys(this.state.buildings)) {
       let building = buildingsCopy[bCode];
       let usages = building.usages;
@@ -181,6 +169,7 @@ class Map extends Component {
             building.usageDesc = 'No square foot data for building <br/>';
           } else {
             formattedUsage = formattedUsage.toFixed(2);
+            console.log(this.state.usageData);
             let usageRank = quantileRankSorted(this.state.usageData[filteredUsage], usage.usage);
 
             // Determine color
