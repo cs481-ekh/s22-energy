@@ -23,7 +23,7 @@ server/logs*
 .vscode/
 
 # ignore environment file
-.env
+*.env
 
 #Ignore properties values
 server/src/test/resources/application.properties
