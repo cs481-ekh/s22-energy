@@ -15,10 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -46,7 +48,7 @@ public class FileController {
      * @throws IOException
      */
     @PostMapping(value ="/uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // Add another parameter for Utility ID
-    public Response<Usage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
+    public ResponseEntity<Response> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String utilID) throws IOException {
         // Get the directory where the file was stored.
         String fileDir = fileStorageService.storeFile(file);
         Response<Usage> response = new Response<>();
@@ -83,6 +85,8 @@ public class FileController {
                     response = source.readData();
                 } catch (Exception ex) {
                     logger.error("Error uploading " + fileDir + " " + ex.getMessage());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+
                 }
                 // Upload succesful usages.
                 for (Usage u : response.getSuccess()) {
@@ -95,7 +99,7 @@ public class FileController {
         catch(Exception ex){
             logger.error("Exception occurred during parsing " + ex.getMessage());
         }
-        return response;
+        return ResponseEntity.ok(response);
     }
 
     /**
