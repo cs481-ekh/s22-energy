@@ -6,8 +6,10 @@ import SDPSticker from "./SDPSticker";
 import remoteFunctions from '../modules/remote';
 import bingMapsAPI from '../modules/bingMapAPI';
 import AlertFade from './AlertFade';
+
 import { Box } from '@mui/material';
 import {quantileRankSorted} from 'simple-statistics';
+// eslint-disable-next-line no-unused-vars
 const _ = require("lodash");
 
 /**
@@ -200,19 +202,19 @@ class Map extends Component {
 
             switch (filteredUsage) {
               case 1:
-                building.usageDesc += `Natural Gas: ${formattedUsage} ${unit} <br/>`;
+                building.usageDesc += `<div class="descText"><span class="mdi mdi-propane-tank image"></span>Natural Gas: ${formattedUsage} ${unit} <br/></div>`;
                 break;
               case 2:
-                building.usageDesc += `Electric: ${formattedUsage} ${unit} <br/>`;
+                building.usageDesc += `<div class="descText"><span class="mdi mdi-flash image"></span>Electric: ${formattedUsage} ${unit} <br/></div>`;
                 break;
               case 3:
-                building.usageDesc += `Steam: ${formattedUsage} ${unit} <br/>`;
+                building.usageDesc += `<div class ="descText"><span class ="mdi mdi-waves-arrow-up image></span>Steam: ${formattedUsage} ${unit} <br/></div>`;
                 break;
               case 4:
-                building.usageDesc += `Geothermal: ${formattedUsage} ${unit} <br/>`;
+                building.usageDesc += `<div class ="descText"><span class ="mdi mdi-white-balance-sunny image></span>Geothermal: ${formattedUsage} ${unit} <br/></div>`;
                 break;
               case 5:
-                building.usageDesc += `Solar: ${formattedUsage} ${unit} <br/>`;
+                building.usageDesc += `<div class ="descText"><span class ="mdi solar-power-variant image></span>Solar: ${formattedUsage} ${unit}`;
                 break;
             }
           }
@@ -238,7 +240,6 @@ class Map extends Component {
         );
       }
       var pin;
-      var infoBox;
 
       if (location) {
         // If there is utility data for the building add it to the info box and color the pin
@@ -246,16 +247,12 @@ class Map extends Component {
           pin = new window.Microsoft.Maps.Pushpin(location, {
             color: building.color,
           });
-          infoBox = new window.Microsoft.Maps.Infobox(location, {
-            title: building.buildingName,
-            description: building.usageDesc,
-            visible: false,
-          });
+          let infoBoxData = {location: location, title: building.buildingName, description: building.usageDesc, visible: false};
           pinArray.push(pin);
-          infoBoxArray.push(infoBox);
+          infoBoxArray.push(infoBoxData);
         } 
       }
-
+    }
       // If there are pins added to the map then we have data
       // Otherwise we should notify the user that no data was loaded.
       if(pinArray.length === 0){
@@ -264,7 +261,9 @@ class Map extends Component {
       else{
         this.modifyAlert(false);
       }
-    }
+
+    infoBoxArray = bingMapsAPI.generateCustomInfoBox(infoBoxArray);
+    
     // Create event handler for each pin/infobox and add them to the map
     for (let i = 0; i < pinArray.length; i++) {
       window.Microsoft.Maps.Events.addHandler(
@@ -284,7 +283,7 @@ class Map extends Component {
    */
   async componentDidMount() {
     const mapRef = document.getElementById(this.props.id);
-
+      
     
     this.state.map.current = await bingMapsAPI.waitGenerateMap(
       window,
@@ -292,10 +291,13 @@ class Map extends Component {
       process.env.REACT_APP_API_KEY,
       mapRef
     );
+
     const buildings = await remoteFunctions.getBuildings();
     this.setState({ buildings: buildings });
     this.updateMapUsage(this.state.startDate, this.state.endDate);
     this.setState({ready: true});
+
+    
   }
 
 

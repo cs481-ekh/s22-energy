@@ -1,11 +1,19 @@
+import '../customInfoBox.css';
+
+ let infoboxArray = [];
+ window.closeInfobox = function(test){
+   const item = infoboxArray[test];
+   item.setOptions({visible: false});
+ };
+  
+ 
 let bingMapsAPI = {
   /**
    * Injects the bing api javascript into our application
    * @param {*} document 
    * @param {*} key 
    */
-  injectScript(document, key) {
-    let url = `https://www.bing.com/api/maps/mapcontrol`;
+  injectScript(document, url, key) {
     if (key) {
       url += `&key=${key}`;
     }
@@ -53,7 +61,7 @@ let bingMapsAPI = {
    */
   async waitGenerateMap(window, document, key, mapRef) {
     let map;
-    bingMapsAPI.injectScript(document, key);
+    bingMapsAPI.injectScript(document, "https://www.bing.com/api/maps/mapcontrol", key);
     // Wait for window to load
     while (!window.Microsoft && !window.Microsoft.Maps);
 
@@ -64,6 +72,37 @@ let bingMapsAPI = {
     map = bingMapsAPI.generateMap(mapRef);
     return map;
   },
+
+clearInfoBoxes(){
+  for(const infoBox of infoboxArray){
+    infoBox.setOptions({visible: false});
+  }
+  infoboxArray = [];
+},
+
+generateCustomInfoBox(dataArray){
+  // Clear any old info boxes
+  bingMapsAPI.clearInfoBoxes();
+  
+  for(let i = 0; i < dataArray.length; i++){
+    let infoBoxData = dataArray[i];
+    var infoboxTemplate = "<div class='customInfobox'> " +
+                            `<div class='headerRow'><span class = "title">{title}</span> <span onClick="closeInfobox(this.id)" id = "${i}" class="closeButton mdi mdi-close-circle"></span></div>` +
+                            "<div class = 'description'>{description}" +
+                              "</div>";
+
+    //Some HTML to add a close button to the infobox.
+    var closeButton = ``;
+
+    //Pass the title and description into the template and pass it into the infobox as an option.
+    let infobox = new window.Microsoft.Maps.Infobox(infoBoxData.location, {
+        htmlContent: infoboxTemplate.replace('{title}', infoBoxData.title).replace('{description}', infoBoxData.description) + closeButton,
+        visible: infoBoxData.visible
+    });
+    infoboxArray.push(infobox);
+  }
+  return infoboxArray;
+},
 
   /**
    * Generates our map with the specified settings
