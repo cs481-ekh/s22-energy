@@ -169,7 +169,6 @@ class Map extends Component {
             building.usageDesc = 'No square foot data for building <br/>';
           } else {
             formattedUsage = formattedUsage.toFixed(2);
-            console.log(this.state.usageData);
             let usageRank = quantileRankSorted(this.state.usageData[filteredUsage], usage.usage);
 
             // Determine color
