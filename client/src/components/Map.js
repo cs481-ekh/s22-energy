@@ -268,9 +268,16 @@ class Map extends Component {
     for (let i = 0; i < pinArray.length; i++) {
       window.Microsoft.Maps.Events.addHandler(
         pinArray[i],
-        "click",
+        "mouseover",
         function () {
           infoBoxArray[i].setOptions({ visible: true });
+        }
+      );
+      window.Microsoft.Maps.Events.addHandler(
+        pinArray[i],
+        "mouseout",
+        function () {
+          infoBoxArray[i].setOptions({ visible: false });
         }
       );
       infoBoxArray[i].setMap(this.state.map.current);
