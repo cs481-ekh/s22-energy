@@ -1,4 +1,15 @@
-## 4/14/22 9:00 AM Moring Meeting
+## 4/21/22 9:00 AM Moring Meeting
+#### Group: Aidan, Keegan, Khaled, Taylor, Victor
+<p>
+   
+   - Short meeting to go over:
+      - Making the repo public for github pages
+      - Merging last pull requests
+   - Victor and Tayor met with the professor to host on SDP
+   
+</p>
+
+## 4/19/22 9:00 AM Moring Meeting
 #### Group: Jack, Aidan, Keegan, Khaled, Taylor, Victor
 <p>
    
