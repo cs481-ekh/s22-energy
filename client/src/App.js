@@ -9,8 +9,9 @@ import CsvReader from "./components/CsvReader";
 import Admin from "./components/Admin-Splash";
 const ResponsiveAppBar = () => {
     return (
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
             <div>
+                
                 <NavBar/>
             </div>
             <ScrollToTop/>
