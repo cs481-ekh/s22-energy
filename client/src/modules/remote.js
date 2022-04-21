@@ -3,6 +3,7 @@ const serverPort = process.env.REACT_APP_SERVER_PORT || 5000;
 const userName = process.env.REACT_APP_API_USER;
 const password = process.env.REACT_APP_API_PASSWORD;
 const credentials = `Basic ${Buffer.from(`${userName}:${password}`).toString('base64')}`;
+const baseURL = `http://localhost:${serverPort}/energy`;
 
 import  { Buffer } from 'buffer';
 let remoteFunctions = {
@@ -21,7 +22,7 @@ let remoteFunctions = {
         },
       };
       const response = await fetch(
-        `http://localhost:${serverPort}/building`,
+        `${baseURL}/building`,
         requestOptions
       );
       responseJson = await response.json();
@@ -51,7 +52,7 @@ let remoteFunctions = {
           Authorization: credentials
         },
       };
-      let requestURL = new URL("usage", `http://localhost:${serverPort}`);
+      let requestURL = new URL("usage", `${baseURL}/`);
       requestURL.searchParams.append("start", startDate);
       requestURL.searchParams.append("end", endDate);
       
@@ -82,7 +83,7 @@ let remoteFunctions = {
         },
       };
       const response = await fetch(
-          `http://localhost:${serverPort}/login?email=${email}&password=${password}`,
+          `${baseURL}/login?email=${email}&password=${password}`,
           requestOptions
       );
       responseJson = await response.json();
@@ -109,7 +110,7 @@ let remoteFunctions = {
         },
       };
       const response = await fetch(
-          `http://localhost:${serverPort}/uploadFile`,
+          `${baseURL}/uploadFile`,
           requestOptions
       );
       return response;
@@ -130,7 +131,7 @@ let remoteFunctions = {
     
     try{
       const response = await fetch(
-        `http://localhost:${serverPort}/utilities`,
+        `${baseURL}/utilities`,
         requestOptions
       );
       return await response.json();

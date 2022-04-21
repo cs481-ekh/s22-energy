@@ -14,7 +14,7 @@ ReactDOM.render(
       <Auth0Provider
           domain={domain}
           clientId={clientId}
-          redirectUri={window.location.origin}
+          redirectUri={process.env.REACT_APP_AUTH0_CALLBACK_URL}
       >
         <App />
       </Auth0Provider>
