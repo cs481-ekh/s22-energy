@@ -22,7 +22,7 @@ let remoteFunctions = {
         },
       };
       const response = await fetch(
-        `http://localhost:${serverPort}/building`,
+        `${baseURL}/building`,
         requestOptions
       );
       responseJson = await response.json();
@@ -52,7 +52,7 @@ let remoteFunctions = {
           Authorization: credentials
         },
       };
-      let requestURL = new URL("usage", `http://localhost:${serverPort}`);
+      let requestURL = new URL("usage", `${baseURL}/`);
       requestURL.searchParams.append("start", startDate);
       requestURL.searchParams.append("end", endDate);
       
@@ -83,7 +83,7 @@ let remoteFunctions = {
         },
       };
       const response = await fetch(
-          `http://localhost:${serverPort}/login?email=${email}&password=${password}`,
+          `${baseURL}/login?email=${email}&password=${password}`,
           requestOptions
       );
       responseJson = await response.json();
@@ -110,7 +110,7 @@ let remoteFunctions = {
         },
       };
       const response = await fetch(
-          `http://localhost:${serverPort}/uploadFile`,
+          `${baseURL}/uploadFile`,
           requestOptions
       );
       return response;
@@ -131,7 +131,7 @@ let remoteFunctions = {
     
     try{
       const response = await fetch(
-        `http://localhost:${serverPort}/utilities`,
+        `${baseURL}/utilities`,
         requestOptions
       );
       return await response.json();
