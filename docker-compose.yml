@@ -1,43 +1,33 @@
 version: '3.1'
 
 services:
-  postgres-db-container:
+  energy-postgres:
     image: postgres
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER:?err}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
       POSTGRES_DB: ${POSTGRES_DB:?err}
-    ports:
-      - 5432:5432
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
       - ./docs/EnergyDB.sql:/docker-entrypoint-initdb.d/EnergyDB.sql
-    networks:
-      - energy_net
 
   frontend-and-backend-container:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     restart: always
     ports:
       - "${HOST_PORT:-3000}:3000"
-    extra_hosts:
-      - "energy-postgres:172.20.0.1"
+      - "${HOST_PORT_API:-5000}:5000"
 
   # instantiate a container that will allow to
   # manage the database through a web interface
   adminer-database-management:
     image: adminer
     restart: always
-    networks:
-      - energy_net
     ports:
       - "${HOST_PORT_ADMIN:-8080}:8080"
-    extra_hosts:
-      - "energy-postgres:192.168.0.4"
 
-networks:
-   energy_net:
-      name: energy_net
+volumes:
+   postgres-data:
