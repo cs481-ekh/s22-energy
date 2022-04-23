@@ -76,7 +76,7 @@ REACT_APP_AUTH0_CALLBACK_URL=http://localhost:3000/energy/admin
 Next open up the application.properties file, add these entries
 
 ```
-spring.energydb.url=jdbc:postgresql://dbhost here):(dbPort)/(database name here)?sslmode=require
+spring.energydb.url=jdbc:postgresql://dbhost here):(dbPort)/(database name here)
 spring.energydb.username=(db login here)
 spring.energydb.password=(db password here)
 spring.energydb.driver=org.postgresql.Driver
