@@ -1,14 +1,14 @@
-### *<span style="color: blue;">Boise State Energy Dashboard </span>*
+# *<span style="color: blue;font-weight: bold;">Boise State Energy Dashboard </span>*
 
 ### Team Energy
 
 ```
-    Aiden Leuck
-    Jack Carr
-    Khaled Natouf
-    Keegan Hanes
-    Taylor Poulsen
-    Victor Cerda
+Aiden Leuck
+Jack Carr
+Khaled Natouf
+Keegan Hanes
+Taylor Poulsen
+Victor Cerda
 ```
 
 ## Building and Deploying Docker 
