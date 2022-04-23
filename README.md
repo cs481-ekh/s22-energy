@@ -1,4 +1,4 @@
-![example workflow](https://github.com/cs481-ekh/s22-energy/actions/workflows/github-actions.yml/badge.svg))
+![example workflow](https://github.com/cs481-ekh/s22-energy/actions/workflows/github-actions.yml/badge.svg)
 
 # Building and Deploying Docker 
     Install Docker on your local system
