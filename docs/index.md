@@ -1,6 +1,6 @@
 # <span style="color: #FF9900;font-weight: bold;">Boise State Energy Dashboard</span>
 
-### <span style="color: #FF9900>Team Energy</span>
+### <span style="color: #FF9900">Team Energy</span>
 
 ```
 Aiden Leuck
@@ -11,7 +11,7 @@ Taylor Poulsen
 Victor Cerda
 ```
 
-## <span style="color: #FF9900>Building and Deploying Docker</span>
+## <span style="color: #FF9900">Building and Deploying Docker</span>
     
     Install Docker on your local system
 [Docker install](https://docs.docker.com/get-docker/)
@@ -40,8 +40,8 @@ Got to following URL to update database
 
 [Database](http://locahost:8080/)
 
-## <span style="color: #FF9900>Build Instructions</span>
-### <span style="color: #FF9900>Software Requirements</span>
+## <span style="color: #FF9900">Build Instructions</span>
+### <span style="color: #FF9900">Software Requirements</span>
 
 <p>
 In order to run this application you must have this software installed:
@@ -58,7 +58,7 @@ If you have both of these dependencies installed you are safe to run the build.s
  $ chmod +x build.sh 
  $ ./build.sh
  ```
-### Running the Application</span>
+### <span style="color: #FF9900">Running the Application</span>
 
 <p>In order to actually run the application we need to set up the environment. This requires two environment files to be created. One for the client and one for the server. You can run these two commands to create the env files (from the top level directory)
 </p>
