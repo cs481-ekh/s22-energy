@@ -1,4 +1,4 @@
-# *<span style="color: blue;font-weight: bold;">Boise State Energy Dashboard </span>*
+# *<span style="color: #FF9900;font-weight: bold;">Boise State Energy Dashboard </span>*
 
 ### Team Energy
 
