@@ -22,7 +22,7 @@ $ docker-compose -f docker-compose.yml up
 
 Go to following URL to see application running:
     
-[API map](http://localhost:3000/)
+[API map](http://localhost:3000/energy)
 
 Got to following URL to update database
 
