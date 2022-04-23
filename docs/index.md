@@ -1,6 +1,17 @@
-<center> <h1 style="color:orange">*Boise State Energy Dashboard*</h1> </center>
+### *<span style="color: blue;">Boise State Energy Dashboard </span>*
 
-# Building and Deploying Docker 
+### Team Energy
+
+```
+    Aiden Leuck
+    Jack Carr
+    Khaled Natouf
+    Keegan Hanes
+    Taylor Poulsen
+    Victor Cerda
+```
+
+## Building and Deploying Docker 
     Install Docker on your local system
 [Docker install](https://docs.docker.com/get-docker/)
 
@@ -28,7 +39,7 @@ Got to following URL to update database
 
 [Database](http://locahost:8080/)
 
-# Build Instructions
+## Build Instructions
 ### Software Requirements
 <p>
 In order to run this application you must have this software installed:
