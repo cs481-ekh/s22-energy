@@ -1,5 +1,6 @@
-# Boise State Energy Dashboard
-# Building and Deploying Docker
+<center> <h1>Boise State Energy Dashboard</h1> </center>
+
+# Building and Deploying Docker 
     Install Docker on your local system
 [Docker install](https://docs.docker.com/get-docker/)
 
@@ -9,23 +10,23 @@
 POSTGRES_USER= (put desired username here)
 POSTGRES_PASSWORD= (put desired password here)
 POSTGRES_DB=energyDB
+HOST_PORT=3000
+HOST_PORT_API=5000
+HOST_PORT_ADMIN=8080
 ```
 <p>After the .env file has been created, run these commands from the root directory to start the containerized application:</p>
 
 ```bash
-$ docker build -t frontend_and_backend .
 $ docker-compose -f docker-compose.yml up
 ```
 
 Go to following URL to see application running:
-
-[API map](http://localhost:3000/)
+    
+[API map](http://localhost:3000/energy)
 
 Got to following URL to update database
 
 [Database](http://locahost:8080/)
-
-![example workflow](https://github.com/cs481-ekh/s22-energy/actions/workflows/github-actions.yml/badge.svg)
 
 # Build Instructions
 ### Software Requirements
@@ -61,25 +62,26 @@ Open up client/.env file and add these lines and fill in the information appropr
 specific to your own setup**
 
 ```
-REACT_APP_API_USER = (endpoint user here should match application.properties spring.security.user)
-REACT_APP_API_PASSWORD = (endpoint password here should match application.properties spring.security.password)
-REACT_APP_API_KEY= (Bing maps api key here)
-REACT_APP_AUTH0_DOMAIN= dev-4wcyhweh.us.auth0.com
-REACT_APP_AUTH0_CLIENT_ID= (Auth 0 client id here)
-REACT_APP_AUTH0_CALLBACK_URL=http://localhost:3000/admin
+REACT_APP_API_USER = (api username here should match application.properties username)
+REACT_APP_API_PASSWORD = (api password here should match application.properties password)
+REACT_APP_API_URL=http://localhost:5000
+REACT_APP_API_KEY=(bing maps api key)
+REACT_APP_AUTH0_DOMAIN=dev-9t0kfb1u.us.auth0.com
+REACT_APP_AUTH0_CLIENT_ID=(auth0 client id here)
+REACT_APP_AUTH0_CALLBACK_URL=http://localhost:3000/energy/admin
 ```
 
 Next open up the application.properties file, add these entries
 
 ```
-spring.energydb.url=jdbc:postgresql://dbhost here):(dbPort)/(database name here)?sslmode=require
+spring.energydb.url=jdbc:postgresql://dbhost here):(dbPort)/(database name here)
 spring.energydb.username=(db login here)
 spring.energydb.password=(db password here)
 spring.energydb.driver=org.postgresql.Driver
 
 spring.security.user.name=(endpoint user here should match REACT_APP_API_USER key)
 spring.security.user.password=(endpoint password here should match REACT_APP_API_PASSWORD key)
-server.port=8000
+server.port=5000
 
 hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 hibernate.jdbc.batch_size=25
@@ -91,6 +93,8 @@ hibernate.cache.use_query_cache=false
 logging.level.application=DEBUG
 logging.level.root=WARN
 
+server.servlet.context-path=/energy/api
+
 spring.servlet.multipart.file-size-threshold=2KB
 spring.servlet.multipart.max-file-size=200MB
 spring.servlet.multipart.max-request-size=215MB
@@ -98,7 +102,7 @@ file.upload-dir=uploads
 ```
 
 Now the application should be able to run properly you can start
-the server/client concurrently by running the start script located in
+the server/client concurrently by running the start script located in 
 the root directory:
 
 ```
