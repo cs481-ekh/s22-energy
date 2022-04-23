@@ -1,8 +1,7 @@
 # <span style="color: #FF7700;font-weight: bold;"> Boise State Energy Dashboard </span>
 
-<img src="/client/src/imgs/gray-logo-scaled.jpeg" width="90" height="100" class="centerImage">
-
-
+ ![Expression]({{ "/client/src/imgs/gray-logo-scaled.jpeg" | relative_url }}) 
+ 
 ### <span style="color: #FF9900">Team Energy</span>
 
 ```
