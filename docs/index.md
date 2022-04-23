@@ -1,4 +1,4 @@
-<center> <h1>Boise State Energy Dashboard</h1> </center>
+<center> <h1 style="color:orange">*Boise State Energy Dashboard*</h1> </center>
 
 # Building and Deploying Docker 
     Install Docker on your local system
