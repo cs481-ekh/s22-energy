@@ -3,7 +3,7 @@
 ### <span style="color: #FF9900">Team Energy</span>
 
 ```
-Aiden Leuck
+Aidan Leuck
 Jack Carr
 Khaled Natouf
 Keegan Hanes
@@ -11,10 +11,28 @@ Taylor Poulsen
 Victor Cerda
 ```
 
+## <span style="color: #FF9900">Abstract:</span>
+
+Boise State Energy Dashboard is an visual web application developed to allow Boise State University to monitor their energy usage.  There are several universities that currently have energy usage applications.  Our team felt like we could create a solid base for an application that could be used by Boise State to serve as a tool.  Current energy monitoring is based on individual reports pulled from different energy companies and analyzed via spreadsheets. Team Energy wanted to help Boise State move its understanding of energy usage to the next level.
+
+There are various types of energy that are being used at Boise State.  Team Energy wanted to create a visual representation of these different types of energy.  Our web application creates a map based visual representation of Boise State.  It then includes the buildings being used by BSU and creates informative cards.  These cards will display building names and energy usage.  There are parameters that can be adjusted, such as, date range and utility type.  Team Energy also has energy levels based on color, so a high usage of energy could be easily identified.  This application is a great representation of energy throughout Boise State
+
+## <span style="color: #FF9900">Project Description:</span>
+In collaboration with our sponsor Brian Emtman, Team Energy offered an idea of creating a Boise State Energy Dashboard.  Our application works on three fronts, a client side visual representation, a backend java infrastructure, and a database storage management.  
+
+The client side allows us to create an accurate map of the BSU campus via a web application.  With this application we added web based pages to handle administrative needs:  login in needs and data uploads requirements.  Using the data uploads our team was then able to visually display buildings and energy usage.  Features also  include energy conversion, date range searches, energy types and color scheme to represent usage levels.  
+
+The database storage is a key piece and allows us to store the information needs of BSU.  Team energy was able to create a schema that allows for a seamless interaction between the client and backend side of the application.  We are now able to identify buildings and their usages based on user request parameters.  
+
+The backend/server side is the piece that ties it all together.  Our server logic allowed for the interaction between the client and the database.  All the needs that the client required were handled by the server logic and turned into valid data points.  These data points were then either used to create visual representations on the map or administrative needs.  The server logic even logged errors, so issues could be easily identified.  
+
+This project is a great starting point for future development of the Boise State Energy dashboard.  
+
+
 ## <span style="color: #FF9900">Building and Deploying Docker</span>
     
     Install Docker on your local system
-[Docker install](https://docs.docker.com/get-docker/)
+[Docker install](https://docs.docker.com/get-docker)
 
 <p>The docker-compose will require a .env file in the root directory with the following lines:</p>
 
