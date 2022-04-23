@@ -1,6 +1,6 @@
 # <span style="color: #FF7700;font-weight: bold;"> Boise State Energy Dashboard </span>
 
-![logo](/s22-energy/client/src/imgs/gray-logo-scaled.jpeg)
+![logo]({{ https://cs481-ekh.github.io/s22-energy/ }}/client/src/imgs/gray-logo-scaled.jpeg)
 
 ### <span style="color: #FF9900">Team Energy</span>
 
