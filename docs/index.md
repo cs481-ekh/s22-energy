@@ -1,6 +1,6 @@
 # <span style="color: #FF7700;font-weight: bold;"> Boise State Energy Dashboard </span>
 
-![](./Electric.jpg)
+![](./images/Electric.jpg)
     
 ### <span style="color: #FF9900">Team Energy</span>
 
