@@ -24,9 +24,33 @@ In collaboration with our sponsor Brian Emtman, Team Energy offered an idea of c
 
 The client side allows us to create an accurate map of the BSU campus via a web application.  With this application we added web based pages to handle administrative needs:  login in needs and data uploads requirements.  Using the data uploads our team was then able to visually display buildings and energy usage.  Features also  include energy conversion, date range searches, energy types and color scheme to represent usage levels.  
 
+BSU Energy Dashboard:
+
+<img src="./images/Energy_DB.jpeg" heigth=200></img>
+
+Dashboard Info Cards:
+
+<img src="./images/Info_Card.jpeg" height=300></img>
+
+Dashboard Filters:
+
+<img src="./images/Filter_Bar.jpeg" height=600></img>
+
+
+
 The database storage is a key piece and allows us to store the information needs of BSU.  Team energy was able to create a schema that allows for a seamless interaction between the client and backend side of the application.  We are now able to identify buildings and their usages based on user request parameters.  
 
+Dashboard utility usage upload page:
+
+<img src="./images/Util_type.jpeg" height=400></img>
+
+<img src="./images/Upload.jpeg" height=400></img>
+
 The backend/server side is the piece that ties it all together.  Our server logic allowed for the interaction between the client and the database.  All the needs that the client required were handled by the server logic and turned into valid data points.  These data points were then either used to create visual representations on the map or administrative needs.  The server logic even logged errors, so issues could be easily identified.  
+
+Web based database management tool, Adminer:
+
+<img src="./images/Adminer.jpeg" height=300></img>
 
 This project is a great starting point for future development of the Boise State Energy dashboard.  
 
