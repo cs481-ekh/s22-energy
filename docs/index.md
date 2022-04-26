@@ -26,15 +26,15 @@ The client side allows us to create an accurate map of the BSU campus via a web 
 
 BSU Energy Dashboard:
 
-<img src="./images/Energy_DB.jpeg" heigth=200></img>
+<img src="./images/Energy_DB.jpeg" heigth=200>
 
 Dashboard Info Cards:
 
-<img src="./images/Info_Card.jpeg" height=300></img>
+<img src="./images/Info_Card.jpeg" height=300>
 
 Dashboard Filters:
 
-<img src="./images/Filter_Bar.jpeg" height=600></img>
+<img src="./images/Filter_Bar.jpeg" height=600>
 
 
 
@@ -42,15 +42,15 @@ The database storage is a key piece and allows us to store the information needs
 
 Dashboard utility usage upload page:
 
-<img src="./images/Util_type.jpeg" height=400></img>
+<img src="./images/Util_type.jpeg" height=400>
 
-<img src="./images/Upload.jpeg" height=400></img>
+<img src="./images/Upload.jpeg" height=400>
 
 The backend/server side is the piece that ties it all together.  Our server logic allowed for the interaction between the client and the database.  All the needs that the client required were handled by the server logic and turned into valid data points.  These data points were then either used to create visual representations on the map or administrative needs.  The server logic even logged errors, so issues could be easily identified.  
 
 Web based database management tool, Adminer:
 
-<img src="./images/Adminer.jpeg" height=300></img>
+<img src="./images/Adminer.jpeg" height=300>
 
 This project is a great starting point for future development of the Boise State Energy dashboard.  
 
