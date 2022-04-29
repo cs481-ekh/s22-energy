@@ -32,6 +32,7 @@ POSTGRES_PORT=(put desired port here) by default = 5432
 <p>After the .env file has been created, run these commands from the root directory to start the containerized application:</p>
 
 ```bash
+$ docker build -t frontend_and_backend .
 $ docker-compose -f docker-local.yml up
 ```
 
