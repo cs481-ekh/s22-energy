@@ -7,17 +7,32 @@
 <p>The docker-compose will require a .env file in the root directory with the following lines:</p>
 
 ```
-POSTGRES_USER= (put desired username here)
-POSTGRES_PASSWORD= (put desired password here)
+POSTGRES_USER=(put desired username here)
+POSTGRES_PASSWORD=(put desired password here)
 POSTGRES_DB=energyDB
-HOST_PORT=3000
-HOST_PORT_API=5000
-HOST_PORT_ADMIN=8080
+
+# (These environment variables are optional
+# You can use them if you need to resolve port 
+# conflicts on local machine if you set them to
+# a value other than this it may require changes 
+# in either application.properties or the clients .env)
+
+# (corresponds to client port)
+HOST_PORT=(put desired port here) by default = 3000
+
+# (corresponds to server.port in application.properties)
+HOST_PORT_API=(put desired port here) by default = 5000
+
+# (adminer database access port)
+HOST_PORT_ADMIN=(put desired port here) by default = 8080
+
+# (Port for postgres to run on in docker)
+POSTGRES_PORT=(put desired port here) by default = 5432
 ```
 <p>After the .env file has been created, run these commands from the root directory to start the containerized application:</p>
 
 ```bash
-$ docker-compose -f docker-compose.yml up
+$ docker-compose -f docker-local.yml up
 ```
 
 Go to following URL to see application running:
@@ -74,13 +89,20 @@ REACT_APP_AUTH0_CALLBACK_URL=http://localhost:3000/energy/admin
 Next open up the application.properties file, add these entries
 
 ```
-spring.energydb.url=jdbc:postgresql://dbhost here):(dbPort)/(database name here)
+(NOTE 5432 might be different if you added POSTGRES_PORT to your docker .env file)
+spring.energydb.url=jdbc:postgresql://localhost:5432/energyDB
+
+#(This value corresponds to POSTGRES_USER in dockers env)
 spring.energydb.username=(db login here)
+
+#(This value corresponds to POSTGRES_PASSWORD in dockers env)
 spring.energydb.password=(db password here)
 spring.energydb.driver=org.postgresql.Driver
 
 spring.security.user.name=(endpoint user here should match REACT_APP_API_USER key)
 spring.security.user.password=(endpoint password here should match REACT_APP_API_PASSWORD key)
+
+#(NOTE: THIS VALUE MIGHT CHANGE IF YOU HAVE HOST_PORT_API specified in dockers .env)
 server.port=5000
 
 hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
