@@ -90,8 +90,12 @@ REACT_APP_AUTH0_CALLBACK_URL=http://localhost:3000/energy/admin
 Next open up the application.properties file, add these entries
 
 ```
-(NOTE 5432 might be different if you added POSTGRES_PORT to your docker .env file)
-spring.energydb.url=jdbc:postgresql://localhost:5432/energyDB
+# (NOTE 5432 might be different if you added POSTGRES_PORT to your docker .env file)
+# Use this energy db if you are debugging locally in your ide
+#spring.energydb.url=jdbc:postgresql://localhost:5432/energyDB
+
+# Use this energy db if you are running front end, back end and postgres in docker.
+spring.energydb.url=jdbc:postgresql://energy-postgres:5432/energyDB
 
 #(This value corresponds to POSTGRES_USER in dockers env)
 spring.energydb.username=(db login here)
